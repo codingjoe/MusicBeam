@@ -2,10 +2,19 @@ MusicBeam
 =========
 
 MusicBeam is a multi plattform software that allows using a projector as a rgb laser.
-MusicBeam is written in [Processing](http://processing.org) a JAVA based language that is easy to learn to enable users to contribute new effects.
+MusicBeam is written in [Processing 1.51](http://processing.org) a JAVA based language that is easy to learn to enable users to contribute new effects.
+
+
+Download
+--------
+The latest releases can be found [here](http://zepplab.net/downloads/BeamMusic_v0.1.zip).
+
+
+_______
+
 
 License
-_______
+-------
 
 Copyright (c) 2012 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
 
