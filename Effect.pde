@@ -12,7 +12,7 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
- 
+
 import controlP5.*;
 import controlP5.Controller;
 
@@ -28,9 +28,13 @@ public abstract class Effect
   Toggle activeToggle;
 
   float rotationHistory = 0;
-  
+
+  float[] translationHistory = {
+    0, 0
+  };
+
   int winWidth = 200;
-  
+
   int winHeight = 200;
 
   Effect(MusicBeam controller)
@@ -47,6 +51,13 @@ public abstract class Effect
   abstract String getName();
 
   abstract void draw();
+
+  void refresh()
+  {
+    draw();
+    resetRotation();
+    resetTranslation();
+  }
 
   boolean isHat()
   {
@@ -93,6 +104,20 @@ public abstract class Effect
   {
     stg.rotate(-rotationHistory);
     rotationHistory = 0;
+  }
+
+  void translate(float x, float y)
+  {
+    stg.translate(x, y);
+    translationHistory[0]+= x;
+    translationHistory[1]+= y;
+  }
+
+  void resetTranslation()
+  {
+    stg.translate(translationHistory[0], translationHistory[1]);
+    translationHistory[0] = 0;
+    translationHistory[1] = 0;
   }
 }
 

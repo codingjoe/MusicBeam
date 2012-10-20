@@ -67,7 +67,6 @@ class Scanner_Effect extends Effect
     
     if (aHueToggle.getState() && isKick() && isOnset())
       hueSlider.setValue((hueSlider.getValue()+120)%360);
-    resetRotation();
   }
 }
 

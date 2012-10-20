@@ -46,7 +46,7 @@ class BezierEllipse_Effect extends Effect
   void draw() {
 
     setEllipse();
-    stg.rotate(rotation);
+    rotate(rotation);
     for (int i=0; i < points; i++) {
       stg.fill(( i* int(360 / points))%360, 100, 100);
       if (i==points-1) {

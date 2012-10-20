@@ -57,7 +57,7 @@ public class CircelingPoints_Effect extends Effect
 
   void draw()
   {
-    stg.rotate(_rotation);
+    rotate(_rotation);
     stg.fill(hueSlider.getValue()%360, 100, 100);
 
     int pts = int(pointSlider.getValue());

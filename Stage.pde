@@ -76,7 +76,7 @@ public class Stage extends PApplet {
     translate(width/2, height/2);
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
-        effectArray[i].draw();
+        effectArray[i].refresh();
   }
 }
 
