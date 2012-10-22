@@ -61,7 +61,7 @@ public class Strobo_Effect extends Effect
 
   boolean state = false;
 
-  int timer = 0;
+  float timer = 0;
 
   Button manualButton;
 
@@ -86,13 +86,13 @@ public class Strobo_Effect extends Effect
   }
 
   void draw() {
-    if (state && timer == 0) {
+    if (state && timer <= 0) {
       state = false;
       timer = int(stg.refreshRate/2-delaySlider.getValue());
     } 
-    else if (!state && isTriggered() && timer == 0) {
+    else if (!state && isTriggered() && timer <= 0) {
       state = true;
-      timer = int(stg.refreshRate/2-delaySlider.getValue());
+      timer = stg.refreshRate/2-delaySlider.getValue();
     }
 
     if (timer > 0)
@@ -101,7 +101,7 @@ public class Strobo_Effect extends Effect
     if (aHueToggle.getState())
       hueSlider.setValue((hueSlider.getValue()+1)%360);
 
-    stg.fill(hueSlider.getValue(), bwToggle.getState()?0:50, 100);
+    stg.fill(hueSlider.getValue(), bwToggle.getState()?0:100, 100);
     if (state)
       stg.rect(-stg.maxRadius/2, -stg.maxRadius/2, stg.maxRadius, stg.maxRadius);
   }

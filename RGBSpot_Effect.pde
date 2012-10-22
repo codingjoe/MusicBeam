@@ -5,6 +5,29 @@ class RGBSpot_Effect extends Effect
   RGBSpot_Effect(MusicBeam ctrl)
   {
     super(ctrl);
+    
+    manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
+    manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
+
+    hatToggle = cp5.addToggle("hat"+getName()).setSize(90, 20).setPosition(100, 45).moveTo(win);
+    hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
+
+    snareToggle = cp5.addToggle("snare"+getName()).setSize(90, 20).setPosition(100, 70).moveTo(win);
+    snareToggle.getCaptionLabel().set("Snare").align(ControlP5.CENTER, ControlP5.CENTER);
+
+    kickToggle = cp5.addToggle("kick"+getName()).setSize(90, 20).setPosition(100, 95).moveTo(win);
+    kickToggle.getCaptionLabel().set("Kick").align(ControlP5.CENTER, ControlP5.CENTER);
+    kickToggle.setState(true);
+
+    onsetToggle = cp5.addToggle("onset"+getName()).setSize(90, 20).setPosition(100, 120).moveTo(win);
+    onsetToggle.getCaptionLabel().set("OnSet").align(ControlP5.CENTER, ControlP5.CENTER);
+    onsetToggle.setState(true);
+
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(1, stg.refreshRate).setValue(stg.refreshRate/2).setPosition(10, 145).setSize(180, 20).moveTo(win);
+    delaySlider.getCaptionLabel().set("delay").align(ControlP5.RIGHT, ControlP5.CENTER);
+    
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(1,10).setValue(4).setPosition(10, 170).setSize(180, 20).moveTo(win);
+    radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
   
   float rx = 0;
@@ -13,24 +36,48 @@ class RGBSpot_Effect extends Effect
   
   float rc = 0;
   
-  int timer = 0;
+  float timer = 0;
   
-  int delay = 20;
+  Button manualButton;
+  
+  Toggle hatToggle, snareToggle, kickToggle, onsetToggle;
+  
+  Slider delaySlider, radiusSlider;
+  
+  float radius = 0;
   
   void draw()
   {
+    radius = stg.minRadius/radiusSlider.getValue();
+    stg.translate(-stg.width/2, -stg.height/2);
     stg.fill(60*rc,100,100);
-    if (isKick()&&isOnset()&&timer==0) {
-      rx = random(-1,1);
-      ry = random(-1,1);
+    if ((isTriggered()&&timer<=0)) {
+      rx = random(radius/2,stg.width-radius/2);
+      ry = random(radius/2,stg.height-radius/2);
       rc = random(0,6);
-      timer = delay;
+      timer = delaySlider.getValue();
     }
     
-    stg.ellipse(((stg.width/2)*rx), (stg.height/2)*ry, stg.minRadius/4, stg.minRadius/4);
+    stg.ellipse(rx,ry, radius, radius);
     
     if (timer>0)
       timer--;
+  }
+  
+  boolean isTriggered()
+  {
+    if (manualButton.isPressed())
+      return true;
+    else if ((!onsetToggle.getState() && hatToggle.getState() && isHat()) || (onsetToggle.getState() && isOnset() && hatToggle.getState() && isHat()))
+      return true;
+    else if ((!onsetToggle.getState() && snareToggle.getState() && isSnare()) || (onsetToggle.getState() && isOnset() && snareToggle.getState() && isSnare()))
+      return true;
+    else if ((!onsetToggle.getState() && kickToggle.getState() && isKick()) || (onsetToggle.getState() && isOnset() && kickToggle.getState() && isKick()))
+      return true;
+    else if (onsetToggle.getState() && isOnset())
+      return true;
+    else
+      return false;
   }
 }
 
