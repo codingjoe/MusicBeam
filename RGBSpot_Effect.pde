@@ -1,11 +1,13 @@
 class RGBSpot_Effect extends Effect
 {
-  String getName() {return "RGB Spot";}
-  
+  String getName() {
+    return "RGB Spot";
+  }
+
   RGBSpot_Effect(MusicBeam ctrl)
   {
     super(ctrl);
-    
+
     manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
 
@@ -23,47 +25,53 @@ class RGBSpot_Effect extends Effect
     onsetToggle.getCaptionLabel().set("OnSet").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(1, stg.refreshRate).setValue(stg.refreshRate/2).setPosition(10, 145).setSize(180, 20).moveTo(win);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate).setValue(stg.refreshRate/3).setPosition(10, 145).setSize(180, 20).moveTo(win);
     delaySlider.getCaptionLabel().set("delay").align(ControlP5.RIGHT, ControlP5.CENTER);
-    
-    radiusSlider = cp5.addSlider("radius"+getName()).setRange(1,10).setValue(4).setPosition(10, 170).setSize(180, 20).moveTo(win);
+
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(1, 10).setValue(4).setPosition(10, 170).setSize(180, 20).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
-  
-  float rx = 0;
-  
-  float ry = 0;
-  
+
+  float[] rx = {
+    0
+  };
+
+  float[] ry = {
+    0
+  };
+
   float rc = 0;
-  
+
   float timer = 0;
-  
+
   Button manualButton;
-  
+
   Toggle hatToggle, snareToggle, kickToggle, onsetToggle;
-  
+
   Slider delaySlider, radiusSlider;
-  
+
   float radius = 0;
-  
+
   void draw()
   {
     radius = stg.minRadius/radiusSlider.getValue();
-    stg.translate(-stg.width/2, -stg.height/2);
-    stg.fill(60*rc,100,100);
+    translate(-stg.width/2, -stg.height/2);
+    stg.fill(60*rc, 100, 10*timer);
     if ((isTriggered()&&timer<=0)) {
-      rx = random(radius/2,stg.width-radius/2);
-      ry = random(radius/2,stg.height-radius/2);
-      rc = random(0,6);
+      rx[0] = random(radius/2, stg.width-radius/2);
+      ry[0] = random(radius/2, stg.height-radius/2);
+      rc = random(0, 6);
       timer = delaySlider.getValue();
     }
-    
-    stg.ellipse(rx,ry, radius, radius);
-    
+
+    stg.ellipse(rx[0], ry[0], radius, radius);
+    translate(stg.width, stg.height);
+    stg.ellipse(-rx[0], -ry[0], radius, radius);
+
     if (timer>0)
       timer--;
   }
-  
+
   boolean isTriggered()
   {
     if (manualButton.isPressed())
