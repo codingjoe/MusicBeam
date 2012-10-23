@@ -55,8 +55,7 @@ public abstract class Effect
   void refresh()
   {
     draw();
-    resetRotation();
-    resetTranslation();
+    resetStage();
   }
 
   boolean isHat()
@@ -115,9 +114,15 @@ public abstract class Effect
 
   void resetTranslation()
   {
-    stg.translate(translationHistory[0], translationHistory[1]);
+    stg.translate(-translationHistory[0], -translationHistory[1]);
     translationHistory[0] = 0;
     translationHistory[1] = 0;
+  }
+  
+  void resetStage()
+  {
+    resetTranslation();
+    resetRotation();
   }
 }
 

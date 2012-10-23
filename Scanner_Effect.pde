@@ -78,6 +78,7 @@ class Scanner_Effect extends Effect
     else if (rotation<PI*8)
     {
       LinesDissolve();
+      resetStage();
       rotate(PI/2);
       stg.fill((hueSlider.getValue()+120)%360, 100, 100);
       LinesDissolve();
@@ -85,6 +86,7 @@ class Scanner_Effect extends Effect
     else if (rotation<PI*9)
     {
       LinesJoin();
+      resetStage();
       rotate(PI/2);
       stg.fill((hueSlider.getValue()+120)%360, 100, 100);
       LinesJoin();
