@@ -16,9 +16,9 @@
 class Beat
 { 
   Boolean hat, snare, kick;
-  
+
   float level;
-  
+
   Beat(Boolean h, Boolean s, Boolean k, float l)
   {
     hat = h;
@@ -27,3 +27,4 @@ class Beat
     level = l;
   }
 }
+

@@ -33,16 +33,16 @@ public abstract class Effect
     0, 0
   };
 
-  int winWidth = 200;
+  static final int defaultWidth = 200;
 
-  int winHeight = 200;
+  static final int defaultHeight = 200;
 
-  Effect(MusicBeam controller)
+  Effect(MusicBeam controller, int width, int height)
   {
     ctrl = controller;
     stg = controller.stage;
 
-    win = cp5.addControlWindow(getName(), winWidth, winHeight);
+    win = cp5.addControlWindow(getName(), width, height);
     activeToggle = cp5.addToggle("active"+getName()).setSize(180, 30).setPosition(10, 10).moveTo(win);
     activeToggle.getCaptionLabel().set("Active").align(ControlP5.CENTER, ControlP5.CENTER);
     activeToggle.setState(false);

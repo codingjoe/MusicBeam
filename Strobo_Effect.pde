@@ -19,11 +19,11 @@ public class Strobo_Effect extends Effect
   {
     return "Strobo";
   }
-  
+
   public Strobo_Effect(MusicBeam controller)
   {
 
-    super(controller);
+    super(controller, Effect.defaultWidth, Effect.defaultHeight);
 
 
     manualButton = cp5.addButton("manual").setSize(85, 95).setPosition(10, 45).moveTo(win);

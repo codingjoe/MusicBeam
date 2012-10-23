@@ -11,7 +11,7 @@
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */ 
+ */
 
 public class CircelingPoints_Effect extends Effect
 {
@@ -22,12 +22,12 @@ public class CircelingPoints_Effect extends Effect
   Slider weightSlider, speedSlider, hueSlider, pointSlider;
 
   Toggle aHueToggle, bwToggle;
-  
+
   int winHeight = 200;
 
   CircelingPoints_Effect(MusicBeam controller)
   {
-    super(controller);
+    super(controller, Effect.defaultWidth, Effect.defaultHeight);
 
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, 300).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
