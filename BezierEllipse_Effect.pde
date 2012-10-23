@@ -57,7 +57,7 @@ class BezierEllipse_Effect extends Effect
         stg.bezierVertex(cx2s[i], cy2s[i], cxs[i], cys[i], pxs[i], pys[i]);
         stg.endShape();
         stg.fill(((points-1)* int(360 / points))%360, 100, 100);
-        stg.ellipse((px[0]-pxs[0])/2+pxs[0], (py[0]-pys[0])/2+pys[0], weightSlider.getValue(), weightSlider.getValue());
+        stg.ellipse((px[0]-pxs[0])/2+pxs[0], (py[0]-pys[0])/2+pys[0], 1.5*weightSlider.getValue(), 1.5*weightSlider.getValue());
       }
       else {
         //bezier(px[i], py[i], cx[i], cy[i], cx2[i], cy2[i], px[i+1], py[i+1]);
@@ -69,7 +69,7 @@ class BezierEllipse_Effect extends Effect
         stg.endShape();
       }
       stg.fill(( i* int(360 / points))%360, 100, 100);
-      stg.ellipse((px[i]-pxs[i])/2+pxs[i], (py[i]-pys[i])/2+pys[i], weightSlider.getValue(), weightSlider.getValue());
+      stg.ellipse((px[i]-pxs[i])/2+pxs[i], (py[i]-pys[i])/2+pys[i], 1.5*weightSlider.getValue(), 1.5*weightSlider.getValue());
     }
     if (isHat())
       rotation += 0.01;
