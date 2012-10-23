@@ -82,6 +82,11 @@ public abstract class Effect
   {
     return activeToggle.getState();
   }
+  
+  float getLevel()
+  {
+    return ctrl.in.mix.level();
+  }
 
   void hideWin()
   {
