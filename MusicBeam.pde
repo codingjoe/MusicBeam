@@ -42,12 +42,17 @@ float beatHistoryMax = 1;
 
 DropdownList displays;
 
+Toggle randomToggle;
+Slider randomTimeSlider;
+
+float randomTimer = 0;
+
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
   gs = ge.getScreenDevices();
 
 
-  size(300, 130);
+  size(300, 180);
   frame.setTitle("Music Beam 0.1");
   frame.setLocation(0, 0);
 
@@ -69,6 +74,16 @@ void draw() {
   background(25);
 
   drawBeatBoard();
+  
+    if (randomToggle.getState()&&randomTimer<=0)
+  {
+    for (int i = 1; i<effectArray.length;i++)
+      effectArray[i].activeToggle.setState(false);
+    effectArray[int(random(1, effectArray.length-1))].activeToggle.setState(true);
+    randomTimer = randomTimeSlider.getValue();
+  }
+  if (randomTimer>0)
+    randomTimer--;
 }
 
 void drawBeatBoard()
@@ -146,6 +161,15 @@ void initControlls()
       .setPosition(182, 11)
         .setSize(108, 20)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+
+  randomToggle = cp5.addToggle("random").setSize(280, 20).setPosition(10, 115);
+  randomToggle.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
+  randomToggle.hide();
+  
+  randomTimeSlider = cp5.addSlider("randomTime").setSize(280, 20).setPosition(10, 140).setRange(60,3600);
+  randomTimeSlider.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
+  randomTimeSlider.setValue(360);
+  randomTimeSlider.hide();
 }
 
 void Projector(boolean trigger)
@@ -168,13 +192,14 @@ void Projector(boolean trigger)
 
 void initEffects()
 {
-  effectArray = new Effect[6];
+  effectArray = new Effect[5];
   effectArray[0] = new Strobo_Effect(this);
   effectArray[1] = new Scanner_Effect(this);
   effectArray[2] = new Moonflower_Effect(this);
-  effectArray[3] = new BezierEllipse_Effect(this);
-  effectArray[4] = new RGBSpot_Effect(this);
-  effectArray[5] = new Derby_Effect(this);
+  effectArray[3] = new RGBSpot_Effect(this);
+  effectArray[4] = new Derby_Effect(this);
+  randomToggle.show();
+  randomTimeSlider.show();
 }
 
 
