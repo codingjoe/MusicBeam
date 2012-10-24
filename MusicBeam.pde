@@ -171,7 +171,7 @@ void initEffects()
   effectArray = new Effect[6];
   effectArray[0] = new Strobo_Effect(this);
   effectArray[1] = new Scanner_Effect(this);
-  effectArray[2] = new CircelingPoints_Effect(this);
+  effectArray[2] = new Moonflower_Effect(this);
   effectArray[3] = new BezierEllipse_Effect(this);
   effectArray[4] = new RGBSpot_Effect(this);
   effectArray[5] = new Derby_Effect(this);

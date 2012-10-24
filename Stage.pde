@@ -56,11 +56,13 @@ public class Stage extends PApplet {
     frame.removeNotify(); 
     frame.setUndecorated(true); 
     frame.addNotify();
-    frame.add( this );
-    this.init( );
+    frame.add(this);
+    this.init();
     if (gd.isFullScreenSupported() && fullscreen)
       gd.setFullScreenWindow(frame);
-    frame.show( );
+    frame.show();
+    maxRadius = sqrt(sq(width)+sq(height));
+    minRadius = height < width ? height : width;
   }
 
   void setup() {
@@ -70,8 +72,6 @@ public class Stage extends PApplet {
     noStroke();
 
     colorMode(HSB, 360, 100, 100);
-    maxRadius = sqrt(sq(width)+sq(height));
-    minRadius = height < width ? height : width;
   }
 
   void draw() {
