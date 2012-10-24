@@ -44,6 +44,7 @@ DropdownList displays;
 
 Toggle randomToggle;
 Slider randomTimeSlider;
+Button nextButton;
 
 float randomTimer = 0;
 
@@ -74,16 +75,33 @@ void draw() {
   background(25);
 
   drawBeatBoard();
-  
-    if (randomToggle.getState()&&randomTimer<=0)
+
+  if (randomToggle.getState()&&randomTimer<=0)
   {
     for (int i = 1; i<effectArray.length;i++)
       effectArray[i].activeToggle.setState(false);
-    effectArray[int(random(1, effectArray.length-1))].activeToggle.setState(true);
+    effectArray[int(random(1, effectArray.length))].activeToggle.setState(true);
     randomTimer = randomTimeSlider.getValue();
   }
   if (randomTimer>0)
     randomTimer--;
+}
+
+void controlEvent(ControlEvent event)
+{
+  if (event.getName()=="next") {
+      for (int i = 1; i<effectArray.length;i++) {
+        if (effectArray[i].activeToggle.getState()) {
+          effectArray[i].activeToggle.setState(false);
+          int k = i;
+          do
+            k = int(random(1, effectArray.length-1));
+          while (i == k);
+          effectArray[k].activeToggle.setState(true);
+        }
+      }
+    randomTimer = randomTimeSlider.getValue();
+  }
 }
 
 void drawBeatBoard()
@@ -162,14 +180,18 @@ void initControlls()
         .setSize(108, 20)
           .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
 
-  randomToggle = cp5.addToggle("random").setSize(280, 20).setPosition(10, 115);
+  randomToggle = cp5.addToggle("random").setSize(135, 20).setPosition(10, 115);
   randomToggle.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
-  randomToggle.hide();
-  
-  randomTimeSlider = cp5.addSlider("randomTime").setSize(280, 20).setPosition(10, 140).setRange(60,3600);
-  randomTimeSlider.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
+  randomToggle.lock();
+
+  randomTimeSlider = cp5.addSlider("randomTime").setSize(140, 20).setPosition(150, 115).setRange(60, 3600);
+  randomTimeSlider.getCaptionLabel().set("Random Time").align(ControlP5.CENTER, ControlP5.CENTER);
   randomTimeSlider.setValue(360);
-  randomTimeSlider.hide();
+  randomTimeSlider.lock();
+
+  nextButton = cp5.addButton("next").setSize(280, 30).setPosition(10, 140);
+  nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
+  nextButton.lock();
 }
 
 void Projector(boolean trigger)
@@ -198,8 +220,9 @@ void initEffects()
   effectArray[2] = new Moonflower_Effect(this);
   effectArray[3] = new RGBSpot_Effect(this);
   effectArray[4] = new Derby_Effect(this);
-  randomToggle.show();
-  randomTimeSlider.show();
+  randomToggle.unlock();
+  randomTimeSlider.unlock();
+  nextButton.unlock();
 }
 
 
