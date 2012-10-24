@@ -37,29 +37,29 @@ class Derby_Effect extends Effect
 
   void draw()
   {
-    float width = stg.width-weightSlider.getValue()/2;
-    float height = stg.height-weightSlider.getValue()/2;
-    float points = pointSlider.getValue();
+    float width = stg.width-weightSlider.getValue();
+    float height = stg.height-weightSlider.getValue();
+    float points = int(pointSlider.getValue());
     
     translate(-stg.width/2, -stg.height/2);
     stg.fill(hueSlider.getValue(), 100, 100);
-    for (int i=1;i<=pointSlider.getValue();i++)
+    for (int i=1;i<=points;i++)
     {
-      stg.ellipse(i*width/(points+1)+cos(rotation)*width/(points+1), height/3-height/3*sin(rotation), weightSlider.getValue(), weightSlider.getValue());
+      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)+cos(rotation)*width/(points+1), weightSlider.getValue()/2+height/3-height/3*sin(rotation), weightSlider.getValue(), weightSlider.getValue());
     }
-    for (int i=1;i<=pointSlider.getValue();i++)
+    for (int i=1;i<=points;i++)
     {
-      stg.ellipse(i*width/(points+1)-cos(rotation)*width/(points+1), height/3-height/3*sin(rotation), weightSlider.getValue(), weightSlider.getValue());
+      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+height/3-height/3*sin(rotation), weightSlider.getValue(), weightSlider.getValue());
     }
     
     stg.fill((hueSlider.getValue()+120)%360, 100, 100);
-    for (int i=1;i<=pointSlider.getValue();i++)
+    for (int i=1;i<=points;i++)
     {
-      stg.ellipse(i*width/(points+1)+cos(rotation)*width/(points+1), 2*height/3-height/3*-sin(rotation), weightSlider.getValue(), weightSlider.getValue());
+      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)+cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue(), weightSlider.getValue());
     }
-    for (int i=1;i<=pointSlider.getValue();i++)
+    for (int i=1;i<=points;i++)
     {
-      stg.ellipse(i*width/(points+1)-cos(rotation)*width/(points+1), 2*height/3-height/3*-sin(rotation), weightSlider.getValue(), weightSlider.getValue());
+      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue(), weightSlider.getValue());
     }
     
     if (aHueToggle.getState()&&isOnset()&&isKick()&&isHat()&&isSnare())
