@@ -85,7 +85,7 @@ public class Moonflower_Effect extends Effect
 
     if (timer<=0 && isKick()) {
       if (aHueToggle.getState())
-        hueSlider.setValue((hueSlider.getValue()+60)%360);
+        hueSlider.setValue((hueSlider.getValue()+120)%360);
       direction = -1*direction;
       rx[0] = rx[1];
       ry[0] = ry[1];
