@@ -197,7 +197,7 @@ void initControlls()
 void Projector(boolean trigger)
 {
   if (trigger && stage == null) {
-    stage = new Stage (this, gs[int(displays.getValue())], false);
+    stage = new Stage (this, int(displays.getValue()), false);
     stage.stop();
     initEffects();
     stage.start();

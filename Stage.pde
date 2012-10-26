@@ -43,14 +43,16 @@ public class Stage extends PApplet {
   float minRadius;
 
 
-  Stage (MusicBeam main, GraphicsDevice gd, boolean fullscreen)
+  Stage (MusicBeam main, int gd, boolean fullscreen)
   {
     ctrl = main;
-    DisplayMode dm = gd.getDisplayMode();
+    DisplayMode dm = gs[gd].getDisplayMode();
     width = dm.getWidth();
     height = dm.getHeight();
     refreshRate = dm.getRefreshRate() == 0 ? 60 : dm.getRefreshRate();
     posx = 0;
+    for (int i=0; i<gd; i++)
+      posx+= ctrl.gs[i].getDisplayMode().getWidth();
     frame = new Frame( );
     frame.setBounds( posx, 0, width, height );
     frame.removeNotify(); 
@@ -58,8 +60,8 @@ public class Stage extends PApplet {
     frame.addNotify();
     frame.add(this);
     this.init();
-    if (gd.isFullScreenSupported() && fullscreen)
-      gd.setFullScreenWindow(frame);
+    if (gs[gd].isFullScreenSupported() && fullscreen)
+      gs[gd].setFullScreenWindow(frame);
     frame.show();
     maxRadius = sqrt(sq(width)+sq(height));
     minRadius = height < width ? height : width;
