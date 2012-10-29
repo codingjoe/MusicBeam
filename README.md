@@ -7,7 +7,7 @@ MusicBeam is written in [Processing 1.51](http://processing.org) a JAVA based la
 
 Download
 --------
-The latest releases can be found [here](http://zepplab.net/downloads/MusicBeam_v0.1.zip).
+The latest releases can be found [here](https://github.com/ZeppLab/MusicBeam/downloads).
 
 
 _______
