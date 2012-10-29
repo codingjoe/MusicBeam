@@ -54,7 +54,7 @@ void setup() {
 
 
   size(300, 180);
-  frame.setTitle("Music Beam 0.1");
+  frame.setTitle("MusicBeam 1 powered by ZeppLab");
   frame.setLocation(0, 0);
 
   Minim minim = new Minim(this);
