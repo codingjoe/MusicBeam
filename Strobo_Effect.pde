@@ -26,24 +26,24 @@ public class Strobo_Effect extends Effect
     super(controller, Effect.defaultWidth, Effect.defaultHeight);
 
 
-    manualButton = cp5.addButton("manual").setSize(85, 95).setPosition(10, 45).moveTo(win);
+    manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    hatToggle = cp5.addToggle("hat").setSize(90, 20).setPosition(100, 45).moveTo(win);
+    hatToggle = cp5.addToggle("hat"+getName()).setSize(90, 20).setPosition(100, 45).moveTo(win);
     hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    snareToggle = cp5.addToggle("snare").setSize(90, 20).setPosition(100, 70).moveTo(win);
+    snareToggle = cp5.addToggle("snare"+getName()).setSize(90, 20).setPosition(100, 70).moveTo(win);
     snareToggle.getCaptionLabel().set("Snare").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    kickToggle = cp5.addToggle("kick").setSize(90, 20).setPosition(100, 95).moveTo(win);
+    kickToggle = cp5.addToggle("kick"+getName()).setSize(90, 20).setPosition(100, 95).moveTo(win);
     kickToggle.getCaptionLabel().set("Kick").align(ControlP5.CENTER, ControlP5.CENTER);
     kickToggle.setState(true);
 
-    onsetToggle = cp5.addToggle("onset").setSize(90, 20).setPosition(100, 120).moveTo(win);
+    onsetToggle = cp5.addToggle("onset"+getName()).setSize(90, 20).setPosition(100, 120).moveTo(win);
     onsetToggle.getCaptionLabel().set("OnSet").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay").setRange(20, stg.refreshRate/2).setValue(stg.refreshRate/2-2).setPosition(10, 145).setSize(180, 20).moveTo(win);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(20, stg.refreshRate/2).setValue(stg.refreshRate/2-2).setPosition(10, 145).setSize(180, 20).moveTo(win);
     delaySlider.getCaptionLabel().set("Hz").align(ControlP5.RIGHT, ControlP5.CENTER);
 
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(130, 20).setPosition(35, 170).moveTo(win);

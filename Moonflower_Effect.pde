@@ -43,7 +43,7 @@ public class Moonflower_Effect extends Effect
 
     radiusSlider = cp5.addSlider("radius"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, stg.minRadius).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
-    radiusSlider.setValue(stg.minRadius/4);
+    radiusSlider.setValue(stg.minRadius/5);
 
     speedSlider = cp5.addSlider("speed"+getName()).setPosition(10, 70).setSize(180, 20).setRange(0, 1).moveTo(win);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -99,7 +99,7 @@ public class Moonflower_Effect extends Effect
 
     translate(dx-stg.width/2, dy-stg.height/2);
 
-    rotation += direction*getLevel()/(20*speedSlider.getValue());
+    rotation = (rotation + 0.01*(direction/speedSlider.getValue()))%(PI*2);
 
     rotate(rotation);
     stg.fill(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
@@ -107,7 +107,7 @@ public class Moonflower_Effect extends Effect
     float slice = 2 * PI / pts;
     for (int i = 0; i < pts; i++) {
       float angle = slice * i;
-      stg.ellipse((radius)*cos(angle), (radius)*sin(angle), radius/2, radius/2);
+      stg.ellipse((radius)*cos(angle), (radius)*sin(angle), 0.8*radius/2, 0.8*radius/2);
     }
 
     if (stereoToggle.getState()) {
@@ -117,10 +117,10 @@ public class Moonflower_Effect extends Effect
     float slice2 = 2 * PI / (pts/2);
     for (int i = 0; i < pts/2; i++) {
       float angle = slice2 * i + slice/2;
-      stg.ellipse((radius/2)*cos(angle), (radius/2)*sin(angle), radius/2, radius/2);
+      stg.ellipse((radius/2)*cos(angle), (radius/2)*sin(angle), 0.8*radius/2, 0.8*radius/2);
     }
     stg.fill(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
-    stg.ellipse(0, 0, radius/2, radius/2);
+    stg.ellipse(0, 0, 0.8*radius/2, 0.8*radius/2);
 
     if (timer>=0)
       timer--;
