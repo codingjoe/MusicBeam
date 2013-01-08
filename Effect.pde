@@ -46,6 +46,7 @@ public abstract class Effect
     activeToggle = cp5.addToggle("active"+getName()).setSize(180, 30).setPosition(10, 10).moveTo(win);
     activeToggle.getCaptionLabel().set("Active").align(ControlP5.CENTER, ControlP5.CENTER);
     activeToggle.setState(false);
+    //win.hide();
   }
 
   abstract String getName();

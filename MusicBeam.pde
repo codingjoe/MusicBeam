@@ -53,7 +53,7 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(300, 180);
+  size(600, 180);
   frame.setTitle("MusicBeam 1 powered by ZeppLab");
   frame.setLocation(0, 0);
 
@@ -183,15 +183,19 @@ void initControlls()
   randomToggle = cp5.addToggle("random").setSize(135, 20).setPosition(10, 115);
   randomToggle.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
   randomToggle.lock();
+  randomToggle.setColorCaptionLabel(50);
 
   randomTimeSlider = cp5.addSlider("randomTime").setSize(140, 20).setPosition(150, 115).setRange(60, 3600);
   randomTimeSlider.getCaptionLabel().set("Random Time").align(ControlP5.CENTER, ControlP5.CENTER);
   randomTimeSlider.setValue(360);
   randomTimeSlider.lock();
+  randomTimeSlider.setColorCaptionLabel(50);
+  randomTimeSlider.setColorValueLabel(50);
 
   nextButton = cp5.addButton("next").setSize(280, 30).setPosition(10, 140);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
   nextButton.lock();
+  nextButton.setColorCaptionLabel(50);
 }
 
 void Projector(boolean trigger)
@@ -216,13 +220,18 @@ void initEffects()
 {
   effectArray = new Effect[5];
   effectArray[0] = new Strobo_Effect(this);
+  
   effectArray[1] = new Scanner_Effect(this);
   effectArray[2] = new Moonflower_Effect(this);
   effectArray[3] = new RGBSpot_Effect(this);
   effectArray[4] = new Derby_Effect(this);
   randomToggle.unlock();
+  randomToggle.setColorCaptionLabel(-1);
   randomTimeSlider.unlock();
+  randomTimeSlider.setColorCaptionLabel(-1);
+  randomTimeSlider.setColorValueLabel(-1);
   nextButton.unlock();
+  nextButton.setColorCaptionLabel(-1);
 }
 
 
