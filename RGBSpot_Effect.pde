@@ -21,7 +21,7 @@ class RGBSpot_Effect extends Effect
 
   RGBSpot_Effect(MusicBeam ctrl)
   {
-    super(ctrl, Effect.defaultWidth, Effect.defaultHeight);
+    super(ctrl, Effect.defaultWidth, Effect.defaultHeight, 10);
 
     manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);

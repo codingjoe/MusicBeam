@@ -53,7 +53,7 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(600, 180);
+  size(525, 190);
   frame.setTitle("MusicBeam 1 powered by ZeppLab");
   frame.setLocation(0, 0);
 
@@ -75,6 +75,15 @@ void draw() {
   background(25);
 
   drawBeatBoard();
+  
+  if (effectArray!=null)
+  for (int i=0; i<effectArray.length; i++)
+  {
+    if(effectArray[i].settingsToggle.getState())
+      effectArray[i].showWin();
+    else
+      effectArray[i].hideWin();
+  }
 
   if (randomToggle.getState()&&randomTimer<=0)
   {
@@ -192,7 +201,7 @@ void initControlls()
   randomTimeSlider.setColorCaptionLabel(50);
   randomTimeSlider.setColorValueLabel(50);
 
-  nextButton = cp5.addButton("next").setSize(280, 30).setPosition(10, 140);
+  nextButton = cp5.addButton("next").setSize(280, 40).setPosition(10, 140);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
   nextButton.lock();
   nextButton.setColorCaptionLabel(50);
@@ -220,7 +229,6 @@ void initEffects()
 {
   effectArray = new Effect[5];
   effectArray[0] = new Strobo_Effect(this);
-  
   effectArray[1] = new Scanner_Effect(this);
   effectArray[2] = new Moonflower_Effect(this);
   effectArray[3] = new RGBSpot_Effect(this);

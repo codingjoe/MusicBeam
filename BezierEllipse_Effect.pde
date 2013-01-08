@@ -36,7 +36,7 @@ class BezierEllipse_Effect extends Effect
 
   BezierEllipse_Effect(MusicBeam controller)
   {
-    super(controller, Effect.defaultWidth, Effect.defaultHeight);
+    super(controller, Effect.defaultWidth, Effect.defaultHeight, 195);
 
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, 100).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);

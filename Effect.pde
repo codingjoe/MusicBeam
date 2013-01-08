@@ -25,7 +25,7 @@ public abstract class Effect
 
   ControlWindow win;
 
-  Toggle activeToggle;
+  Toggle activeToggle, settingsToggle;
 
   float rotationHistory = 0;
 
@@ -37,16 +37,20 @@ public abstract class Effect
 
   static final int defaultHeight = 200;
 
-  Effect(MusicBeam controller, int width, int height)
+  Effect(MusicBeam controller, int width, int height, int posy)
   {
     ctrl = controller;
     stg = controller.stage;
 
     win = cp5.addControlWindow(getName(), width, height);
-    activeToggle = cp5.addToggle("active"+getName()).setSize(180, 30).setPosition(10, 10).moveTo(win);
-    activeToggle.getCaptionLabel().set("Active").align(ControlP5.CENTER, ControlP5.CENTER);
+    activeToggle = cp5.addToggle("active"+getName()).setSize(180, 30).setPosition(300, posy);
+    activeToggle.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
     activeToggle.setState(false);
-    //win.hide();
+    win.hide();
+    
+    settingsToggle = cp5.addToggle("settings"+getName()).setSize(30, 30).setPosition(485, posy);
+    settingsToggle.getCaptionLabel().set("Edit").align(ControlP5.CENTER, ControlP5.CENTER);
+    activeToggle.setState(false);
   }
 
   abstract String getName();

@@ -39,7 +39,7 @@ public class Moonflower_Effect extends Effect
 
   Moonflower_Effect(MusicBeam controller)
   {
-    super(controller, Effect.defaultWidth, 150);
+    super(controller, Effect.defaultWidth, 150, 80);
 
     radiusSlider = cp5.addSlider("radius"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, stg.minRadius).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
