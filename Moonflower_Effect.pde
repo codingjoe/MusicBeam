@@ -37,13 +37,13 @@ public class Moonflower_Effect extends Effect
 
   float timer = 0;
 
-  Moonflower_Effect(MusicBeam controller)
+  Moonflower_Effect(MusicBeam controller, int y)
   {
-    super(controller, Effect.defaultWidth, 150, 80);
+    super(controller, Effect.defaultWidth, 150, y);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, stg.minRadius).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, stg.minRadius/2).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
-    radiusSlider.setValue(stg.minRadius/5);
+    radiusSlider.setValue(stg.minRadius/3);
 
     speedSlider = cp5.addSlider("speed"+getName()).setPosition(10, 70).setSize(180, 20).setRange(0, 1).moveTo(win);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -107,7 +107,7 @@ public class Moonflower_Effect extends Effect
     float slice = 2 * PI / pts;
     for (int i = 0; i < pts; i++) {
       float angle = slice * i;
-      stg.ellipse((radius)*cos(angle), (radius)*sin(angle), 0.8*radius/2, 0.8*radius/2);
+      stg.ellipse((radius)*cos(angle), (radius)*sin(angle), 0.7*radius/2, 0.7*radius/2);
     }
 
     if (stereoToggle.getState()) {
@@ -117,10 +117,10 @@ public class Moonflower_Effect extends Effect
     float slice2 = 2 * PI / (pts/2);
     for (int i = 0; i < pts/2; i++) {
       float angle = slice2 * i + slice/2;
-      stg.ellipse((radius/2)*cos(angle), (radius/2)*sin(angle), 0.8*radius/2, 0.8*radius/2);
+      stg.ellipse((radius/2)*cos(angle), (radius/2)*sin(angle), 0.7*radius/2, 0.7*radius/2);
     }
     stg.fill(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
-    stg.ellipse(0, 0, 0.8*radius/2, 0.8*radius/2);
+    stg.ellipse(0, 0, 0.7*radius/2, 0.7*radius/2);
 
     if (timer>=0)
       timer--;

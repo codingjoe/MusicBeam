@@ -42,7 +42,7 @@ float beatHistoryMax = 1;
 
 DropdownList displays;
 
-Toggle randomToggle;
+Toggle projectorToggle, randomToggle;
 Slider randomTimeSlider;
 Button nextButton;
 
@@ -53,16 +53,18 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(525, 190);
+  size(775, 580);
   frame.setTitle("MusicBeam 1 powered by ZeppLab");
   frame.setLocation(0, 0);
+  frame.setResizable(true);
+  frameRate(60);
 
   Minim minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
 
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
-
+  
   initControlls();
 
   colorMode(HSB, 360, 100, 100);
@@ -90,7 +92,7 @@ void draw() {
     for (int i = 1; i<effectArray.length;i++)
       effectArray[i].activeToggle.setState(false);
     effectArray[int(random(1, effectArray.length))].activeToggle.setState(true);
-    randomTimer = randomTimeSlider.getValue();
+    randomTimer = randomTimeSlider.getValue()*60;
   }
   if (randomTimer>0)
     randomTimer--;
@@ -109,99 +111,94 @@ void controlEvent(ControlEvent event)
           effectArray[k].activeToggle.setState(true);
         }
       }
-    randomTimer = randomTimeSlider.getValue();
+    randomTimer = randomTimeSlider.getValue()*60;
   }
 }
 
 void drawBeatBoard()
 {
   fill(200, 100, 20);
-  rect(10, 36, 280, 75);
+  rect(10, 70, 380, 122);
   fill(120, 100, bdFreq.isHat() ? 100 : 20);
-  rect(265, 36, 25, 25);
+  rect(365, 70, 40, 40);
   fill(220, 100, bdFreq.isSnare() ? 100 : 20);
-  rect(265, 61, 25, 25);
+  rect(365, 111, 40, 40);
   fill(320, 100, bdFreq.isKick() ? 100 : 20);
-  rect(265, 86, 25, 25);
+  rect(365, 152, 40, 40);
   fill(0);
-  text("H", 273, 53);
-  text("S", 275, 78);
-  text("K", 274, 103);
-
-  drawBeatHistory(beatHistory, 11, 73);
+  
+  textSize(32);
+  textAlign(CENTER,CENTER);
+  text("H", 385, 88);
+  text("S", 385, 129);
+  text("K", 385, 170);
+  textAlign(LEFT,BOTTOM);
+  drawBeatHistory(beatHistory, 10, 130);
 }
 
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 {
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
-    stroke(200, 100, 50);
-    if (b.hat) {
+    
+    if (b.hat)
       stroke(120, 100, 100);
-    }
-
-    if (b.snare) {
+    else if (b.snare)
       stroke(220, 100, 100);
-    }
-
-    if (b.kick) {
+    else if (b.kick)
       stroke(320, 100, 100);
-    }
+    else if (b.onset)
+      stroke(0, 0, 100);
+    else
+      stroke(200, 100, 50);
+    
 
-    float d = 32*b.level;
+    float d = 60*b.level;
     if (d>beatHistoryMax)
       beatHistoryMax = d;
 
-    int a = int(32*(d/beatHistoryMax));
+    int a = int(60*(d/beatHistoryMax));
 
     line(x+i, y-a, x+i, y+a);
   }
-  if (history.size()>= 254)
+  if (history.size()>= 354)
     history.removeFirst();
 
-  history.add(new Beat(bdFreq.isHat(), bdFreq.isSnare(), bdFreq.isKick(), in.mix.level()));
+  history.add(new Beat(bdFreq.isHat(), bdFreq.isSnare(), bdFreq.isKick(), bdSound.isOnset(), in.mix.level()));
   stroke(0);
 }
 
 void initControlls()
 {
   cp5 = new ControlP5(this);
+  cp5.setFont(createFont("Monospace",12));
 
-  displays = cp5.addDropdownList("display")
-    .setPosition(11, 32)
-      .setSize(170, 30);
-  displays.setItemHeight(20);
-  displays.setBarHeight(20);
-  displays.captionLabel().set("Select Display");
-  displays.captionLabel().style().marginTop = 5;
-  displays.captionLabel().style().marginLeft = 3;
-  displays.valueLabel().style().marginTop = 3;
+  displays = cp5.addDropdownList("display").setPosition(10, 62).setSize(255, 150);
+  displays.setItemHeight(50).setBarHeight(50);
+  displays.captionLabel().set("Select Video Out").align(ControlP5.CENTER,ControlP5.CENTER);
   for (int i = 0; i < gs.length; i++)
   {
     DisplayMode dm = gs[i].getDisplayMode();
     displays.addItem(dm.getWidth()+"x"+dm.getHeight()+"@"+((dm.getRefreshRate() == 0) ? 60 : dm.getRefreshRate()) +"Hz", i);
   }
-  displays.setValue(gs.length-1);
+  // displays.setValue(gs.length-1);
 
-  cp5.addToggle("Projector")
-    .setCaptionLabel("Start Projector")
-      .setPosition(182, 11)
-        .setSize(108, 20)
-          .getCaptionLabel().align(ControlP5.CENTER, ControlP5.CENTER);
+  projectorToggle = cp5.addToggle("Projector").setPosition(272, 10).setSize(133, 50);
+  projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  randomToggle = cp5.addToggle("random").setSize(135, 20).setPosition(10, 115);
+  randomToggle = cp5.addToggle("random").setSize(135, 50).setPosition(10, 202);
   randomToggle.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
   randomToggle.lock();
   randomToggle.setColorCaptionLabel(50);
 
-  randomTimeSlider = cp5.addSlider("randomTime").setSize(140, 20).setPosition(150, 115).setRange(60, 3600);
-  randomTimeSlider.getCaptionLabel().set("Random Time").align(ControlP5.CENTER, ControlP5.CENTER);
-  randomTimeSlider.setValue(360);
+  randomTimeSlider = cp5.addSlider("randomTime").setSize(255, 50).setPosition(150, 202).setRange(1, 60);
+  randomTimeSlider.getCaptionLabel().set("Random Time (s)").align(ControlP5.CENTER, ControlP5.CENTER);
+  randomTimeSlider.setValue(20);
   randomTimeSlider.lock();
   randomTimeSlider.setColorCaptionLabel(50);
   randomTimeSlider.setColorValueLabel(50);
 
-  nextButton = cp5.addButton("next").setSize(280, 40).setPosition(10, 140);
+  nextButton = cp5.addButton("next").setSize(395, 50).setPosition(10, 257);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
   nextButton.lock();
   nextButton.setColorCaptionLabel(50);
@@ -214,25 +211,33 @@ void Projector(boolean trigger)
     stage.stop();
     initEffects();
     stage.start();
+    projectorToggle.setCaptionLabel("Stop Projector");
   } 
   else if (trigger && stage != null) {
     stage.frame.setVisible(true);
     stage.start();
+    projectorToggle.setCaptionLabel("Stop Projector");
   } 
   else {
     stage.stop();
     stage.frame.setVisible(false);
+    projectorToggle.setCaptionLabel("Start Projector");
   }
 }
 
 void initEffects()
 {
-  effectArray = new Effect[5];
-  effectArray[0] = new Strobo_Effect(this);
-  effectArray[1] = new Scanner_Effect(this);
-  effectArray[2] = new Moonflower_Effect(this);
-  effectArray[3] = new RGBSpot_Effect(this);
-  effectArray[4] = new Derby_Effect(this);
+  //frame.setResizable(true);
+  //frame.setSize(525,190);
+  effectArray = new Effect[8];
+  effectArray[0] = new Strobo_Effect(this,0);
+  effectArray[1] = new Scanner_Effect(this,1);
+  effectArray[2] = new Moonflower_Effect(this,2);
+  effectArray[3] = new RGBSpot_Effect(this,3);
+  effectArray[4] = new Derby_Effect(this,4);
+  effectArray[5] = new Snowstorm_Effect(this,5);
+  effectArray[6] = new LaserBurst_Effect(this,6);
+  effectArray[7] = new Polygon_Effect(this,7);
   randomToggle.unlock();
   randomToggle.setColorCaptionLabel(-1);
   randomTimeSlider.unlock();
@@ -240,13 +245,15 @@ void initEffects()
   randomTimeSlider.setColorValueLabel(-1);
   nextButton.unlock();
   nextButton.setColorCaptionLabel(-1);
+  
+  //frame.setResizable(false);
 }
 
 
 void beatDetect()
 {
-  // bdSound.setSensitivity(50);
-  // bdFreq.setSensitivity(50);
+  bdSound.setSensitivity(500);
+  bdFreq.setSensitivity(500);
   bdSound.detect(in.mix);
   bdFreq.detect(in.mix);
 }

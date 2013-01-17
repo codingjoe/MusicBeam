@@ -19,9 +19,9 @@ class RGBSpot_Effect extends Effect
     return "RGB Spot";
   }
 
-  RGBSpot_Effect(MusicBeam ctrl)
+  RGBSpot_Effect(MusicBeam ctrl, int y)
   {
-    super(ctrl, Effect.defaultWidth, Effect.defaultHeight, 10);
+    super(ctrl, Effect.defaultWidth, Effect.defaultHeight, y);
 
     manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -43,7 +43,7 @@ class RGBSpot_Effect extends Effect
     delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate).setValue(stg.refreshRate/3).setPosition(10, 145).setSize(180, 20).moveTo(win);
     delaySlider.getCaptionLabel().set("delay").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setRange(1, 10).setValue(4).setPosition(10, 170).setSize(180, 20).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0,1).setValue(0.3).setPosition(10, 170).setSize(180, 20).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
 
@@ -69,7 +69,7 @@ class RGBSpot_Effect extends Effect
 
   void draw()
   {
-    radius = stg.minRadius/radiusSlider.getValue();
+    radius = stg.minRadius*radiusSlider.getValue();
     translate(-stg.width/2, -stg.height/2);
     stg.fill(60*rc, 100, 10*timer);
     if ((isTriggered()&&timer<=0)) {

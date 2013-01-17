@@ -37,18 +37,19 @@ public abstract class Effect
 
   static final int defaultHeight = 200;
 
-  Effect(MusicBeam controller, int width, int height, int posy)
+  Effect(MusicBeam controller, int width, int height, int y)
   {
     ctrl = controller;
     stg = controller.stage;
+    
+    int posy = 10+(y*50);
 
-    win = cp5.addControlWindow(getName(), width, height);
-    activeToggle = cp5.addToggle("active"+getName()).setSize(180, 30).setPosition(300, posy);
+    win = cp5.addControlWindow(getName(), width, height).hide();
+    activeToggle = cp5.addToggle("active"+getName()).setSize(300, 45).setPosition(415, posy);
     activeToggle.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
     activeToggle.setState(false);
-    win.hide();
     
-    settingsToggle = cp5.addToggle("settings"+getName()).setSize(30, 30).setPosition(485, posy);
+    settingsToggle = cp5.addToggle("settings"+getName()).setSize(45, 45).setPosition(720, posy);
     settingsToggle.getCaptionLabel().set("Edit").align(ControlP5.CENTER, ControlP5.CENTER);
     activeToggle.setState(false);
   }

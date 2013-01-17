@@ -25,9 +25,9 @@ class Derby_Effect extends Effect
   
   float rotation = 0;
 
-  Derby_Effect(MusicBeam ctrl)
+  Derby_Effect(MusicBeam ctrl, int y)
   {
-    super(ctrl, Effect.defaultWidth, 175, 115);
+    super(ctrl, Effect.defaultWidth, 175, y);
     
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, 200).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
