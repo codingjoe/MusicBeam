@@ -20,19 +20,19 @@ class Scanner_Effect extends Effect
   {
     super(controller, Effect.defaultWidth, 120, y);
 
-    weightSlider = cp5.addSlider("weight"+getName()).setPosition(10, 45).setSize(180, 20).setRange(0, 100).moveTo(win);
+    weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, 100).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
     weightSlider.setValue(20);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setPosition(10, 70).setSize(180, 20).setRange(0, 0.05).moveTo(win);
+    speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0, 1).moveTo(win);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
-    speedSlider.setValue(0.02);
+    speedSlider.setValue(0.3);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(155, 20).setPosition(35, 95).moveTo(win);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(345, 45).setPosition(50, 105).moveTo(win);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(10, 95).setSize(20, 20).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 105).setSize(45, 45).moveTo(win);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
   }
@@ -53,7 +53,7 @@ class Scanner_Effect extends Effect
 
     stg.fill(hueSlider.getValue(), 100, 100);
 
-    rotation = (rotation+speedSlider.getValue())%(9*PI);
+    rotation = (rotation+speedSlider.getValue()/20)%(9*PI);
 
     if (rotation<PI)
       rotateRight();

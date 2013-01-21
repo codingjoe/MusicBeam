@@ -37,23 +37,23 @@ class Polygon_Effect extends Effect
   {
     super(controller, Effect.defaultWidth, 220, y);
 
-    weightSlider = cp5.addSlider("weight"+getName()).setPosition(10, 10).setSize(180, 45).setRange(0, 100).moveTo(win);
-    weightSlider.getCaptionLabel().set("Weight").align(ControlP5.CENTER, ControlP5.CENTER);
+    weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, 100).moveTo(win);
+    weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
     weightSlider.setValue(20);
 
-    pointsSlider = cp5.addSlider("points"+getName()).setPosition(10, 60).setSize(180, 45).setRange(3, 20).moveTo(win);
-    pointsSlider.getCaptionLabel().set("Points").align(ControlP5.CENTER, ControlP5.CENTER);
+    pointsSlider = cp5.addSlider("points"+getName()).setPosition(0, 55).setSize(395, 45).setRange(3, 20).moveTo(win);
+    pointsSlider.getCaptionLabel().set("Points").align(ControlP5.RIGHT, ControlP5.CENTER);
     pointsSlider.setValue(8);
 
-    rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).setPosition(10, 110).setSize(180, 45).moveTo(win);
+    rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).setPosition(0, 105).setSize(395, 45).moveTo(win);
     rotationSpeedSlider.setRange(-1, 1).setValue(0.3);
-    rotationSpeedSlider.getCaptionLabel().set("Rotation Speed").align(ControlP5.CENTER, ControlP5.CENTER);
+    rotationSpeedSlider.getCaptionLabel().set("Rotation Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(130, 45).setPosition(60, 160).moveTo(win);
-    hueSlider.getCaptionLabel().set("hue").align(ControlP5.CENTER, ControlP5.CENTER);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(345, 45).setPosition(50, 155).moveTo(win);
+    hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(10, 160).setSize(45, 45).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 155).setSize(45, 45).moveTo(win);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
   }

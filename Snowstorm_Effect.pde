@@ -20,22 +20,22 @@ class Snowstorm_Effect extends Effect
   {
     super(controller, Effect.defaultWidth, 180, y);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(10, 10).setSize(180, 50);
+    radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(0, 5).setSize(395, 45);
     radiusSlider.getCaptionLabel().set("Size").align(ControlP5.CENTER, ControlP5.CENTER);
     radiusSlider.setRange(50, 200).setValue(80);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setRange(1, 10).setValue(3).setPosition(10, 65).setSize(180, 50).moveTo(win);
+    speedSlider = cp5.addSlider("speed"+getName()).setRange(0.01, 1).setValue(0.3).setPosition(0, 55).setSize(395, 45).moveTo(win);
     speedSlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(70, 50).setPosition(65, 120).moveTo(win);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 105).moveTo(win);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(10, 120).setSize(50, 50).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 105).setSize(45, 45).moveTo(win);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
 
-    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(140, 120).setSize(50, 50).moveTo(win);
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 105).setSize(45, 45).moveTo(win);
     bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
     bwToggle.setState(true);
 
@@ -63,7 +63,8 @@ class Snowstorm_Effect extends Effect
   {
     if (radiusSlider.isMousePressed())
       calcPoints();
-    translate(-stg.width/2-lauf*speedSlider.getValue(), -stg.height/2);
+    else {
+    translate(-stg.width/2-lauf*speedSlider.getValue()*10, -stg.height/2);
     for (int i=0;i<pts;i++) {
       float posx, posy;
       posx = (2*radiusSlider.getValue()*(i%px))+x.get(i);
@@ -72,7 +73,7 @@ class Snowstorm_Effect extends Effect
       stg.ellipse(posx, posy, r.get(i), r.get(i));
     }
 
-    if (lauf>=(2*radiusSlider.getValue()/speedSlider.getValue())-1) {  
+    if (lauf>=(2*radiusSlider.getValue()/(speedSlider.getValue()*10))-1) {  
       x.add(x.remove());
       y.add(y.remove());
       r.add(r.remove());
@@ -80,9 +81,10 @@ class Snowstorm_Effect extends Effect
     } 
     else
       lauf++;
+    }
 
     if (aHueToggle.getState()&& (isKick()&&isSnare()))
-      hueSlider.setValue((hueSlider.getValue()+120)%360);
+      hueSlider.setValue((hueSlider.getValue()+60)%360);
   }
 
   void calcPoints() {

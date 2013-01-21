@@ -23,27 +23,27 @@ class RGBSpot_Effect extends Effect
   {
     super(ctrl, Effect.defaultWidth, Effect.defaultHeight, y);
 
-    manualButton = cp5.addButton("manual"+getName()).setSize(85, 95).setPosition(10, 45).moveTo(win);
+    manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    hatToggle = cp5.addToggle("hat"+getName()).setSize(90, 20).setPosition(100, 45).moveTo(win);
+    hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).moveTo(win);
     hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    snareToggle = cp5.addToggle("snare"+getName()).setSize(90, 20).setPosition(100, 70).moveTo(win);
+    snareToggle = cp5.addToggle("snare"+getName()).setSize(195, 45).setPosition(200, 55).moveTo(win);
     snareToggle.getCaptionLabel().set("Snare").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    kickToggle = cp5.addToggle("kick"+getName()).setSize(90, 20).setPosition(100, 95).moveTo(win);
+    kickToggle = cp5.addToggle("kick"+getName()).setSize(195, 45).setPosition(200, 105).moveTo(win);
     kickToggle.getCaptionLabel().set("Kick").align(ControlP5.CENTER, ControlP5.CENTER);
     kickToggle.setState(true);
 
-    onsetToggle = cp5.addToggle("onset"+getName()).setSize(90, 20).setPosition(100, 120).moveTo(win);
-    onsetToggle.getCaptionLabel().set("OnSet").align(ControlP5.CENTER, ControlP5.CENTER);
+    onsetToggle = cp5.addToggle("onset"+getName()).setSize(195, 45).setPosition(200, 155).moveTo(win);
+    onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate).setValue(stg.refreshRate/3).setPosition(10, 145).setSize(180, 20).moveTo(win);
-    delaySlider.getCaptionLabel().set("delay").align(ControlP5.RIGHT, ControlP5.CENTER);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate).setValue(stg.refreshRate/3).setPosition(0, 205).setSize(395, 45).moveTo(win);
+    delaySlider.getCaptionLabel().set("Delay").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0,1).setValue(0.3).setPosition(10, 170).setSize(180, 20).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0,1).setValue(0.3).setPosition(0, 255).setSize(395, 45).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
 

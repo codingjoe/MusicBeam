@@ -20,29 +20,29 @@ class LaserBurst_Effect extends Effect
   {
     super(controller, Effect.defaultWidth, 265, y);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(10, 10).setSize(180, 45);
-    radiusSlider.getCaptionLabel().set("Size").align(ControlP5.CENTER, ControlP5.CENTER);
+    radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(0, 5).setSize(395, 45).moveTo(win);
+    radiusSlider.getCaptionLabel().set("Size").align(ControlP5.RIGHT, ControlP5.CENTER);
     radiusSlider.setRange(10, 100).setValue(30);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setRange(1, 10).setValue(3).setPosition(10, 60).setSize(180, 45).moveTo(win);
+    speedSlider = cp5.addSlider("speed"+getName()).setRange(1, 10).setValue(3).setPosition(0, 55).setSize(395, 45).moveTo(win);
     speedSlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
     
-    rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).moveTo(win).setPosition(10, 60).setSize(180, 45);
-    rotationSpeedSlider.getCaptionLabel().set("Rotation Speed").align(ControlP5.CENTER, ControlP5.CENTER);
+    rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).setPosition(0, 105).setSize(395, 45).moveTo(win);
+    rotationSpeedSlider.getCaptionLabel().set("Rotation Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
     rotationSpeedSlider.setRange(0, 1).setValue(0.3);
 
-    inverseToggle = cp5.addToggle("inverse"+getName()).setSize(180, 45).setPosition(10, 160).moveTo(win);
+    inverseToggle = cp5.addToggle("inverse"+getName()).setSize(395, 45).setPosition(0, 155).moveTo(win);
     inverseToggle.getCaptionLabel().set("Inverse").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(80, 45).setPosition(60, 210).moveTo(win);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 205).moveTo(win);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(10, 210).setSize(45, 45).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 205).setSize(45, 45).moveTo(win);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
 
-    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(130, 210).setSize(45, 45).moveTo(win);
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 205).setSize(45, 45).moveTo(win);
     bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
     bwToggle.setState(true);
 
