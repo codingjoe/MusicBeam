@@ -25,7 +25,7 @@ public abstract class Effect
 
   Group win;
 
-  Toggle activeToggle, settingsToggle;
+  Toggle activeToggle, randomToggle, settingsToggle;
   
   Tab settingsTab;
 
@@ -38,26 +38,35 @@ public abstract class Effect
   static final int defaultWidth = 400;
 
   static final int defaultHeight = 300;
+  
+  int id;
 
-  Effect(MusicBeam controller, int width, int height, int y)
+  Effect(MusicBeam controller, int i)
   {
+    id = i;
     ctrl = controller;
     stg = controller.stage;
     
-    int posy = 115+(y*50);
+    int posy = 115+(i*50);
 
-    win = cp5.addGroup(getName()).hide().setPosition(10,235).setWidth(395).setHeight(30);
+    win = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,235).setWidth(395).setHeight(30);
     win.disableCollapse();
-    win.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
+    win.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
+//    activeToggle = cp5.addToggle("active"+getName()).setSize(250, 45).setPosition(415, posy);
+//    activeToggle.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
+//    activeToggle.setState(false);
     
-    activeToggle = cp5.addToggle("active"+getName()).setSize(300, 45).setPosition(415, posy);
-    activeToggle.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
-    activeToggle.setState(false);
+    ctrl.activeEffect.addItem(getName(),i);
+    ctrl.activeSetting.addItem("settings"+getName(),i);
     
-    settingsToggle = cp5.addToggle("settings"+getName()).setSize(45, 45).setPosition(720, posy);
-    settingsToggle.getCaptionLabel().set("Edit").align(ControlP5.CENTER, ControlP5.CENTER);
-    activeToggle.setState(false);
+    randomToggle = cp5.addToggle("random"+getName()).setSize(45, 45).setPosition(670, posy);
+    randomToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER);
+    randomToggle.setState(true);
+    
+//    settingsToggle = cp5.addToggle("settings"+getName()).setSize(45, 45).setPosition(720, posy);
+//    settingsToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER);
+//    activeToggle.setState(false);
   }
 
   abstract String getName();
@@ -89,10 +98,19 @@ public abstract class Effect
   {
     return ctrl.bdSound.isOnset();
   }
+  
+  int getId()
+  {
+    return id;
+  }
 
   boolean isActive()
   {
-    return activeToggle.getState();
+    return activeEffect.getState(id);
+  }
+  
+  void activate() {
+    activeEffect.activate(id);
   }
   
   float getLevel()

@@ -26,7 +26,7 @@ String version = "1.0";
 
 Stage stage = null;
 
-Strobo_Effect strobo;
+Strobe_Effect strobo;
 
 GraphicsDevice[] gs;
 
@@ -44,13 +44,18 @@ Effect[] effectArray;
 
 float beatHistoryMax = 1;
 
+PFont symFont;
+
 DropdownList displays;
 
 Toggle projectorToggle, randomToggle;
 Slider randomTimeSlider;
 Button nextButton;
+RadioButton activeEffect, activeSetting;
 
 float randomTimer = 0;
+
+int randomEffect = 0;
 
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -61,13 +66,15 @@ void setup() {
   frame.setTitle("MusicBeam");
   frame.setLocation(0, 0);
   frame.setResizable(true);
-  frameRate(60);
+  frameRate(30);
 
   Minim minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
 
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
+
+  symFont = createFont("glyphicons-regular.otf", 24);
 
   initControlls();
 
@@ -81,46 +88,40 @@ void draw() {
     beatDetect();
   smooth();
   background(25);
-  
+
   noStroke();
 
   drawBeatBoard();
 
-  if (effectArray!=null)
-    for (int i=0; i<effectArray.length; i++)
-    {
-      if (effectArray[i].settingsToggle.getState())
-        effectArray[i].showWin();
-      else
-        effectArray[i].hideWin();
-    }
-
-  if (randomToggle.getState()&&randomTimer<=0)
-  {
-    for (int i = 1; i<effectArray.length;i++)
-      effectArray[i].activeToggle.setState(false);
-    effectArray[int(random(1, effectArray.length))].activeToggle.setState(true);
-    randomTimer = randomTimeSlider.getValue()*60;
+  if (effectArray!=null) {
+    for (Effect e:effectArray)
+      e.hideWin();
+    if (int(activeSetting.getValue())>=0)
+      effectArray[int(activeSetting.getValue())].showWin();
   }
-  if (randomTimer>0)
-    randomTimer--;
+
+  if (randomToggle.getState()&&randomTimer>=randomTimeSlider.getValue()*60)
+  {
+    nextRandom();
+  }
+  else if (randomToggle.getState())
+    randomTimer++;
+}
+
+void nextRandom()
+{
+  int k = randomEffect;
+  while (randomEffect==k || !effectArray[k].randomToggle.getState ())
+    k = int(random(effectArray.length));
+  randomEffect = k;
+  activeEffect.activate(randomEffect);
+  randomTimer = 0;
 }
 
 void controlEvent(ControlEvent event)
 {
-  if (event.getName()=="next") {
-    for (int i = 1; i<effectArray.length;i++) {
-      if (effectArray[i].activeToggle.getState()) {
-        effectArray[i].activeToggle.setState(false);
-        int k = i;
-        do
-          k = int(random(1, effectArray.length-1));
-        while (i == k);
-        effectArray[k].activeToggle.setState(true);
-      }
-    }
-    randomTimer = randomTimeSlider.getValue()*60;
-  }
+  if (event.getName()=="next")
+    nextRandom();
 }
 
 void drawBeatBoard()
@@ -195,7 +196,7 @@ void initControlls()
   projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
 
   randomToggle = cp5.addToggle("random").setSize(135, 45).setPosition(415, 10);
-  randomToggle.getCaptionLabel().set("Random Effects").align(ControlP5.CENTER, ControlP5.CENTER);
+  randomToggle.getCaptionLabel().set("Play Random").align(ControlP5.CENTER, ControlP5.CENTER);
   randomToggle.lock();
   randomToggle.setColorCaptionLabel(50);
 
@@ -210,6 +211,9 @@ void initControlls()
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
   nextButton.lock();
   nextButton.setColorCaptionLabel(50);
+
+  activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
+  activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
 }
 
 void Projector(boolean trigger)
@@ -236,7 +240,7 @@ void Projector(boolean trigger)
 void initEffects()
 {
   effectArray = new Effect[8];
-  strobo = new Strobo_Effect(this, 0);
+  strobo = new Strobe_Effect(this, 0);
   effectArray[0] = strobo;
   effectArray[1] = new Scanner_Effect(this, 1);
   effectArray[2] = new Moonflower_Effect(this, 2);
@@ -245,6 +249,11 @@ void initEffects()
   effectArray[5] = new Snowstorm_Effect(this, 5);
   effectArray[6] = new LaserBurst_Effect(this, 6);
   effectArray[7] = new Polygon_Effect(this, 7);
+  for (Toggle t:activeEffect.getItems())
+    t.getCaptionLabel().align(CENTER, CENTER);
+  for (Toggle t:activeSetting.getItems())
+    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER);
+
   randomToggle.unlock();
   randomToggle.setColorCaptionLabel(-1);
   randomTimeSlider.unlock();
@@ -273,22 +282,29 @@ void checkForUpdate()
 
 void keyPressed()
 {
-  if (key=='s') {
-    strobo.manualButton.setSwitch(true);
-    strobo.manualButton.setOn();
+  if (effectArray!=null) {
+    if (key=='s') {
+      strobo.activate();
+      strobo.manualButton.setSwitch(true);
+      strobo.manualButton.setOn();
+    }
+    if (key=='n')
+      nextRandom();
+    if (key==CODED)
+      if (keyCode==RIGHT)
+        strobo.delaySlider.setValue(strobo.delaySlider.getValue()+1);
+      else if (keyCode==LEFT)
+        strobo.delaySlider.setValue(strobo.delaySlider.getValue()-1);
   }
-  if (key==CODED)
-    if (keyCode==RIGHT)
-      strobo.delaySlider.setValue(strobo.delaySlider.getValue()+1);
-    else if (keyCode==LEFT)
-      strobo.delaySlider.setValue(strobo.delaySlider.getValue()-1);
 }
 
 void keyReleased()
 {
-  if (key=='s') {
-    strobo.manualButton.setOff();
-    strobo.manualButton.setSwitch(false);
-  }
+  if (effectArray!=null)
+    if (key=='s') {
+      strobo.manualButton.setOff();
+      strobo.manualButton.setSwitch(false);
+      nextRandom();
+    }
 }
 

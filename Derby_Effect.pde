@@ -29,7 +29,7 @@ class Derby_Effect extends Effect
 
   Derby_Effect(MusicBeam ctrl, int y)
   {
-    super(ctrl, Effect.defaultWidth, 175, y);
+    super(ctrl, y);
 
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, 200).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -37,9 +37,9 @@ class Derby_Effect extends Effect
 
     speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0, 1).moveTo(win);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
-    speedSlider.setValue(0.25);
+    speedSlider.setValue(0.5);
 
-    pointSlider = cp5.addSlider("point"+getName()).setPosition(0, 105).setSize(395, 45).setRange(1, 20).moveTo(win);
+    pointSlider = cp5.addSlider("point"+getName()).setPosition(0, 105).setSize(395, 45).setRange(1, 10).moveTo(win);
     pointSlider.getCaptionLabel().set("points").align(ControlP5.RIGHT, ControlP5.CENTER);
     pointSlider.setValue(4);
 

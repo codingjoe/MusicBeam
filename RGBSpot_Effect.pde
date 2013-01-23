@@ -21,7 +21,7 @@ class RGBSpot_Effect extends Effect
 
   RGBSpot_Effect(MusicBeam ctrl, int y)
   {
-    super(ctrl, Effect.defaultWidth, Effect.defaultHeight, y);
+    super(ctrl, y);
 
     manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).moveTo(win);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -40,24 +40,20 @@ class RGBSpot_Effect extends Effect
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate).setValue(stg.refreshRate/3).setPosition(0, 205).setSize(395, 45).moveTo(win);
-    delaySlider.getCaptionLabel().set("Delay").align(ControlP5.RIGHT, ControlP5.CENTER);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(0.01,1).setValue(0.3).setPosition(0, 205).setSize(395, 45).moveTo(win);
+    delaySlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0,1).setValue(0.3).setPosition(0, 255).setSize(395, 45).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0, 1).setValue(0.3).setPosition(0, 255).setSize(395, 45).moveTo(win);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
 
-  float[] rx = {
-    0
-  };
-
-  float[] ry = {
-    0
-  };
-
-  float rc = 0;
+  float[] rx = {0,0};
+  float[] ry = {0,0};
+  float[] rc = {0,0};
 
   float timer = 0;
+  
+  float fader = 0;
 
   Button manualButton;
 
@@ -71,20 +67,33 @@ class RGBSpot_Effect extends Effect
   {
     radius = stg.minRadius*radiusSlider.getValue();
     translate(-stg.width/2, -stg.height/2);
-    stg.fill(60*rc, 100, 10*timer);
+
     if ((isTriggered()&&timer<=0)) {
+      rx[1] = rx[0];
+      ry[1] = ry[0];
+      rc[1] = rc[0];
       rx[0] = random(radius/2, stg.width-radius/2);
       ry[0] = random(radius/2, stg.height-radius/2);
-      rc = random(0, 6);
-      timer = delaySlider.getValue();
+      while(rc[0]==rc[1])
+        rc[0] = random(0, 6);
+      timer = delaySlider.getValue()*stg.refreshRate*3;
+      fader = stg.refreshRate/4;
     }
 
+    stg.fill(60*rc[0], 100, 100);
     stg.ellipse(rx[0], ry[0], radius, radius);
     translate(stg.width, stg.height);
     stg.ellipse(-rx[0], -ry[0], radius, radius);
+    translate(-stg.width, -stg.height);
+    stg.fill(60*rc[1], 100, 5*fader);
+    stg.ellipse(rx[1], ry[1], radius, radius);
+    translate(stg.width, stg.height);
+    stg.ellipse(-rx[1], -ry[1], radius, radius);
 
     if (timer>0)
       timer--;
+    if (fader>0)
+      fader--;
   }
 
   boolean isTriggered()

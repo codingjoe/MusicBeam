@@ -18,13 +18,13 @@ class LaserBurst_Effect extends Effect
 
   LaserBurst_Effect(MusicBeam controller, int y)
   {
-    super(controller, Effect.defaultWidth, 265, y);
+    super(controller, y);
 
     radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(0, 5).setSize(395, 45).moveTo(win);
     radiusSlider.getCaptionLabel().set("Size").align(ControlP5.RIGHT, ControlP5.CENTER);
     radiusSlider.setRange(10, 100).setValue(30);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setRange(1, 10).setValue(3).setPosition(0, 55).setSize(395, 45).moveTo(win);
+    speedSlider = cp5.addSlider("speed"+getName()).setRange(0.01, 1).setValue(0.3).setPosition(0, 55).setSize(395, 45).moveTo(win);
     speedSlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
     
     rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).setPosition(0, 105).setSize(395, 45).moveTo(win);
@@ -67,7 +67,7 @@ class LaserBurst_Effect extends Effect
   void draw()
   {
     rotate(inverseToggle.getState()?rotation:-rotation);
-    if (isHat()||isSnare()||isKick()) {
+    if (isKick()) {
       Float[] k = {
         0.0f, random(0, PI)
       };
@@ -91,10 +91,10 @@ class LaserBurst_Effect extends Effect
       if (k[0]>=1)
         pts.remove(i);
       else
-        k[0]+=0.01f;
+        k[0]+=speedSlider.getValue()/100;
     }
-    if (aHueToggle.getState()&& (isKick()&&isSnare()))
-      hueSlider.setValue((hueSlider.getValue()+120)%360);
+    if (aHueToggle.getState()&& (isKick()||isSnare()))
+      hueSlider.setValue((hueSlider.getValue()+1)%360);
     rotation = (rotation+rotationSpeedSlider.getValue()/20)%PI;
   }
 }

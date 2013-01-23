@@ -13,17 +13,19 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-public class Strobo_Effect extends Effect
+public class Strobe_Effect extends Effect
 {  
   public String getName()
   {
-    return "Strobo";
+    return "Strobe";
   }
 
-  public Strobo_Effect(MusicBeam controller, int y)
+  public Strobe_Effect(MusicBeam controller, int y)
   {
 
-    super(controller, Effect.defaultWidth, Effect.defaultHeight, y);
+    super(controller, y);
+    
+    randomToggle.setState(false);
 
 
     manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).moveTo(win);
@@ -43,7 +45,7 @@ public class Strobo_Effect extends Effect
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(20, stg.refreshRate/2).setValue(stg.refreshRate/2-2).setPosition(0, 205).setSize(395, 45).moveTo(win);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate/2).setValue(stg.refreshRate/2-2).setPosition(0, 205).setSize(395, 45).moveTo(win);
     delaySlider.getCaptionLabel().set("Frequency (Hz)").align(ControlP5.RIGHT, ControlP5.CENTER);
 
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).moveTo(win);
@@ -86,9 +88,9 @@ public class Strobo_Effect extends Effect
   }
 
   void draw() {
-    if (state && timer <= 0) {
+    if (state && (timer <= 0 || timer < stg.refreshRate/2-delaySlider.getValue()-3)) {
       state = false;
-      timer = int(stg.refreshRate/2-delaySlider.getValue());
+      timer = stg.refreshRate/2-delaySlider.getValue();
     } 
     else if (!state && isTriggered() && timer <= 0) {
       state = true;

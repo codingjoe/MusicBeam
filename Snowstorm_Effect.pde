@@ -18,7 +18,7 @@ class Snowstorm_Effect extends Effect
 
   Snowstorm_Effect(MusicBeam controller, int y)
   {
-    super(controller, Effect.defaultWidth, 180, y);
+    super(controller, y);
 
     radiusSlider = cp5.addSlider("radius"+getName()).moveTo(win).setPosition(0, 5).setSize(395, 45);
     radiusSlider.getCaptionLabel().set("Size").align(ControlP5.CENTER, ControlP5.CENTER);

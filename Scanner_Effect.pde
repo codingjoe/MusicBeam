@@ -18,7 +18,7 @@ class Scanner_Effect extends Effect
 
   Scanner_Effect(MusicBeam controller, int y)
   {
-    super(controller, Effect.defaultWidth, 120, y);
+    super(controller, y);
 
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, 100).moveTo(win);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
