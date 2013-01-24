@@ -53,20 +53,12 @@ public abstract class Effect
     win.disableCollapse();
     win.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
-//    activeToggle = cp5.addToggle("active"+getName()).setSize(250, 45).setPosition(415, posy);
-//    activeToggle.getCaptionLabel().set(getName()).align(ControlP5.CENTER, ControlP5.CENTER);
-//    activeToggle.setState(false);
-    
     ctrl.activeEffect.addItem(getName(),i);
     ctrl.activeSetting.addItem("settings"+getName(),i);
     
     randomToggle = cp5.addToggle("random"+getName()).setSize(45, 45).setPosition(670, posy);
-    randomToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER);
+    randomToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER).style().moveMargin(-3,0,0,0);
     randomToggle.setState(true);
-    
-//    settingsToggle = cp5.addToggle("settings"+getName()).setSize(45, 45).setPosition(720, posy);
-//    settingsToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER);
-//    activeToggle.setState(false);
   }
 
   abstract String getName();

@@ -62,7 +62,7 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(775, 545);
+  size(415, 200);
   frame.setTitle("MusicBeam");
   frame.setLocation(0, 0);
   frame.setResizable(true);
@@ -74,7 +74,7 @@ void setup() {
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
 
-  symFont = createFont("glyphicons-regular.otf", 24);
+  symFont = loadFont("GLYPHICONS-NONFREE.vlw");
 
   initControlls();
 
@@ -239,6 +239,9 @@ void Projector(boolean trigger)
 
 void initEffects()
 {
+  frame.setResizable(true);
+  frame.setSize(775, 565);
+  
   effectArray = new Effect[8];
   strobo = new Strobe_Effect(this, 0);
   effectArray[0] = strobo;
@@ -252,7 +255,7 @@ void initEffects()
   for (Toggle t:activeEffect.getItems())
     t.getCaptionLabel().align(CENTER, CENTER);
   for (Toggle t:activeSetting.getItems())
-    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER);
+    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER).style().moveMargin(-4,0,0,0);
 
   randomToggle.unlock();
   randomToggle.setColorCaptionLabel(-1);
