@@ -24,7 +24,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "0.9";
+String version = "0.9.1";
 
 Stage stage = null;
 
