@@ -17,6 +17,8 @@ import java.awt.GraphicsEnvironment;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
 
+import java.util.LinkedList;
+
 import controlP5.*;
 
 import ddf.minim.*;

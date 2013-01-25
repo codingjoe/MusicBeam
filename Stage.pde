@@ -16,6 +16,7 @@
 import processing.opengl.*;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
+import java.awt.Frame;
 import processing.opengl.*;
 import javax.media.opengl.*;
 
@@ -23,10 +24,6 @@ public class Stage extends PApplet {
 
 
   MusicBeam ctrl = null;
-
-  PGraphicsOpenGL pgl;
-
-  GL gl;
 
   int width;
 
@@ -80,16 +77,15 @@ public class Stage extends PApplet {
     ctrl.beatDetect();
     smooth();
     background(0);
+
+    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
+    GL2 gl = pgl.beginPGL().gl.getGL2();
     
-    pgl = (PGraphicsOpenGL) g;
-    gl = pgl.gl;
-    
-    pgl.beginGL();
     gl.glDisable(GL.GL_DEPTH_TEST);
     gl.glEnable(GL.GL_BLEND);
     gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
-    pgl.endGL(); 
-    
+    pgl.endPGL();
+
     translate(width/2, height/2);
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
