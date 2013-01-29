@@ -17,8 +17,7 @@ import processing.opengl.*;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
 import java.awt.Frame;
-import processing.opengl.*;
-import javax.media.opengl.*;
+import javax.media.opengl.GL2;
 
 public class Stage extends PApplet {
 
@@ -38,6 +37,10 @@ public class Stage extends PApplet {
   float maxRadius;
 
   float minRadius;
+  
+  PGraphicsOpenGL pgl;
+  
+  GL2 gl;
 
 
   Stage (MusicBeam main, int gd, boolean fullscreen)
@@ -66,7 +69,11 @@ public class Stage extends PApplet {
 
   void setup() {
     size(width, height, OPENGL);
-    frameRate(refreshRate);
+    frameRate(refreshRate<30?60:refreshRate);
+    
+    pgl = (PGraphicsOpenGL) g;
+    gl = pgl.beginPGL().gl.getGL2();
+    
     background(0);
     noStroke();
 
@@ -77,13 +84,10 @@ public class Stage extends PApplet {
     ctrl.beatDetect();
     smooth();
     background(0);
-
-    PGraphicsOpenGL pgl = (PGraphicsOpenGL) g;
-    GL2 gl = pgl.beginPGL().gl.getGL2();
     
-    gl.glDisable(GL.GL_DEPTH_TEST);
-    gl.glEnable(GL.GL_BLEND);
-    gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
+    gl.glDisable(GL2.GL_DEPTH_TEST);
+    gl.glEnable(GL2.GL_BLEND);
+    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
     pgl.endPGL();
 
     translate(width/2, height/2);
