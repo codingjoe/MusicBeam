@@ -24,7 +24,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "0.9.1";
+String version = "0.9.2";
 
 Stage stage = null;
 
@@ -51,7 +51,7 @@ PFont symFont;
 DropdownList displays;
 
 Toggle projectorToggle, randomToggle;
-Slider randomTimeSlider;
+Slider randomTimeSlider, beatDelaySlider;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
 
@@ -64,7 +64,7 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(415, 200);
+  size(415, 255);
   frame.setTitle("MusicBeam");
   frame.setLocation(0, 0);
   frame.setResizable(true);
@@ -196,6 +196,10 @@ void initControlls()
 
   projectorToggle = cp5.addToggle("Projector").setPosition(270, 10).setSize(135, 50);
   projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
+  
+  beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 45).setPosition(10, 200).setRange(10, 1000);
+  beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
+  beatDelaySlider.setValue(100);
 
   randomToggle = cp5.addToggle("random").setSize(135, 45).setPosition(415, 10);
   randomToggle.getCaptionLabel().set("Play Random").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -242,7 +246,7 @@ void Projector(boolean trigger)
 void initEffects()
 {
   frame.setResizable(true);
-  frame.setSize(775, 565);
+  frame.setSize(775, 615);
   
   effectArray = new Effect[8];
   strobo = new Strobe_Effect(this, 0);
@@ -271,8 +275,8 @@ void initEffects()
 
 void beatDetect()
 {
-  bdSound.setSensitivity(500);
-  bdFreq.setSensitivity(500);
+  bdSound.setSensitivity(int(beatDelaySlider.getValue()));
+  bdFreq.setSensitivity(int(beatDelaySlider.getValue()));
   bdSound.detect(in.mix);
   bdFreq.detect(in.mix);
 }
@@ -280,9 +284,10 @@ void beatDetect()
 void checkForUpdate()
 {
   String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/latest");
-
-  if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
-    open("http://musicbeam.zepplab.net/#update");
+  
+  if (currentVersion!=null)
+    if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
+      open("http://musicbeam.zepplab.net/#update");
 }
 
 void keyPressed()
