@@ -24,7 +24,9 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "0.9.2";
+String version = "0.9.3";
+
+public Boolean debugMode = false;
 
 Stage stage = null;
 
@@ -66,9 +68,7 @@ void setup() {
 
   size(415, 255);
   frame.setTitle("MusicBeam");
-  frame.setLocation(0, 0);
   frame.setResizable(true);
-  frameRate(30);
 
   Minim minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
@@ -78,12 +78,13 @@ void setup() {
 
   symFont = loadFont("GLYPHICONS-NONFREE.vlw");
 
-  initControlls();
+
 
   colorMode(HSB, 360, 100, 100);
-
+  initControls();
   checkForUpdate();
 }
+
 
 void draw() {
   if (stage==null)
@@ -97,17 +98,18 @@ void draw() {
 
   if (effectArray!=null) {
     for (Effect e:effectArray)
-      e.hideWin();
+      e.hideControls();
     if (int(activeSetting.getValue())>=0)
-      effectArray[int(activeSetting.getValue())].showWin();
+      effectArray[int(activeSetting.getValue())].showControls();
   }
 
-  if (randomToggle.getState()&&randomTimer>=randomTimeSlider.getValue()*60)
-  {
-    nextRandom();
-  }
-  else if (randomToggle.getState())
-    randomTimer++;
+  if (randomToggle!=null)
+    if (randomToggle.getState()&&randomTimer>=randomTimeSlider.getValue()*60)
+    {
+      nextRandom();
+    }
+    else if (randomToggle.getState())
+      randomTimer++;
 }
 
 void nextRandom()
@@ -179,7 +181,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
   stroke(0);
 }
 
-void initControlls()
+void initControls()
 {
   cp5 = new ControlP5(this);
   cp5.setFont(createFont("Monospace", 12));
@@ -196,11 +198,13 @@ void initControlls()
 
   projectorToggle = cp5.addToggle("Projector").setPosition(270, 10).setSize(135, 50);
   projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
-  
+
   beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 45).setPosition(10, 200).setRange(10, 1000);
   beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
   beatDelaySlider.setValue(100);
+}
 
+void initRandomControls() {
   randomToggle = cp5.addToggle("random").setSize(135, 45).setPosition(415, 10);
   randomToggle.getCaptionLabel().set("Play Random").align(ControlP5.CENTER, ControlP5.CENTER);
   randomToggle.lock();
@@ -225,7 +229,7 @@ void initControlls()
 void Projector(boolean trigger)
 {
   if (trigger && stage == null) {
-    stage = new Stage (this, int(displays.getValue()), false);
+    stage = new Stage (this, int(displays.getValue()));
     stage.stop();
     initEffects();
     stage.start();
@@ -245,9 +249,8 @@ void Projector(boolean trigger)
 
 void initEffects()
 {
-  frame.setResizable(true);
-  frame.setSize(775, 615);
-  
+  initRandomControls();
+
   effectArray = new Effect[8];
   strobo = new Strobe_Effect(this, 0);
   effectArray[0] = strobo;
@@ -261,15 +264,10 @@ void initEffects()
   for (Toggle t:activeEffect.getItems())
     t.getCaptionLabel().align(CENTER, CENTER);
   for (Toggle t:activeSetting.getItems())
-    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER).style().moveMargin(-4,0,0,0);
+    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER).style().moveMargin(-4, 0, 0, 0);
 
-  randomToggle.unlock();
-  randomToggle.setColorCaptionLabel(-1);
-  randomTimeSlider.unlock();
-  randomTimeSlider.setColorCaptionLabel(-1);
-  randomTimeSlider.setColorValueLabel(-1);
-  nextButton.unlock();
-  nextButton.setColorCaptionLabel(-1);
+  frame.setResizable(true);
+  frame.setSize(775, 615);
 }
 
 
@@ -284,7 +282,7 @@ void beatDetect()
 void checkForUpdate()
 {
   String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/latest");
-  
+
   if (currentVersion!=null)
     if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
       open("http://musicbeam.zepplab.net/#update");

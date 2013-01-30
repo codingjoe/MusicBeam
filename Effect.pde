@@ -3,7 +3,7 @@
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
- * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ * and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the follocontrolGroupg conditions:
  *
  * The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
  *
@@ -23,7 +23,7 @@ public abstract class Effect
 
   Stage stg;
 
-  Group win;
+  Group controlGroup;
 
   Toggle activeToggle, randomToggle, settingsToggle;
   
@@ -49,9 +49,9 @@ public abstract class Effect
     
     int posy = 115+(i*50);
 
-    win = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,285).setWidth(395).setHeight(30);
-    win.disableCollapse();
-    win.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
+    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,285).setWidth(395).setHeight(30);
+    controlGroup.disableCollapse();
+    controlGroup.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
     ctrl.activeEffect.addItem(getName(),i);
     ctrl.activeSetting.addItem("settings"+getName(),i);
@@ -73,22 +73,22 @@ public abstract class Effect
 
   boolean isHat()
   {
-    return ctrl.bdFreq.isHat();
+    return getLevel()>0.1?ctrl.bdFreq.isHat():false;
   }
 
   boolean isSnare()
   {
-    return ctrl.bdFreq.isSnare();
+    return getLevel()>0.1?ctrl.bdFreq.isSnare():false;
   }
 
   boolean isKick()
   {
-    return ctrl.bdFreq.isKick();
+    return getLevel()>0.1?ctrl.bdFreq.isKick():false;
   }
 
   boolean isOnset()
   {
-    return ctrl.bdSound.isOnset();
+    return getLevel()>0.1?ctrl.bdSound.isOnset():false;
   }
   
   int getId()
@@ -110,14 +110,14 @@ public abstract class Effect
     return ctrl.in.mix.level();
   }
 
-  void hideWin()
+  void hideControls()
   {
-    win.hide();
+    controlGroup.hide();
   }
 
-  void showWin()
+  void showControls()
   {
-    win.show();
+    controlGroup.show();
   }
 
   void rotate(float r)

@@ -41,27 +41,27 @@ public class Moonflower_Effect extends Effect
   {
     super(controller, y);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, stg.minRadius/2).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, stg.minRadius/2).setGroup(controlGroup);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
     radiusSlider.setValue(stg.minRadius/3);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0.01, 1).moveTo(win);
+    speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0.01, 1).setGroup(controlGroup);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
     speedSlider.setValue(0.5);
 
-    stereoToggle = cp5.addToggle("stereo"+getName()).setPosition(0, 105).setSize(395, 45).moveTo(win);
+    stereoToggle = cp5.addToggle("stereo"+getName()).setPosition(0, 105).setSize(395, 45).setGroup(controlGroup);
     stereoToggle.getCaptionLabel().set("Bi-Color").align(ControlP5.RIGHT, ControlP5.CENTER);
     stereoToggle.setState(true);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 155).moveTo(win);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 155).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 155).setSize(45, 45).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 155).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
 
-    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 155).setSize(45, 45).moveTo(win);
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 155).setSize(45, 45).setGroup(controlGroup);
     bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
     bwToggle.setState(false);
 
@@ -81,7 +81,7 @@ public class Moonflower_Effect extends Effect
   {
     float radius = radiusSlider.getValue();
 
-    float speed = (1-speedSlider.getValue())*stg.refreshRate;
+    float speed = (1-speedSlider.getValue())*stg.frameRate;
 
     if (timer<=0 && isKick()) {
       if (aHueToggle.getState())
@@ -91,7 +91,7 @@ public class Moonflower_Effect extends Effect
       ry[0] = ry[1];
       rx[1] = random((1-direction)/4*stg.width+radius*5/4, stg.width-radius*5/4-(1-direction)/4*stg.width);
       ry[1] = random((1-direction)/4*stg.height+radius*5/4, stg.height-radius*5/4-(1-direction)/4*stg.height);
-      timer = stg.refreshRate*(1-speedSlider.getValue());
+      timer = stg.frameRate*(1-speedSlider.getValue());
     }
 
     float dx = abs(timer*rx[0]-(timer-speed)*rx[1])/speed;

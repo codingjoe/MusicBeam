@@ -28,35 +28,35 @@ public class Strobe_Effect extends Effect
     randomToggle.setState(false);
 
 
-    manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).moveTo(win);
+    manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).setGroup(controlGroup);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).moveTo(win);
+    hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).setGroup(controlGroup);
     hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    snareToggle = cp5.addToggle("snare"+getName()).setSize(195, 45).setPosition(200, 55).moveTo(win);
+    snareToggle = cp5.addToggle("snare"+getName()).setSize(195, 45).setPosition(200, 55).setGroup(controlGroup);
     snareToggle.getCaptionLabel().set("Snare").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    kickToggle = cp5.addToggle("kick"+getName()).setSize(195, 45).setPosition(200, 105).moveTo(win);
+    kickToggle = cp5.addToggle("kick"+getName()).setSize(195, 45).setPosition(200, 105).setGroup(controlGroup);
     kickToggle.getCaptionLabel().set("Kick").align(ControlP5.CENTER, ControlP5.CENTER);
     kickToggle.setState(true);
 
-    onsetToggle = cp5.addToggle("onset"+getName()).setSize(195, 45).setPosition(200, 155).moveTo(win);
+    onsetToggle = cp5.addToggle("onset"+getName()).setSize(195, 45).setPosition(200, 155).setGroup(controlGroup);
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.refreshRate/2).setValue(stg.refreshRate/2-2).setPosition(0, 205).setSize(395, 45).moveTo(win);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.frameRate/2).setValue(stg.frameRate/2-2).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
     delaySlider.getCaptionLabel().set("Frequency (Hz)").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).moveTo(win);
+    hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
 
-    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 255).setSize(45, 45).moveTo(win);
+    aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 255).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
 
-    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 255).setSize(45, 45).moveTo(win);
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 255).setSize(45, 45).setGroup(controlGroup);
     bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
     bwToggle.setState(true);
   }
@@ -88,13 +88,13 @@ public class Strobe_Effect extends Effect
   }
 
   void draw() {
-    if (state && (timer <= 0 || timer < stg.refreshRate/2-delaySlider.getValue()-3)) {
+    if (state && (timer <= 0 || timer < stg.frameRate/2-delaySlider.getValue()-3)) {
       state = false;
-      timer = stg.refreshRate/2-delaySlider.getValue();
+      timer = stg.frameRate/2-delaySlider.getValue();
     } 
     else if (!state && isTriggered() && timer <= 0) {
       state = true;
-      timer = stg.refreshRate/2-delaySlider.getValue();
+      timer = stg.frameRate/2-delaySlider.getValue();
     }
 
     if (timer > 0)

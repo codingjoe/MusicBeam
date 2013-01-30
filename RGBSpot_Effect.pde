@@ -23,27 +23,27 @@ class RGBSpot_Effect extends Effect
   {
     super(ctrl, y);
 
-    manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).moveTo(win);
+    manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).setGroup(controlGroup);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).moveTo(win);
+    hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).setGroup(controlGroup);
     hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    snareToggle = cp5.addToggle("snare"+getName()).setSize(195, 45).setPosition(200, 55).moveTo(win);
+    snareToggle = cp5.addToggle("snare"+getName()).setSize(195, 45).setPosition(200, 55).setGroup(controlGroup);
     snareToggle.getCaptionLabel().set("Snare").align(ControlP5.CENTER, ControlP5.CENTER);
 
-    kickToggle = cp5.addToggle("kick"+getName()).setSize(195, 45).setPosition(200, 105).moveTo(win);
+    kickToggle = cp5.addToggle("kick"+getName()).setSize(195, 45).setPosition(200, 105).setGroup(controlGroup);
     kickToggle.getCaptionLabel().set("Kick").align(ControlP5.CENTER, ControlP5.CENTER);
     kickToggle.setState(true);
 
-    onsetToggle = cp5.addToggle("onset"+getName()).setSize(195, 45).setPosition(200, 155).moveTo(win);
+    onsetToggle = cp5.addToggle("onset"+getName()).setSize(195, 45).setPosition(200, 155).setGroup(controlGroup);
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(0.01,1).setValue(0.3).setPosition(0, 205).setSize(395, 45).moveTo(win);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(0.01,1).setValue(0.3).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
     delaySlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0, 1).setValue(0.3).setPosition(0, 255).setSize(395, 45).moveTo(win);
+    radiusSlider = cp5.addSlider("radius"+getName()).setRange(0, 1).setValue(0.3).setPosition(0, 255).setSize(395, 45).setGroup(controlGroup);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
   }
 
@@ -76,8 +76,8 @@ class RGBSpot_Effect extends Effect
       ry[0] = random(radius/2, stg.height-radius/2);
       while(rc[0]==rc[1])
         rc[0] = random(0, 6);
-      timer = delaySlider.getValue()*stg.refreshRate*3;
-      fader = stg.refreshRate/4;
+      timer = delaySlider.getValue()*stg.frameRate*3;
+      fader = stg.frameRate/4;
     }
 
     stg.fill(60*rc[0], 100, 100);

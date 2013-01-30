@@ -28,8 +28,6 @@ public class Stage extends PApplet {
 
   int height;
 
-  public int refreshRate;
-
   int posx;
 
   float t = 0.0f;
@@ -37,19 +35,23 @@ public class Stage extends PApplet {
   float maxRadius;
 
   float minRadius;
-  
+
   PGraphicsOpenGL pgl;
-  
+
   GL2 gl;
 
+  DisplayMode dm;
 
-  Stage (MusicBeam main, int gd, boolean fullscreen)
+
+  Stage (MusicBeam main, int gd)
   {
+    super();
     ctrl = main;
-    DisplayMode dm = gs[gd].getDisplayMode();
+
+    dm = gs[gd].getDisplayMode();
+
     width = dm.getWidth();
     height = dm.getHeight();
-    refreshRate = dm.getRefreshRate() == 0 ? 60 : dm.getRefreshRate();
     posx = 0;
     for (int i=0; i<gd; i++)
       posx+= ctrl.gs[i].getDisplayMode().getWidth();
@@ -60,31 +62,32 @@ public class Stage extends PApplet {
     frame.addNotify();
     frame.add(this);
     this.init();
-    if (gs[gd].isFullScreenSupported() && fullscreen)
-      gs[gd].setFullScreenWindow(frame);
     frame.show();
     maxRadius = sqrt(sq(width)+sq(height));
     minRadius = height < width ? height : width;
   }
 
   void setup() {
-    size(width, height, OPENGL);
-    frameRate(refreshRate<30?60:refreshRate);
-    
+    frameRate(getRefreshRate());
+
     pgl = (PGraphicsOpenGL) g;
     gl = pgl.beginPGL().gl.getGL2();
-    
-    background(0);
-    noStroke();
 
+    noStroke();
     colorMode(HSB, 360, 100, 100);
   }
 
-  void draw() {
+  public void draw() {
     ctrl.beatDetect();
-    smooth();
     background(0);
+
+    if (ctrl.debugMode) {
+      fill(120, 100, 100);
+      textSize(30);
+      text(frameRate, 100, 100);
+    }
     
+    pgl.beginPGL();
     gl.glDisable(GL2.GL_DEPTH_TEST);
     gl.glEnable(GL2.GL_BLEND);
     gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
@@ -94,6 +97,31 @@ public class Stage extends PApplet {
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
         effectArray[i].refresh();
+  }
+
+  public int sketchWidth() {
+    return dm.getWidth();
+  }
+
+  public int sketchHeight() {
+    return dm.getHeight();
+  }
+
+  public String sketchRenderer() {
+    return OPENGL;
+  }
+
+  /**
+   * Returns the Monitor/Projectors refresh rate.
+   * @see java.awt.DisplayMode
+   * @return Int
+   */
+  public int getRefreshRate() {
+    return dm.getRefreshRate() < 30 ? 60 : dm.getRefreshRate();
+  }
+
+  boolean sketchFullScreen() {
+    return true;
   }
 }
 
