@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
+ * Copyright (c) 2012-2013 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -49,7 +49,7 @@ public abstract class Effect
     
     int posy = 115+(i*50);
 
-    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,285).setWidth(395).setHeight(30);
+    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,255).setWidth(395).setHeight(30);
     controlGroup.disableCollapse();
     controlGroup.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
@@ -57,7 +57,7 @@ public abstract class Effect
     ctrl.activeSetting.addItem("settings"+getName(),i);
     
     randomToggle = cp5.addToggle("random"+getName()).setSize(45, 45).setPosition(670, posy);
-    randomToggle.getCaptionLabel().set("").setFont(symFont).align(ControlP5.CENTER, ControlP5.CENTER).style().moveMargin(-3,0,0,0);
+    randomToggle.getCaptionLabel().set("RND").align(ControlP5.CENTER, ControlP5.CENTER);
     randomToggle.setState(true);
   }
 
@@ -73,22 +73,22 @@ public abstract class Effect
 
   boolean isHat()
   {
-    return getLevel()>0.1?ctrl.bdFreq.isHat():false;
+    return getLevel()>ctrl.minLevelSlider.getValue()?ctrl.bdFreq.isHat():false;
   }
 
   boolean isSnare()
   {
-    return getLevel()>0.1?ctrl.bdFreq.isSnare():false;
+    return getLevel()>ctrl.minLevelSlider.getValue()?ctrl.bdFreq.isSnare():false;
   }
 
   boolean isKick()
   {
-    return getLevel()>0.1?ctrl.bdFreq.isKick():false;
+    return getLevel()>ctrl.minLevelSlider.getValue()?ctrl.bdFreq.isKick():false;
   }
 
   boolean isOnset()
   {
-    return getLevel()>0.1?ctrl.bdSound.isOnset():false;
+    return getLevel()>ctrl.minLevelSlider.getValue()?ctrl.bdSound.isOnset():false;
   }
   
   int getId()

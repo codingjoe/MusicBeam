@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
+ * Copyright (c) 2012-2013 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -24,7 +24,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "0.9.3";
+String version = "0.9.4";
 
 public Boolean debugMode = false;
 
@@ -42,18 +42,16 @@ AudioSource in;
 
 BeatDetect bdFreq, bdSound;
 
+PImage[] randomImg;
+
 LinkedList<Beat> beatHistory = new LinkedList();
 
 Effect[] effectArray;
 
-float beatHistoryMax = 1;
-
-PFont symFont;
-
 DropdownList displays;
 
 Toggle projectorToggle, randomToggle;
-Slider randomTimeSlider, beatDelaySlider;
+Slider randomTimeSlider, beatDelaySlider, minLevelSlider;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
 
@@ -66,7 +64,7 @@ void setup() {
   gs = ge.getScreenDevices();
 
 
-  size(415, 255);
+  size(415, 225);
   frame.setTitle("MusicBeam");
   frame.setResizable(true);
 
@@ -76,11 +74,9 @@ void setup() {
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
 
-  symFont = loadFont("GLYPHICONS-NONFREE.vlw");
-
-
 
   colorMode(HSB, 360, 100, 100);
+  
   initControls();
   checkForUpdate();
 }
@@ -132,11 +128,11 @@ void drawBeatBoard()
 {
   fill(200, 100, 20);
   rect(10, 70, 354, 122);
-  fill(120, 100, bdFreq.isHat() ? 100 : 20);
+  fill(120, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isHat() ? 100 : 20);
   rect(365, 70, 40, 40);
-  fill(220, 100, bdFreq.isSnare() ? 100 : 20);
+  fill(220, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isSnare() ? 100 : 20);
   rect(365, 111, 40, 40);
-  fill(320, 100, bdFreq.isKick() ? 100 : 20);
+  fill(320, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isKick() ? 100 : 20);
   rect(365, 152, 40, 40);
   fill(0);
 
@@ -146,7 +142,7 @@ void drawBeatBoard()
   text("S", 385, 129);
   text("K", 385, 170);
   textAlign(LEFT, BOTTOM);
-  drawBeatHistory(beatHistory, 10, 130);
+  drawBeatHistory(beatHistory, 10, 170);
 }
 
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
@@ -166,23 +162,32 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
       stroke(200, 100, 50);
 
 
-    float d = 60*b.level;
-    if (d>beatHistoryMax)
-      beatHistoryMax = d;
-
-    int a = int(60*(d/beatHistoryMax));
-
-    line(x+i, y-a, x+i, y+a);
+    float d = 130*b.level;
+    line(x+i, y-d, x+i, y);
+    
+    if (b.hat)
+      stroke(120, 100, 30);
+    else if (b.snare)
+      stroke(220, 100, 30);
+    else if (b.kick)
+      stroke(320, 100, 30);
+    else if (b.onset)
+      stroke(0, 0, 30);
+    else
+      stroke(200, 100, 30);
+    
+    float e = 30*b.level;
+    line(x+i, y+e, x+i, y);
   }
-  if (history.size()>= 354)
+  if (history.size()>= 343)
     history.removeFirst();
 
-  history.add(new Beat(bdFreq.isHat(), bdFreq.isSnare(), bdFreq.isKick(), bdSound.isOnset(), in.mix.level()));
+  history.add(new Beat(isHat(), isSnare(), isKick(), isOnset(), getLevel()));
   stroke(0);
 }
 
 void initControls()
-{
+{ 
   cp5 = new ControlP5(this);
   cp5.setFont(createFont("Monospace", 12));
 
@@ -199,28 +204,25 @@ void initControls()
   projectorToggle = cp5.addToggle("Projector").setPosition(270, 10).setSize(135, 50);
   projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 45).setPosition(10, 200).setRange(10, 1000);
+  beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 20).setPosition(10, 194).setRange(10, 1000);
   beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
-  beatDelaySlider.setValue(100);
+  beatDelaySlider.setValue(200);
+  
+  minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 70).setRange(0, 1);
+  minLevelSlider.setLabelVisible(false);
+  minLevelSlider.setValue(0.1);
 }
 
 void initRandomControls() {
   randomToggle = cp5.addToggle("random").setSize(135, 45).setPosition(415, 10);
   randomToggle.getCaptionLabel().set("Play Random").align(ControlP5.CENTER, ControlP5.CENTER);
-  randomToggle.lock();
-  randomToggle.setColorCaptionLabel(50);
 
   randomTimeSlider = cp5.addSlider("randomTime").setSize(210, 45).setPosition(555, 10).setRange(1, 60);
   randomTimeSlider.getCaptionLabel().set("Random Time (s)").align(ControlP5.CENTER, ControlP5.CENTER);
   randomTimeSlider.setValue(20);
-  randomTimeSlider.lock();
-  randomTimeSlider.setColorCaptionLabel(50);
-  randomTimeSlider.setColorValueLabel(50);
 
   nextButton = cp5.addButton("next").setSize(350, 45).setPosition(415, 60);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
-  nextButton.lock();
-  nextButton.setColorCaptionLabel(50);
 
   activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
   activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
@@ -261,10 +263,14 @@ void initEffects()
   effectArray[5] = new Snowstorm_Effect(this, 5);
   effectArray[6] = new LaserBurst_Effect(this, 6);
   effectArray[7] = new Polygon_Effect(this, 7);
+  
+  activeSetting.activate(0);
+  
   for (Toggle t:activeEffect.getItems())
     t.getCaptionLabel().align(CENTER, CENTER);
+  
   for (Toggle t:activeSetting.getItems())
-    t.getCaptionLabel().set("").setFont(symFont).align(CENTER, CENTER).style().moveMargin(-4, 0, 0, 0);
+    t.getCaptionLabel().set("EDIT").align(CENTER, CENTER);
 
   frame.setResizable(true);
   frame.setSize(775, 615);
@@ -281,7 +287,7 @@ void beatDetect()
 
 void checkForUpdate()
 {
-  String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/latest");
+  String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/LATEST");
 
   if (currentVersion!=null)
     if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
@@ -316,3 +322,27 @@ void keyReleased()
     }
 }
 
+  boolean isHat()
+  {
+    return getLevel()>minLevelSlider.getValue()?bdFreq.isHat():false;
+  }
+
+  boolean isSnare()
+  {
+    return getLevel()>minLevelSlider.getValue()?bdFreq.isSnare():false;
+  }
+
+  boolean isKick()
+  {
+    return getLevel()>minLevelSlider.getValue()?bdFreq.isKick():false;
+  }
+
+  boolean isOnset()
+  {
+    return getLevel()>minLevelSlider.getValue()?bdSound.isOnset():false;
+  }
+
+  float getLevel()
+  {
+    return in.mix.level();
+  }
