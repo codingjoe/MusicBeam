@@ -41,8 +41,8 @@ class Polygon_Effect extends Effect
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
     weightSlider.setValue(20);
 
-    pointsSlider = cp5.addSlider("points"+getName()).setPosition(0, 55).setSize(395, 45).setRange(3, 20).setGroup(controlGroup);
-    pointsSlider.getCaptionLabel().set("Points").align(ControlP5.RIGHT, ControlP5.CENTER);
+    pointsSlider = cp5.addSlider("points"+getName()).setPosition(0, 55).setSize(395, 45).setRange(4, 20).setNumberOfTickMarks(9).setGroup(controlGroup);
+    pointsSlider.getCaptionLabel().set("Edges").align(ControlP5.RIGHT, ControlP5.CENTER);
     pointsSlider.setValue(8);
 
     rotationSpeedSlider = cp5.addSlider("rotationspeed"+getName()).setPosition(0, 105).setSize(395, 45).setGroup(controlGroup);
