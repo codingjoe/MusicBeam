@@ -24,7 +24,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "0.9.4";
+String version = "1.0";
 
 public Boolean debugMode = false;
 
