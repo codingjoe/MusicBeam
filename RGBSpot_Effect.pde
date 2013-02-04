@@ -76,8 +76,8 @@ class RGBSpot_Effect extends Effect
       ry[0] = random(radius/2, stg.height-radius/2);
       while(rc[0]==rc[1])
         rc[0] = random(0, 6);
-      timer = delaySlider.getValue()*stg.frameRate*3;
-      fader = stg.frameRate/4;
+      timer = delaySlider.getValue()*frameRate*3;
+      fader = frameRate/4;
     }
 
     stg.fill(60*rc[0], 100, 100);

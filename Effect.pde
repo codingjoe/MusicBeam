@@ -40,12 +40,15 @@ public abstract class Effect
   static final int defaultHeight = 300;
   
   int id;
+  
+  int frameRate;
 
   Effect(MusicBeam controller, int i)
   {
     id = i;
     ctrl = controller;
     stg = controller.stage;
+    frameRate = stg.getRefreshRate();
     
     int posy = 115+(i*50);
 

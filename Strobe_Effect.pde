@@ -45,7 +45,7 @@ public class Strobe_Effect extends Effect
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, stg.frameRate/2).setValue(stg.frameRate/2-2).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, frameRate/2).setValue(frameRate/2-2).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
     delaySlider.getCaptionLabel().set("Frequency (Hz)").align(ControlP5.RIGHT, ControlP5.CENTER);
 
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).setGroup(controlGroup);
@@ -88,13 +88,13 @@ public class Strobe_Effect extends Effect
   }
 
   void draw() {
-    if (state && (timer <= 0 || timer < stg.frameRate/2-delaySlider.getValue()-3)) {
+    if (state && (timer <= 0 || timer < frameRate/2-delaySlider.getValue()-3)) {
       state = false;
-      timer = stg.frameRate/2-delaySlider.getValue();
+      timer = frameRate/2-delaySlider.getValue();
     } 
     else if (!state && isTriggered() && timer <= 0) {
       state = true;
-      timer = stg.frameRate/2-delaySlider.getValue();
+      timer = frameRate/2-delaySlider.getValue();
     }
 
     if (timer > 0)
