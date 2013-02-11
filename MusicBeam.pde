@@ -144,6 +144,11 @@ void drawBeatBoard()
   drawBeatHistory(beatHistory, 10, 170);
 }
 
+/** Draws a beat Visualisation.
+* @param LinkedList<Bea>, Integer, Integer
+*
+*
+*/
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 {
   for (int i=0; i < history.size(); i++) {
