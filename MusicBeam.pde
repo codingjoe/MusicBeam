@@ -65,7 +65,7 @@ void setup() {
 
 
   size(415, 225);
-  frame.setTitle("MusicBeam");
+  frame.setTitle("MusicBeam v"+version);
   frame.setResizable(true);
 
   Minim minim = new Minim(this);
@@ -85,7 +85,6 @@ void setup() {
 void draw() {
   if (stage==null)
     beatDetect();
-  smooth();
   background(25);
 
   noStroke();
