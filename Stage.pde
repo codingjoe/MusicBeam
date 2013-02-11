@@ -17,11 +17,10 @@ import processing.opengl.*;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
 import java.awt.Frame;
-import javax.media.opengl.GL2;
+import javax.media.opengl.GL;
 
 public class Stage extends PApplet {
-
-
+  
   MusicBeam ctrl = null;
 
   int width;
@@ -36,11 +35,9 @@ public class Stage extends PApplet {
 
   float minRadius;
 
-  PGraphicsOpenGL pgl;
-
-  GL2 gl;
-
   DisplayMode dm;
+
+  PGraphicsOpenGL pgl;
 
 
   Stage (MusicBeam main, int gd)
@@ -69,10 +66,7 @@ public class Stage extends PApplet {
 
   void setup() {
     frameRate(getRefreshRate());
-
     pgl = (PGraphicsOpenGL) g;
-    gl = pgl.beginPGL().gl.getGL2();
-
     noStroke();
     colorMode(HSB, 360, 100, 100);
   }
@@ -86,17 +80,25 @@ public class Stage extends PApplet {
       textSize(30);
       text(frameRate, 100, 100);
     }
-    
-    pgl.beginPGL();
-    gl.glDisable(GL2.GL_DEPTH_TEST);
-    gl.glEnable(GL2.GL_BLEND);
-    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
-    pgl.endPGL();
+
+    enableGLBlending();
 
     translate(width/2, height/2);
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
         effectArray[i].refresh();
+  }
+
+  /**
+   * Enables GLBlending and sets a function to blend overlaying colors.
+   *
+   */
+  private void enableGLBlending() {
+    GL gl = pgl.beginGL(); 
+    gl.glDisable(GL.GL_DEPTH_TEST);
+    gl.glEnable(GL.GL_BLEND);
+    gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
+    pgl.endGL();
   }
 
   public int sketchWidth() {
