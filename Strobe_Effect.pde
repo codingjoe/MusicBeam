@@ -19,6 +19,10 @@ public class Strobe_Effect extends Effect
   {
     return "Strobe";
   }
+  
+  char triggeredByKey() {
+    return 's';
+  }
 
   public Strobe_Effect(MusicBeam controller, int y)
   {

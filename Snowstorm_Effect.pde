@@ -46,6 +46,10 @@ class Snowstorm_Effect extends Effect
   {
     return "Snowstorm";
   }
+  
+  char triggeredByKey() {
+    return 'o';
+  }
 
   Slider radiusSlider, speedSlider, hueSlider;
 

@@ -53,6 +53,10 @@ class LaserBurst_Effect extends Effect
   {
     return "LaserBurst";
   }
+  
+  char triggeredByKey() {
+    return 'b';
+  }
 
   Slider radiusSlider, speedSlider, hueSlider, rotationSpeedSlider;
 

@@ -18,6 +18,10 @@ class Derby_Effect extends Effect
   String getName() {
     return "Derby";
   }
+  
+  char triggeredByKey() {
+    return 'd';
+  }
 
   Slider weightSlider, speedSlider, pointSlider, hueSlider;
 

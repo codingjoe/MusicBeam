@@ -76,7 +76,7 @@ void setup() {
 
 
   colorMode(HSB, 360, 100, 100);
-  
+
   initControls();
   checkForUpdate();
 }
@@ -145,10 +145,10 @@ void drawBeatBoard()
 }
 
 /** Draws a beat Visualisation.
-* @param LinkedList<Bea>, Integer, Integer
-*
-*
-*/
+ * @param LinkedList<Bea>, Integer, Integer
+ *
+ *
+ */
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 {
   for (int i=0; i < history.size(); i++) {
@@ -168,7 +168,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 
     float d = 130*b.level;
     line(x+i, y-d, x+i, y);
-    
+
     if (b.hat)
       stroke(120, 100, 30);
     else if (b.snare)
@@ -179,7 +179,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
       stroke(0, 0, 30);
     else
       stroke(200, 100, 30);
-    
+
     float e = 30*b.level;
     line(x+i, y+e, x+i, y);
   }
@@ -211,7 +211,7 @@ void initControls()
   beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 20).setPosition(10, 194).setRange(10, 1000);
   beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
   beatDelaySlider.setValue(200);
-  
+
   minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 70).setRange(0, 1);
   minLevelSlider.setLabelVisible(false);
   minLevelSlider.setValue(0.1);
@@ -267,12 +267,12 @@ void initEffects()
   effectArray[5] = new Snowstorm_Effect(this, 5);
   effectArray[6] = new LaserBurst_Effect(this, 6);
   effectArray[7] = new Polygon_Effect(this, 7);
-  
+
   activeSetting.activate(0);
-  
+
   for (Toggle t:activeEffect.getItems())
     t.getCaptionLabel().align(CENTER, CENTER);
-  
+
   for (Toggle t:activeSetting.getItems())
     t.getCaptionLabel().set("EDIT").align(CENTER, CENTER);
 
@@ -300,53 +300,47 @@ void checkForUpdate()
 
 void keyPressed()
 {
-  if (effectArray!=null) {
-    if (key=='s') {
-      strobo.activate();
-      strobo.manualButton.setSwitch(true);
-      strobo.manualButton.setOn();
-    }
-    if (key=='n')
-      nextRandom();
-    if (key==CODED)
-      if (keyCode==RIGHT)
-        strobo.delaySlider.setValue(strobo.delaySlider.getValue()+1);
-      else if (keyCode==LEFT)
-        strobo.delaySlider.setValue(strobo.delaySlider.getValue()-1);
-  }
+  if (effectArray!=null)
+    for (int i = 0; i < effectArray.length; i++)
+      if (effectArray[i].isActive())
+        effectArray[i].keyPressed(key, keyCode);
 }
 
 void keyReleased()
 {
+
   if (effectArray!=null)
-    if (key=='s') {
-      strobo.manualButton.setOff();
-      strobo.manualButton.setSwitch(false);
-      nextRandom();
+    for (int i = 0; i < effectArray.length; i++)
+    {
+      if (key == effectArray[i].triggeredByKey())
+        effectArray[i].activate();
+      if (effectArray[i].isActive())
+        effectArray[i].keyReleased(key, keyCode);
     }
 }
 
-  boolean isHat()
-  {
-    return getLevel()>minLevelSlider.getValue()?bdFreq.isHat():false;
-  }
+boolean isHat()
+{
+  return getLevel()>minLevelSlider.getValue()?bdFreq.isHat():false;
+}
 
-  boolean isSnare()
-  {
-    return getLevel()>minLevelSlider.getValue()?bdFreq.isSnare():false;
-  }
+boolean isSnare()
+{
+  return getLevel()>minLevelSlider.getValue()?bdFreq.isSnare():false;
+}
 
-  boolean isKick()
-  {
-    return getLevel()>minLevelSlider.getValue()?bdFreq.isKick():false;
-  }
+boolean isKick()
+{
+  return getLevel()>minLevelSlider.getValue()?bdFreq.isKick():false;
+}
 
-  boolean isOnset()
-  {
-    return getLevel()>minLevelSlider.getValue()?bdSound.isOnset():false;
-  }
+boolean isOnset()
+{
+  return getLevel()>minLevelSlider.getValue()?bdSound.isOnset():false;
+}
 
-  float getLevel()
-  {
-    return in.mix.level();
-  }
+float getLevel()
+{
+  return in.mix.level();
+}
+

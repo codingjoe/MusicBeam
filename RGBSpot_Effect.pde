@@ -18,6 +18,10 @@ class RGBSpot_Effect extends Effect
   String getName() {
     return "RGB Spot";
   }
+  
+  char triggeredByKey() {
+    return 'r';
+  }
 
   RGBSpot_Effect(MusicBeam ctrl, int y)
   {

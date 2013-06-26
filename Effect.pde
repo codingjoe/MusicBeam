@@ -154,5 +154,13 @@ public abstract class Effect
     resetTranslation();
     resetRotation();
   }
+  
+  abstract char triggeredByKey();
+  
+  void keyPressed(char key, int keyCode)
+  {}
+  
+  void keyReleased(char key, int keyCode)
+  {}
 }
 

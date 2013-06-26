@@ -76,6 +76,10 @@ public class Moonflower_Effect extends Effect
   {
     return "Moonflower";
   }
+  
+  char triggeredByKey() {
+    return 'm';
+  }
 
   void draw()
   {

@@ -19,6 +19,10 @@ class Polygon_Effect extends Effect
   {
     return "Polygon";
   }
+  
+  char triggeredByKey() {
+    return 'p';
+  }
 
   int winHeight = 200;
 
