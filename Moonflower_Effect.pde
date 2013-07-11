@@ -78,7 +78,7 @@ public class Moonflower_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'm';
+    return '3';
   }
 
   void draw()
@@ -87,7 +87,7 @@ public class Moonflower_Effect extends Effect
 
     float speed = (1-speedSlider.getValue())*stg.frameRate;
 
-    if (timer<=0 && isKick()) {
+    if (timer<=0 && (isKick() || effect_manual_triggered)) {
       if (aHueToggle.getState())
         hueSlider.setValue((hueSlider.getValue()+120)%360);
       direction = -1*direction;

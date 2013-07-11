@@ -28,6 +28,8 @@ public abstract class Effect
   Toggle activeToggle, randomToggle, settingsToggle;
   
   Tab settingsTab;
+  
+  Boolean effect_manual_triggered = false;
 
   float rotationHistory = 0;
 
@@ -56,7 +58,7 @@ public abstract class Effect
     controlGroup.disableCollapse();
     controlGroup.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
-    ctrl.activeEffect.addItem(getName(),i);
+    ctrl.activeEffect.addItem("("+triggeredByKey() + ")  " + getName(),i);
     ctrl.activeSetting.addItem("settings"+getName(),i);
     
     randomToggle = cp5.addToggle("random"+getName()).setSize(45, 45).setPosition(670, posy);
@@ -106,6 +108,7 @@ public abstract class Effect
   
   void activate() {
     activeEffect.activate(id);
+    activeSetting.activate(id);
   }
   
   float getLevel()
@@ -158,9 +161,15 @@ public abstract class Effect
   abstract char triggeredByKey();
   
   void keyPressed(char key, int keyCode)
-  {}
+  {
+    if (key == 't')
+      effect_manual_triggered = true;
+  }
   
   void keyReleased(char key, int keyCode)
-  {}
+  {
+    if (key == 't')
+      effect_manual_triggered = false;
+  }
 }
 

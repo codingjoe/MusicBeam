@@ -20,7 +20,7 @@ class Derby_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'd';
+    return '5';
   }
 
   Slider weightSlider, speedSlider, pointSlider, hueSlider;

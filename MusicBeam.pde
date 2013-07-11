@@ -257,21 +257,21 @@ void initEffects()
 {
   initRandomControls();
 
-  effectArray = new Effect[8];
-  strobo = new Strobe_Effect(this, 0);
-  effectArray[0] = strobo;
-  effectArray[1] = new Scanner_Effect(this, 1);
-  effectArray[2] = new Moonflower_Effect(this, 2);
-  effectArray[3] = new RGBSpot_Effect(this, 3);
-  effectArray[4] = new Derby_Effect(this, 4);
-  effectArray[5] = new Snowstorm_Effect(this, 5);
-  effectArray[6] = new LaserBurst_Effect(this, 6);
-  effectArray[7] = new Polygon_Effect(this, 7);
+  effectArray = new Effect[9];
+  effectArray[0] = new Blackout_Effect(this, 0);
+  effectArray[1] = new Strobe_Effect(this, 1);
+  effectArray[2] = new Scanner_Effect(this, 2);
+  effectArray[3] = new Moonflower_Effect(this, 3);
+  effectArray[4] = new RGBSpot_Effect(this, 4);
+  effectArray[5] = new Derby_Effect(this, 5);
+  effectArray[6] = new Snowstorm_Effect(this, 6);
+  effectArray[7] = new LaserBurst_Effect(this, 7);
+  effectArray[8] = new Polygon_Effect(this, 8);
 
   activeSetting.activate(0);
 
   for (Toggle t:activeEffect.getItems())
-    t.getCaptionLabel().align(CENTER, CENTER);
+    t.getCaptionLabel().align(LEFT, CENTER);
 
   for (Toggle t:activeSetting.getItems())
     t.getCaptionLabel().set("EDIT").align(CENTER, CENTER);
@@ -302,8 +302,12 @@ void keyPressed()
 {
   if (effectArray!=null)
     for (int i = 0; i < effectArray.length; i++)
+    {
+      if (key == effectArray[i].triggeredByKey())
+        effectArray[i].activate();
       if (effectArray[i].isActive())
         effectArray[i].keyPressed(key, keyCode);
+    }
 }
 
 void keyReleased()
@@ -311,12 +315,8 @@ void keyReleased()
 
   if (effectArray!=null)
     for (int i = 0; i < effectArray.length; i++)
-    {
-      if (key == effectArray[i].triggeredByKey())
-        effectArray[i].activate();
       if (effectArray[i].isActive())
         effectArray[i].keyReleased(key, keyCode);
-    }
 }
 
 boolean isHat()

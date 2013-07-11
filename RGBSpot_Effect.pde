@@ -20,7 +20,7 @@ class RGBSpot_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'r';
+    return '4';
   }
 
   RGBSpot_Effect(MusicBeam ctrl, int y)
@@ -102,7 +102,7 @@ class RGBSpot_Effect extends Effect
 
   boolean isTriggered()
   {
-    if (manualButton.isPressed())
+    if (manualButton.isPressed() || effect_manual_triggered)
       return true;
     else if ((!onsetToggle.getState() && hatToggle.getState() && isHat()) || (onsetToggle.getState() && isOnset() && hatToggle.getState() && isHat()))
       return true;

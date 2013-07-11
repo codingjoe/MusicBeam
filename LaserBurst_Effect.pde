@@ -55,7 +55,7 @@ class LaserBurst_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'b';
+    return '7';
   }
 
   Slider radiusSlider, speedSlider, hueSlider, rotationSpeedSlider;
@@ -71,7 +71,7 @@ class LaserBurst_Effect extends Effect
   void draw()
   {
     rotate(inverseToggle.getState()?rotation:-rotation);
-    if (isKick()) {
+    if (isKick() || effect_manual_triggered) {
       Float[] k = {
         0.0f, random(0, PI)
       };

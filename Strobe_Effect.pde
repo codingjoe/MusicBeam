@@ -19,16 +19,16 @@ public class Strobe_Effect extends Effect
   {
     return "Strobe";
   }
-  
+
   char triggeredByKey() {
-    return 's';
+    return '1';
   }
 
   public Strobe_Effect(MusicBeam controller, int y)
   {
 
     super(controller, y);
-    
+
     randomToggle.setState(false);
 
 
@@ -77,7 +77,7 @@ public class Strobe_Effect extends Effect
 
   boolean isTriggered()
   {
-    if (manualButton.isOn())
+    if (manualButton.isOn() || effect_manual_triggered)
       return true;
     else if ((!onsetToggle.getState() && hatToggle.getState() && isHat()) || (onsetToggle.getState() && isOnset() && hatToggle.getState() && isHat()))
       return true;
@@ -110,6 +110,17 @@ public class Strobe_Effect extends Effect
     stg.fill(hueSlider.getValue(), bwToggle.getState()?0:100, 100);
     if (state)
       stg.rect(-stg.maxRadius/2, -stg.maxRadius/2, stg.maxRadius, stg.maxRadius);
+  }
+
+  void keyPressed(char key, int keyCode)
+  {
+    super.keyPressed(key, keyCode);
+    if (key == CODED) {
+      if (keyCode == LEFT)
+        delaySlider.setValue(delaySlider.getValue()-1);
+      else if (keyCode == RIGHT)
+        delaySlider.setValue(delaySlider.getValue()+1);
+    }
   }
 }
 

@@ -43,7 +43,7 @@ class Scanner_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'c';
+    return '2';
   }
 
   float rotation = 0.0f;

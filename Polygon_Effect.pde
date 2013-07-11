@@ -21,7 +21,7 @@ class Polygon_Effect extends Effect
   }
   
   char triggeredByKey() {
-    return 'p';
+    return '8';
   }
 
   int winHeight = 200;
@@ -107,6 +107,17 @@ class Polygon_Effect extends Effect
       pxs[i] = cos(radians(angle))*(radius+weightSlider.getValue());
       pys[i] = sin(radians(angle))*(radius+weightSlider.getValue());  
       angle+=360.0/points;
+    }
+  }
+  
+ void keyPressed(char key, int keyCode)
+  {
+    super.keyPressed(key, keyCode);
+    if (key == CODED) {
+      if (keyCode == LEFT)
+        rotationSpeedSlider.setValue(rotationSpeedSlider.getValue()-0.05);
+      else if (keyCode == RIGHT)
+        rotationSpeedSlider.setValue(rotationSpeedSlider.getValue()+0.05);
     }
   }
 }
