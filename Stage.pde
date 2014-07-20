@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2013 Zepp Lab UG (haftungsbeschränkt) <www.zepplab.net>, Johannes Hoppe <info@johanneshoppe.com>
+ * Copyright (c) 2012-2014 Johannes Hoppe <info@johanneshoppe.com>
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
  * to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
@@ -12,12 +12,10 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-
-import processing.opengl.*;
 import java.awt.GraphicsDevice;
 import java.awt.DisplayMode;
 import java.awt.Frame;
-import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
 
 public class Stage extends PApplet {
   
@@ -36,9 +34,8 @@ public class Stage extends PApplet {
   float minRadius;
 
   DisplayMode dm;
-
-  PGraphicsOpenGL pgl;
-
+  
+  GL2 gl;
 
   Stage (MusicBeam main, int gd)
   {
@@ -66,7 +63,7 @@ public class Stage extends PApplet {
 
   void setup() {
     frameRate(getRefreshRate());
-    pgl = (PGraphicsOpenGL) g;
+    gl = ((PJOGL)beginPGL()).gl.getGL2();
     noStroke();
     colorMode(HSB, 360, 100, 100);
   }
@@ -94,11 +91,9 @@ public class Stage extends PApplet {
    *
    */
   private void enableGLBlending() {
-    GL gl = pgl.beginGL(); 
-    gl.glDisable(GL.GL_DEPTH_TEST);
-    gl.glEnable(GL.GL_BLEND);
-    gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE);
-    pgl.endGL();
+    gl.glDisable(GL2.GL_DEPTH_TEST);
+    gl.glEnable(GL2.GL_BLEND);
+    gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
   }
 
   public int sketchWidth() {
