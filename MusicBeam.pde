@@ -24,7 +24,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "1.1.0";
+String version = "1.1.1";
 
 public Boolean debugMode = false;
 
@@ -191,7 +191,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 }
 
 void initControls()
-{ 
+{
   cp5 = new ControlP5(this);
   cp5.setFont(createFont("Monospace", 12));
 
@@ -240,12 +240,12 @@ void Projector(boolean trigger)
     initEffects();
     stage.start();
     projectorToggle.setCaptionLabel("Stop Projector");
-  } 
+  }
   else if (trigger && stage != null) {
     stage.frame.setVisible(true);
     stage.start();
     projectorToggle.setCaptionLabel("Stop Projector");
-  } 
+  }
   else {
     stage.stop();
     stage.frame.setVisible(false);
@@ -343,4 +343,3 @@ float getLevel()
 {
   return in.mix.level();
 }
-
