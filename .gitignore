@@ -1,6 +1,5 @@
 
-application.*
-distro*
+MusicBeam/application.*
+releases/
 build*
 .DS_Store
-output
