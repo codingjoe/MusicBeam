@@ -44,6 +44,8 @@ float randomTimer = 0;
 
 int randomEffect = 0;
 
+int maxLevel = 0;
+
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
   gs = ge.getScreenDevices();
@@ -137,6 +139,13 @@ void drawBeatBoard()
  */
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 {
+  history.add(new Beat(isHat(), isSnare(), isKick(), isOnset(), getLevel()));
+  maxLevel=0;
+  for (int i=0; i < history.size(); i++) {
+    Beat b = history.get(i);
+    if(b.level>maxLevel)
+      maxLevel=b.level;
+  }
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
 
@@ -152,7 +161,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
       stroke(200, 100, 50);
 
 
-    float d = 130*b.level;
+    float d = 95*b.level/maxLevel;
     line(x+i, y-d, x+i, y);
 
     if (b.hat)
@@ -166,13 +175,16 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
     else
       stroke(200, 100, 30);
 
-    float e = 30*b.level;
+    float e = 20*b.level/maxLevel;
     line(x+i, y+e, x+i, y);
   }
   if (history.size()>= 343)
     history.removeFirst();
-
-  history.add(new Beat(isHat(), isSnare(), isKick(), isOnset(), getLevel()));
+  stroke(50, 20, 60);
+  float n = (minLevelSlider.getValue()/maxLevel*95);
+  if(n>98)
+    n=98;
+  line(x, y-n, x+343, y-n);
   stroke(0);
 }
 
