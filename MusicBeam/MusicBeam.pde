@@ -44,7 +44,7 @@ float randomTimer = 0;
 
 int randomEffect = 0;
 
-int maxLevel = 0;
+float maxLevel = 0;
 
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
