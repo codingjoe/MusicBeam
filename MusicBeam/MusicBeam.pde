@@ -45,6 +45,7 @@ float randomTimer = 0;
 int randomEffect = 0;
 
 float maxLevel = 0;
+float goalMaxLevel=0;
 
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -140,12 +141,13 @@ void drawBeatBoard()
 void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 {
   history.add(new Beat(isHat(), isSnare(), isKick(), isOnset(), getLevel()));
-  maxLevel=0;
+  goalMaxLevel=0;
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
-    if(b.level>maxLevel)
-      maxLevel=b.level;
+    if(b.level>goalMaxLevel)
+      goalMaxLevel=b.level;
   }
+  if(maxLevel<goalMaxLevel)maxLevel+=(goalMaxLevel-maxLevel)/2;
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
 
@@ -183,9 +185,13 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
   stroke(50, 20, 60);
   float n = (minLevelSlider.getValue()/maxLevel*95);
   if(n>98)
+  {
+    stroke(50, 20, 30); 
     n=98;
+  }
   line(x, y-n, x+343, y-n);
   stroke(0);
+  maxLevel*=0.99;
 }
 
 void initControls()
@@ -339,5 +345,6 @@ boolean isOnset()
 
 float getLevel()
 {
+  if(in.mix.level()<0.0001)return 0;
   return in.mix.level();
 }
