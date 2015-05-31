@@ -36,9 +36,14 @@ Effect[] effectArray;
 DropdownList displays;
 
 Toggle projectorToggle, randomToggle;
-Slider randomTimeSlider, beatDelaySlider, minLevelSlider;
+Slider randomTimeSlider, beatDelaySlider, minLevelSlider,lineSizeSlider,smoothnesSlieder;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
+
+FFT fft;
+fftBuffer buffer;
+int fftSize = 4;
+
 
 float randomTimer = 0;
 
@@ -46,13 +51,29 @@ int randomEffect = 0;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
+float maxFreq=0;
+
+int baseColor = 0;
+int lastBeat = 0;
+Color kickColor;
+int goalBaseColor;
+int colorFlow = 0;
+
+int maxIndex = 0;
+float meanMaxIndex = 0;
+
+int mod(int a, int b){
+  if(a>0)return a%b;
+  a*=-1;
+  return a%b;
+}
 
 void setup() {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
   gs = ge.getScreenDevices();
 
 
-  size(415, 225);
+  size(415, 425);
   frame.setTitle("MusicBeam v"+version);
   frame.setIconImage( getToolkit().getImage("sketch.ico") );
   frame.setResizable(true);
@@ -62,15 +83,17 @@ void setup() {
 
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
-
-
+  
+  fft = new FFT(in.bufferSize()*fftSize, in.sampleRate());
+  buffer=new fftBuffer(in.mix.size());
+  kickColor = new Color();
+  
   colorMode(HSB, 360, 100, 100);
 
   initControls();
   checkForUpdate();
 }
-
-
+float[] FrequencyColor;
 void draw() {
   if (stage==null)
     beatDetect();
@@ -79,7 +102,46 @@ void draw() {
   noStroke();
 
   drawBeatBoard();
+  drawFrequencies( 10, 360);
+  
+  kickColor.r *= 0.95;
+  kickColor.g *= 0.95;
+  kickColor.b *= 0.95;
+  
+  baseColor+=0.001;
+  baseColor%=256;
+  lastBeat++;
+  
+  if(colorFlow>0)
+  {
+    baseColor=(baseColor*14+goalBaseColor)/15;
+    colorFlow--;
+  }
+  
+  Color col = Wheel(int((baseColor+meanMaxIndex*8)%255));
+  
+  if(isHat()) {if(colorFlow==0){goalBaseColor =mod(int(baseColor+40),256);colorFlow=15;}}
+  if(isKick()) {if(lastBeat>15){kickColor = Wheel(mod(int(baseColor-50),255)); lastBeat=0;}}
+  
+  
+  // maybe not the best way. But it will result in a nice flash!
+  if((col.r =col.r + kickColor.r)>255)col.r=255;
+  if((col.g =col.g + kickColor.g)>255)col.g=255;
+  if((col.b =col.b + kickColor.b)>255)col.b=255;
+  
+  float[] colors = java.awt.Color.RGBtoHSB(col.r,col.g,col.b,null);
+  FrequencyColor = colors;
+  FrequencyColor[0]*=360;
+  FrequencyColor[1]*=100;
+  FrequencyColor[2]*=100;
+  
+  fill(FrequencyColor[0], FrequencyColor[1], FrequencyColor[2]);
+  rect(357,260,48,48);
 
+  colors = java.awt.Color.RGBtoHSB(kickColor.r,kickColor.g,kickColor.b,null);
+  fill(colors[0]*360,colors[1]*100,colors[2]*100);
+  rect(357,310,48,48);
+  
   if (effectArray!=null) {
     for (Effect e:effectArray)
       e.hideControls();
@@ -192,6 +254,51 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
   line(x, y-n, x+343, y-n);
   stroke(0);
   maxLevel*=0.99;
+
+}
+
+void drawFrequencies(int x, int y){
+  float freqSum=0;
+  int linesize = int(lineSizeSlider.getValue());
+  
+  noStroke();
+  fill(200, 100, 20);
+  rect(x, y+32, 345, -132);
+  fft.forward(buffer.add(in.mix));
+  int i;
+  fill(0,30,100);
+  freqSum=0;
+  maxIndex = 0;
+  maxFreq = 0;
+  for(i = 0; i < fft.specSize(); i++)
+  {
+    float freq =  fft.getBand(i);
+    if(freq>=maxFreq){maxFreq=freq;maxIndex=i;}
+    freqSum += freq;
+    if(x+i*linesize+linesize>350)break;
+  }
+  noStroke();
+  for(i = 0; i < fft.specSize(); i++)
+  {
+    // draw the line for frequency band i, scaling it by 4 so we can see it a bit better
+    float freq =  fft.getBand(i);
+    
+    fill(200,100,100);
+    if(i==maxIndex){fill(120,100,100);}
+    rect(x+i*linesize, y-freq/3, linesize,freq/3);
+    fill(200,100,30);
+     if(i==maxIndex){fill(120,30,30);}
+    rect(x+i*linesize, y, linesize,freq/5);
+    if(x+i*linesize+linesize>350)break;
+  }
+ 
+  if(getLevel()<0.01)maxIndex*=0.8;
+  meanMaxIndex = ((meanMaxIndex*smoothnesSlieder.getValue())+maxIndex)/(smoothnesSlieder.getValue()+1);
+  
+  stroke(0, 0, 100);
+  rect(x+meanMaxIndex*linesize, y, linesize, 30);
+  
+  fill(255);
 }
 
 void initControls()
@@ -219,6 +326,14 @@ void initControls()
   minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 70).setRange(0, 1);
   minLevelSlider.setLabelVisible(false);
   minLevelSlider.setValue(0.1);
+  
+  lineSizeSlider = cp5.addSlider("lineSize").setSize(395, 20).setPosition(10, 238).setRange(1, 64);
+  lineSizeSlider.getCaptionLabel().set("fft element count").align(ControlP5.CENTER, ControlP5.CENTER);
+  lineSizeSlider.setValue(8);
+  
+  smoothnesSlieder = cp5.addSlider("smooth").setSize(395, 20).setPosition(10, 216).setRange(0, 200);
+  smoothnesSlieder.getCaptionLabel().set("color change delay / ageing").align(ControlP5.CENTER, ControlP5.CENTER);
+  smoothnesSlieder.setValue(40);
 }
 
 void initRandomControls() {
@@ -281,7 +396,7 @@ void initEffects()
     t.getCaptionLabel().set("EDIT").align(CENTER, CENTER);
 
   frame.setResizable(true);
-  frame.setSize(775, 615);
+  frame.setSize(790, 777);
 }
 
 
