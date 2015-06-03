@@ -377,7 +377,7 @@ void initEffects()
   initRandomControls();
 
   effectArray = new Effect[9];
-  effectArray[0] = new Blackout_Effect(this, 0);
+  effectArray[0] = new RGBLine_Effect(this, 0);
   effectArray[1] = new Strobe_Effect(this, 1);
   effectArray[2] = new Scanner_Effect(this, 2);
   effectArray[3] = new Moonflower_Effect(this, 3);
