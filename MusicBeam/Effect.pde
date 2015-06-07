@@ -39,7 +39,7 @@ public abstract class Effect
     
     int posy = 115+(i*50);
 
-    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,255).setWidth(395).setHeight(30);
+    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,429).setWidth(395).setHeight(30);
     controlGroup.disableCollapse();
     controlGroup.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
