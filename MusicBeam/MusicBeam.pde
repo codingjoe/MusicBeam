@@ -9,7 +9,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "1.1.2";
+String version = "1.2.2";
 
 public Boolean debugMode = false;
 
