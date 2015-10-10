@@ -40,6 +40,8 @@ public class Strobe_Effect extends Effect
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
+    HueControlListener hL = new HueControlListener(); 
+    hueSlider.addListener(hL);
 
     aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 255).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -94,7 +96,7 @@ public class Strobe_Effect extends Effect
 
     stg.fill(hueSlider.getValue(), bwToggle.getState()?0:100, 100);
     if (state)
-      stg.rect(-stg.maxRadius/2, -stg.maxRadius/2, stg.maxRadius, stg.maxRadius);
+      stg.rect(-stg.getMaxRadius()/2, -stg.getMaxRadius()/2, stg.getMaxRadius(), stg.getMaxRadius());
   }
 
   void keyPressed(char key, int keyCode)
@@ -108,4 +110,3 @@ public class Strobe_Effect extends Effect
     }
   }
 }
-

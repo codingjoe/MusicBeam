@@ -22,6 +22,8 @@ class LaserBurst_Effect extends Effect
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 205).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
+    HueControlListener hL = new HueControlListener(); 
+    hueSlider.addListener(hL);
 
     aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 205).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -68,10 +70,10 @@ class LaserBurst_Effect extends Effect
 
       float r;
       if (inverseToggle.getState()) {
-        r = (1-k[0])*stg.maxRadius;
+        r = (1-k[0])*stg.getMaxRadius();
       } 
       else {
-        r = k[0]*stg.maxRadius;
+        r = k[0]*stg.getMaxRadius();
       }
 
       stg.ellipse(r*cos(k[1]), r*sin(k[1]), radiusSlider.getValue(), radiusSlider.getValue());
@@ -87,4 +89,3 @@ class LaserBurst_Effect extends Effect
     rotation = (rotation+rotationSpeedSlider.getValue()/20)%PI;
   }
 }
-

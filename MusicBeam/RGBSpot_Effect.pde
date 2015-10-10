@@ -54,7 +54,7 @@ class RGBSpot_Effect extends Effect
 
   void draw()
   {
-    radius = stg.minRadius*radiusSlider.getValue();
+    radius = stg.getMinRadius()*radiusSlider.getValue();
     translate(-stg.width/2, -stg.height/2);
 
     if ((isTriggered()&&timer<=0)) {
@@ -101,4 +101,3 @@ class RGBSpot_Effect extends Effect
       return false;
   }
 }
-
