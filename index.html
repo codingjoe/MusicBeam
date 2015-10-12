@@ -28,7 +28,7 @@
 <a class="btn btn-large btn-primary" href="#download">Download</a>
 <a class="btn btn-large" href="#demo">View Demo</a>
 </p>
-<p id="version">Version: 1.2.0</p>
+<p id="version">Version: <span class="version"></span></p>
 </div>
 </div>
 
@@ -283,6 +283,12 @@ $(document).ready(function() {
 		if (hash=="update")
 			$('#update').addClass('alert').html('<p><strong>Update:</strong> There is a new version of MusicBeam available!</p><p>If you want to keep up with our latest changes or have any questions visit our <a href="//facebook.com/musicbeam">Facebook Page</a></p>');
 	}
+	$.getJSON(
+		"https://api.github.com/repos/codingjoe/musicbeam/releases/latest",
+		function(data) {
+			$('.version').text(data.tag_name);
+		}
+	)
 });
 </script>
 <div id="fb-root"></div>
