@@ -7,7 +7,7 @@ import ddf.minim.analysis.*;
 
 String version = "2.0.0";
 
-public Boolean debugMode = true;
+public Boolean debugMode = false;
 
 Stage stage = null;
 
@@ -42,7 +42,7 @@ int height = 570;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
-void settings(){
+void settings() {
   size(width, height);
 }
 
@@ -203,13 +203,13 @@ void initControls()
   minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 10).setRange(0, 1);
   minLevelSlider.setLabelVisible(false);
   minLevelSlider.setValue(0.1);
-  
+
   stage = new Stage(this);
-    String[] args = {"Stage"};
-    PApplet.runSketch(args, stage);
-    stage.noLoop();
-    initEffects();
-    stage.loop();
+  String[] args = {"Stage"};
+  PApplet.runSketch(args, stage);
+  stage.noLoop();
+  initEffects();
+  stage.loop();
 }
 
 void initRandomControls() {
@@ -262,11 +262,16 @@ void beatDetect()
 
 void checkForUpdate()
 {
-  String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/LATEST");
-
-  if (currentVersion!=null)
-    if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
+  String[] lines = loadStrings("https://api.github.com/repos/codingjoe/musicbeam/releases/latest");
+  if (lines!=null) {
+    String jsonString = "";
+    for (int i = 0; i < lines.length; i++) {
+      jsonString += lines[i];
+    }
+    JSONObject json = parseJSONObject(jsonString);
+    if (!json.getString("tag_name").toLowerCase().equals(version.toLowerCase()))
       launch("http://musicbeam.zepplab.net/#update");
+  }
 }
 
 void keyPressed()
