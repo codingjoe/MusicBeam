@@ -270,7 +270,7 @@ void checkForUpdate()
     }
     JSONObject json = parseJSONObject(jsonString);
     if (!json.getString("tag_name").toLowerCase().equals(version.toLowerCase()))
-      launch("http://musicbeam.zepplab.net/#update");
+      launch("http://www.musicbeam.org/#update");
   }
 }
 
