@@ -39,6 +39,8 @@ class Derby_Effect extends Effect
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(345, 45).setPosition(50, 205).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
+    HueControlListener hL = new HueControlListener(); 
+    hueSlider.addListener(hL);
 
     aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 205).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -93,4 +95,3 @@ class Derby_Effect extends Effect
     }
   }
 }
-

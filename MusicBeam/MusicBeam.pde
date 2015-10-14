@@ -1,7 +1,3 @@
-import java.awt.GraphicsEnvironment;
-import java.awt.GraphicsDevice;
-import java.awt.DisplayMode;
-
 import java.util.LinkedList;
 
 import controlP5.*;
@@ -9,15 +5,13 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "1.2.0";
+String version = "2.0.0";
 
 public Boolean debugMode = false;
 
 Stage stage = null;
 
 Strobe_Effect strobo;
-
-GraphicsDevice[] gs;
 
 ControlP5 cp5;
 
@@ -43,19 +37,17 @@ RadioButton activeEffect, activeSetting;
 float randomTimer = 0;
 
 int randomEffect = 0;
+int width = 775;
+int height = 570;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
+void settings() {
+  size(width, height);
+}
 
 void setup() {
-  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-  gs = ge.getScreenDevices();
-
-
-  size(415, 225);
-  frame.setTitle("MusicBeam v"+version);
-  frame.setIconImage( getToolkit().getImage("sketch.ico") );
-  frame.setResizable(true);
+  surface.setTitle("MusicBeam v"+version);
 
   Minim minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
@@ -67,7 +59,8 @@ void setup() {
   colorMode(HSB, 360, 100, 100);
 
   initControls();
-  checkForUpdate();
+  if (! debugMode)
+    checkForUpdate();
 }
 
 
@@ -81,7 +74,7 @@ void draw() {
   drawBeatBoard();
 
   if (effectArray!=null) {
-    for (Effect e:effectArray)
+    for (Effect e : effectArray)
       e.hideControls();
     if (int(activeSetting.getValue())>=0)
       effectArray[int(activeSetting.getValue())].showControls();
@@ -91,15 +84,14 @@ void draw() {
     if (randomToggle.getState()&&randomTimer>=randomTimeSlider.getValue()*60)
     {
       nextRandom();
-    }
-    else if (randomToggle.getState())
+    } else if (randomToggle.getState())
       randomTimer++;
 }
 
 void nextRandom()
 {
   int k = randomEffect;
-  while (randomEffect==k || !effectArray[k].randomToggle.getState ())
+  while (randomEffect==k || !effectArray[k].randomToggle.getState())
     k = int(random(effectArray.length));
   randomEffect = k;
   activeEffect.activate(randomEffect);
@@ -115,22 +107,22 @@ void controlEvent(ControlEvent event)
 void drawBeatBoard()
 {
   fill(200, 100, 20);
-  rect(10, 70, 354, 122);
+  rect(10, 10, 354, 122);
   fill(120, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isHat() ? 100 : 20);
-  rect(365, 70, 40, 40);
+  rect(365, 10, 40, 40);
   fill(220, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isSnare() ? 100 : 20);
-  rect(365, 111, 40, 40);
+  rect(365, 51, 40, 40);
   fill(320, 100, getLevel()>minLevelSlider.getValue()&&bdFreq.isKick() ? 100 : 20);
-  rect(365, 152, 40, 40);
+  rect(365, 92, 40, 40);
   fill(0);
 
   textSize(32);
   textAlign(CENTER, CENTER);
-  text("H", 385, 88);
-  text("S", 385, 129);
-  text("K", 385, 170);
+  text("H", 385, 26);
+  text("S", 385, 67);
+  text("K", 385, 108);
   textAlign(LEFT, BOTTOM);
-  drawBeatHistory(beatHistory, 10, 170);
+  drawBeatHistory(beatHistory, 10, 110);
 }
 
 /** Draws a beat Visualisation.
@@ -144,10 +136,10 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
   goalMaxLevel=0;
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
-    if(b.level>goalMaxLevel)
+    if (b.level>goalMaxLevel)
       goalMaxLevel=b.level;
   }
-  if(maxLevel<goalMaxLevel)maxLevel+=(goalMaxLevel-maxLevel)/2;
+  if (maxLevel<goalMaxLevel)maxLevel+=(goalMaxLevel-maxLevel)/2;
   for (int i=0; i < history.size(); i++) {
     Beat b = history.get(i);
 
@@ -184,7 +176,13 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
     history.removeFirst();
   stroke(50, 20, 60);
   float n = (minLevelSlider.getValue()/maxLevel*95);
-  if(n>98)
+  float level = minLevelSlider.getValue();
+  if (level*5 > maxLevel*4) {
+    minLevelSlider.setValue(level*0.99);
+  } else if (level*5 < maxLevel) {
+    minLevelSlider.setValue(level*1.01);
+  }
+  if (n>98)
   {
     stroke(50, 20, 30); 
     n=98;
@@ -198,27 +196,20 @@ void initControls()
 {
   cp5 = new ControlP5(this);
   cp5.setFont(createFont("Monospace", 12));
-
-  displays = cp5.addDropdownList("display").setPosition(10, 61).setSize(255, 150);
-  displays.setItemHeight(50).setBarHeight(50);
-  displays.captionLabel().set("Select Video Out").align(ControlP5.CENTER, ControlP5.CENTER);
-  for (int i = 0; i < gs.length; i++)
-  {
-    DisplayMode dm = gs[i].getDisplayMode();
-    displays.addItem(dm.getWidth()+"x"+dm.getHeight()+"@"+((dm.getRefreshRate() == 0) ? 60 : dm.getRefreshRate()) +"Hz", i);
-  }
-  // displays.setValue(gs.length-1);
-
-  projectorToggle = cp5.addToggle("Projector").setPosition(270, 10).setSize(135, 50);
-  projectorToggle.getCaptionLabel().set("Start Projector").align(ControlP5.CENTER, ControlP5.CENTER);
-
-  beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 20).setPosition(10, 194).setRange(10, 1000);
+  beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 20).setPosition(10, 134).setRange(10, 1000);
   beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
   beatDelaySlider.setValue(200);
 
-  minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 70).setRange(0, 1);
+  minLevelSlider = cp5.addSlider("minLevel").setSize(10, 122).setPosition(354, 10).setRange(0, 1);
   minLevelSlider.setLabelVisible(false);
   minLevelSlider.setValue(0.1);
+
+  stage = new Stage(this);
+  String[] args = {"Stage"};
+  PApplet.runSketch(args, stage);
+  stage.noLoop();
+  initEffects();
+  stage.loop();
 }
 
 void initRandomControls() {
@@ -234,27 +225,6 @@ void initRandomControls() {
 
   activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
   activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
-}
-
-void Projector(boolean trigger)
-{
-  if (trigger && stage == null) {
-    stage = new Stage (this, int(displays.getValue()));
-    stage.stop();
-    initEffects();
-    stage.start();
-    projectorToggle.setCaptionLabel("Stop Projector");
-  }
-  else if (trigger && stage != null) {
-    stage.frame.setVisible(true);
-    stage.start();
-    projectorToggle.setCaptionLabel("Stop Projector");
-  }
-  else {
-    stage.stop();
-    stage.frame.setVisible(false);
-    projectorToggle.setCaptionLabel("Start Projector");
-  }
 }
 
 void initEffects()
@@ -274,14 +244,11 @@ void initEffects()
 
   activeSetting.activate(0);
 
-  for (Toggle t:activeEffect.getItems())
+  for (Toggle t : activeEffect.getItems())
     t.getCaptionLabel().align(LEFT, CENTER);
 
-  for (Toggle t:activeSetting.getItems())
+  for (Toggle t : activeSetting.getItems())
     t.getCaptionLabel().set("EDIT").align(CENTER, CENTER);
-
-  frame.setResizable(true);
-  frame.setSize(775, 615);
 }
 
 
@@ -295,11 +262,16 @@ void beatDetect()
 
 void checkForUpdate()
 {
-  String[] currentVersion = loadStrings("http://musicbeam.zepplab.net/builds/LATEST");
-
-  if (currentVersion!=null)
-    if (!currentVersion[0].toLowerCase().equals(version.toLowerCase()))
-      open("http://musicbeam.zepplab.net/#update");
+  String[] lines = loadStrings("https://api.github.com/repos/codingjoe/musicbeam/releases/latest");
+  if (lines!=null) {
+    String jsonString = "";
+    for (int i = 0; i < lines.length; i++) {
+      jsonString += lines[i];
+    }
+    JSONObject json = parseJSONObject(jsonString);
+    if (!json.getString("tag_name").toLowerCase().equals(version.toLowerCase()))
+      launch("http://www.musicbeam.org/#update");
+  }
 }
 
 void keyPressed()
@@ -345,6 +317,6 @@ boolean isOnset()
 
 float getLevel()
 {
-  if(in.mix.level()<0.0001)return 0;
+  if (in.mix.level()<0.0001)return 0;
   return in.mix.level();
 }

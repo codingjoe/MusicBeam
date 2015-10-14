@@ -25,10 +25,9 @@ public class Moonflower_Effect extends Effect
   Moonflower_Effect(MusicBeam controller, int y)
   {
     super(controller, y);
-
-    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, stg.minRadius/2).setGroup(controlGroup);
+    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(0, 5).setSize(395, 45).setRange(0, stg.getMinRadius()/2).setGroup(controlGroup);
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
-    radiusSlider.setValue(stg.minRadius/3);
+    radiusSlider.setValue(stg.getMinRadius()/5);
 
     speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0.01, 1).setGroup(controlGroup);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -41,6 +40,8 @@ public class Moonflower_Effect extends Effect
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 155).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
+    HueControlListener hL = new HueControlListener(); 
+    hueSlider.addListener(hL);
 
     aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 155).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -115,4 +116,3 @@ public class Moonflower_Effect extends Effect
       timer--;
   }
 }
-

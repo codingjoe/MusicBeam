@@ -28,18 +28,18 @@ public abstract class Effect
   
   int id;
   
-  int frameRate;
+  float frameRate;
 
   Effect(MusicBeam controller, int i)
   {
     id = i;
     ctrl = controller;
     stg = controller.stage;
-    frameRate = stg.getRefreshRate();
+    frameRate = stg.frameRate;
     
     int posy = 115+(i*50);
 
-    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,255).setWidth(395).setHeight(30);
+    controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,195).setWidth(395).setHeight(30);
     controlGroup.disableCollapse();
     controlGroup.getCaptionLabel().set(getName()+" Settings").align(ControlP5.CENTER, ControlP5.CENTER);
     
@@ -157,4 +157,3 @@ public abstract class Effect
       effect_manual_triggered = false;
   }
 }
-

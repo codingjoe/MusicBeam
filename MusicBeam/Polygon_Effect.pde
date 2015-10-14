@@ -41,6 +41,8 @@ class Polygon_Effect extends Effect
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(345, 45).setPosition(50, 155).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(0);
+    HueControlListener hL = new HueControlListener(); 
+    hueSlider.addListener(hL);
 
     aHueToggle = cp5.addToggle("ahue"+getName()).setPosition(0, 155).setSize(45, 45).setGroup(controlGroup);
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -51,7 +53,7 @@ class Polygon_Effect extends Effect
 
     int points = int(pointsSlider.getValue());
     float weight = weightSlider.getValue();
-    float radius = stg.minRadius-weight;
+    float radius = stg.getMinRadius()-weight;
     float c = hueSlider.getValue();
 
     setEllipse();
@@ -80,7 +82,7 @@ class Polygon_Effect extends Effect
   void setEllipse() {
     int points = int(pointsSlider.getValue());
     float weight = weightSlider.getValue();
-    float radius = stg.minRadius/2-1.5*weight;
+    float radius = stg.getMinRadius()/2-1.5*weight;
     px = new float[points];
     py = new float[points];
     pxs = new float[points];
@@ -106,4 +108,3 @@ class Polygon_Effect extends Effect
     }
   }
 }
-
