@@ -57,6 +57,7 @@ public abstract class Effect
 
   void refresh()
   {
+    frameRate = stg.frameRate;
     draw();
     resetStage();
   }

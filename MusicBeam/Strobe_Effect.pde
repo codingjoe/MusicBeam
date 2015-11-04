@@ -34,7 +34,7 @@ public class Strobe_Effect extends Effect
     onsetToggle.getCaptionLabel().set("Peak").align(ControlP5.CENTER, ControlP5.CENTER);
     onsetToggle.setState(true);
 
-    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, frameRate/2).setValue(frameRate/2-2).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
+    delaySlider = cp5.addSlider("delay"+getName()).setRange(10, 30).setValue(28).setPosition(0, 205).setSize(395, 45).setGroup(controlGroup);
     delaySlider.getCaptionLabel().set("Frequency (Hz)").align(ControlP5.RIGHT, ControlP5.CENTER);
 
     hueSlider = cp5.addSlider("hue"+getName()).setRange(0, 360).setSize(295, 45).setPosition(50, 255).setGroup(controlGroup);
