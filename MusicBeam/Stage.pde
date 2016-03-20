@@ -1,3 +1,6 @@
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+
 import processing.core.PApplet;
 import processing.core.PSurface;
 
@@ -16,7 +19,16 @@ public class Stage extends PApplet {
   }
 
   public void settings() {
-    fullScreen(P2D, 2);
+    GraphicsEnvironment environment =
+          GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] devices = environment.getScreenDevices();
+    int displayNum = devices.length;
+    if (displayNum <= 1) {
+      fullScreen(P2D); 
+      print("found only one screen");
+    } else {
+      fullScreen(P2D, 2);
+    }
   }
 
   public void setup() {

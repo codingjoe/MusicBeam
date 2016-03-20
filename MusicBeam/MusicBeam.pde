@@ -2,12 +2,15 @@ import java.util.LinkedList;
 
 import controlP5.*;
 
+import oscP5.*;
+import netP5.*;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
 String version = "2.0.1";
 
-public Boolean debugMode = false;
+public Boolean debugMode = true;
 
 Stage stage = null;
 
@@ -34,6 +37,17 @@ Slider randomTimeSlider, beatDelaySlider, minLevelSlider;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
 
+
+OscP5 oscP5;
+NetAddressList myNetAddressList = new NetAddressList();
+/* listeningPort is the port the server is listening for incoming messages */
+int myListeningPort = 8000;
+/* the broadcast port is the port the clients should listen for incoming messages from the server*/
+int myBroadcastPort = 9000;
+
+String myConnectPattern = "/server/connect";
+String myDisconnectPattern = "/server/disconnect";
+
 float randomTimer = 0;
 
 int randomEffect = 0;
@@ -47,6 +61,7 @@ void settings() {
 }
 
 void setup() {
+  oscP5 = new OscP5(this, myListeningPort);
   surface.setTitle("MusicBeam v"+version);
 
   Minim minim = new Minim(this);
@@ -63,6 +78,37 @@ void setup() {
     checkForUpdate();
 }
 
+
+ private void connect(String theIPaddress) {
+     if (!myNetAddressList.contains(theIPaddress, myBroadcastPort)) {
+       myNetAddressList.add(new NetAddress(theIPaddress, myBroadcastPort));
+       println("### adding "+theIPaddress+" to the list.");
+     }
+ }
+
+
+
+private void disconnect(String theIPaddress) {
+if (myNetAddressList.contains(theIPaddress, myBroadcastPort)) {
+    myNetAddressList.remove(theIPaddress, myBroadcastPort);
+       println("### removing "+theIPaddress+" from the list.");
+     } else {
+       println("### "+theIPaddress+" is not connected.");
+     }
+       println("### currently there are "+myNetAddressList.list().size());
+ }
+
+void oscEvent(OscMessage theOscMessage) {
+  /* check if the address pattern fits any of our patterns */
+
+  connect(theOscMessage.netAddress().address());
+    if (effectArray!=null) {
+      for (int i = 0; i < effectArray.length; i++)
+      {
+          effectArray[i].oscEvent(theOscMessage);
+      }
+    }
+}
 
 void draw() {
   if (stage==null)
@@ -123,6 +169,18 @@ void drawBeatBoard()
   text("K", 385, 108);
   textAlign(LEFT, BOTTOM);
   drawBeatHistory(beatHistory, 10, 110);
+  
+  OscMessage hat = new OscMessage("/ctrl/hat"); 
+  hat.add(bdFreq.isHat());
+  oscP5.send(hat, myNetAddressList);
+  
+  OscMessage snare = new OscMessage("/ctrl/snare"); 
+  snare.add(bdFreq.isSnare());
+  oscP5.send(snare, myNetAddressList);
+  
+  OscMessage kick = new OscMessage("/ctrl/kick"); 
+  kick.add(bdFreq.isKick());
+  oscP5.send(kick, myNetAddressList);
 }
 
 /** Draws a beat Visualisation.

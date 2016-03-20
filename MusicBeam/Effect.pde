@@ -157,4 +157,7 @@ public abstract class Effect
     if (key == 't')
       effect_manual_triggered = false;
   }
+  
+  void oscEvent(OscMessage theOscMessage) {
+  }
 }

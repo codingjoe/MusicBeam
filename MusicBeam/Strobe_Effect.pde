@@ -19,6 +19,7 @@ public class Strobe_Effect extends Effect
 
     manualButton = cp5.addButton("manual"+getName()).setSize(195, 195).setPosition(0, 5).setGroup(controlGroup);
     manualButton.getCaptionLabel().set("Manual Trigger").align(ControlP5.CENTER, ControlP5.CENTER);
+    manualButton.setSwitch(true);
 
     hatToggle = cp5.addToggle("hat"+getName()).setSize(195, 45).setPosition(200, 5).setGroup(controlGroup);
     hatToggle.getCaptionLabel().set("Hat").align(ControlP5.CENTER, ControlP5.CENTER);
@@ -77,7 +78,7 @@ public class Strobe_Effect extends Effect
     else
       return false;
   }
-
+  float hue;
   void draw() {
     if (state && (timer <= 0 || timer < frameRate/2-delaySlider.getValue()-3)) {
       state = false;
@@ -92,7 +93,11 @@ public class Strobe_Effect extends Effect
       timer--;
 
     if (aHueToggle.getState())
-      hueSlider.setValue((hueSlider.getValue()+1)%360);
+      hue = (hueSlider.getValue()+1) % 360;
+      hueSlider.setValue(hue);
+      OscMessage myMessage = new OscMessage("/strobe/hue"); 
+      myMessage.add(hue);
+      ctrl.oscP5.send(myMessage, myNetAddressList);
 
     stg.fill(hueSlider.getValue(), bwToggle.getState()?0:100, 100);
     if (state)
@@ -109,4 +114,28 @@ public class Strobe_Effect extends Effect
         delaySlider.setValue(delaySlider.getValue()+1);
     }
   }
+  
+  void oscEvent(OscMessage theOscMessage) {
+    String addr = theOscMessage.addrPattern();
+    float  val  = theOscMessage.get(0).floatValue();
+    
+
+    if(addr.equals("/strobe/manualButton"))  {
+      
+      if (val == 1.0) {
+        manualButton.setOn();
+      } else {
+        manualButton.setOff();
+      }
+    } else if (addr.equals("/strobe/hue")) {
+      hueSlider.setValue(val); 
+    } else if (addr.equals("/strobe/autoHue")) {
+      aHueToggle.setValue(val); 
+    } else if (addr.equals("/strobe/bw")) {
+      bwToggle.setValue(val);
+    } else if (addr.equals("/strobe/delay")) {
+      delaySlider.setValue(val);
+    }
+  }
+  
 }
