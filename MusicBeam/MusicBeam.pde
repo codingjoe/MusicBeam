@@ -1,5 +1,10 @@
 import java.util.LinkedList;
 
+import javax.swing.JOptionPane;
+
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+
 import controlP5.*;
 
 import ddf.minim.*;
@@ -43,6 +48,14 @@ int height = 570;
 float maxLevel = 0;
 float goalMaxLevel=0;
 void settings() {
+  if(!hasEnoughScreenDevices()) {
+      String msg = "No second screen device detected!\n"
+        +"Please make sure to attach your video projector before you launch MusicBeam.\n"
+        +"Do you want to launch MusicBeam anyway?";
+      int close = JOptionPane.showConfirmDialog(null, msg, "Device detection", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+      if (close == JOptionPane.NO_OPTION)
+        System.exit(1);
+    }
   size(width, height);
 }
 
@@ -319,4 +332,13 @@ float getLevel()
 {
   if (in.mix.level()<0.0001)return 0;
   return in.mix.level();
+}
+
+private boolean hasEnoughScreenDevices()
+{
+  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+  GraphicsDevice[] gs = ge.getScreenDevices();
+  if(gs.length < 2)
+    return false;
+  return true;
 }
