@@ -5,6 +5,7 @@ release:
 	# Mac OS X
 	cp MusicBeam/sketch.icns MusicBeam/application.macosx/MusicBeam.app/Contents/Resources/sketch.icns
 	defaults write $(pwd)MusicBeam/application.macosx/MusicBeam.app/Contents/Info.plist LSUIPresentationMode -int 4
+	-codesign --remove-signature $(pwd)MusicBeam/application.macosx/MusicBeam.app
 	(cd MusicBeam/application.macosx/ && zip -rq ../../builds/MusicBeam-v$(version)-macosx.zip *)
 	zip -q builds/MusicBeam-v$(version)-macosx.zip LICENSE README.md
 
