@@ -61,6 +61,8 @@ void settings() {
 
 void setup() {
   surface.setTitle("MusicBeam v"+version);
+  PImage titlebaricon = loadImage("icon.png");
+  surface.setIcon(titlebaricon);
 
   Minim minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
