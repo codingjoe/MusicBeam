@@ -224,6 +224,7 @@ void initControls()
   PApplet.runSketch(args, stage);
   stage.noLoop();
   initEffects();
+  initSettings();
   stage.loop();
 }
 
