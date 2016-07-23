@@ -13,4 +13,3 @@ class Beat
     level = l;
   }
 }
-

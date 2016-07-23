@@ -29,7 +29,6 @@ public void loadDefaultSettings()
 public void loadSettings()
 {
   selectInput("Load Music Beam settings", "selectedSettingsFile");
-  resetSliderLabelAlign();
 }
 
 public void saveSettings()
@@ -41,13 +40,17 @@ void selectedSettingsFile(File selection)
 {
   if (selection != null) {
     cp5.loadProperties(selection.getAbsolutePath());
+    resetSliderLabelAlign();
   }
 }
 
 void saveSettingsFile(File selection) 
 {
   if (selection != null) {
-    String path = selection.getAbsolutePath() + ".musicbeam";
+    String path = selection.getAbsolutePath();
+    if(!path.contains(".musicbeam.ser"))
+      path+= ".musicbeam";
+      
     cp5.saveProperties(path);
   }
 }
