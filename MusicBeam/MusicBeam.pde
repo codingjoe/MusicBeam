@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.1.1";
+String version = "2.1.2";
 
 public Boolean debugMode = false;
 
@@ -64,8 +64,6 @@ void settings() {
 
 void setup() {
   surface.setTitle("MusicBeam v"+version);
-  PImage titlebaricon = loadImage("icon.png");
-  surface.setIcon(titlebaricon);
 
   colorMode(HSB, 360, 100, 100);
 
