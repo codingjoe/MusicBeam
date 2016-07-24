@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.1.0";
+String version = "2.1.1";
 
 public Boolean debugMode = false;
 
@@ -48,6 +48,8 @@ int height = 570;
 float maxLevel = 0;
 float goalMaxLevel=0;
 void settings() {
+  initAudioInput();
+
   if(!hasEnoughScreenDevices()) {
       String msg = "No second screen device detected!\n"
         +"Please make sure to attach your video projector before you launch MusicBeam.\n"
@@ -56,6 +58,7 @@ void settings() {
       if (close == JOptionPane.NO_OPTION)
         System.exit(1);
     }
+
   size(width, height);
 }
 
@@ -63,13 +66,6 @@ void setup() {
   surface.setTitle("MusicBeam v"+version);
   PImage titlebaricon = loadImage("icon.png");
   surface.setIcon(titlebaricon);
-
-  Minim minim = new Minim(this);
-  in = minim.getLineIn(Minim.STEREO, 512);
-
-  bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
-  bdSound = new BeatDetect();
-
 
   colorMode(HSB, 360, 100, 100);
 
@@ -343,4 +339,23 @@ private boolean hasEnoughScreenDevices()
   if(gs.length < 2)
     return false;
   return true;
+}
+
+private void initAudioInput()
+{
+  String msg = "No audio input found!\n\n"
+             + "Please check the audio settings on your current operating system.\n"
+             + "There must be at least one audio input activated.";
+  
+  minim = new Minim(this);
+  in = minim.getLineIn(Minim.STEREO, 512);
+  
+  if(in == null)
+  {
+    JOptionPane.showMessageDialog(null, msg, "Device detection", JOptionPane.ERROR_MESSAGE);
+    System.exit(1);
+  }
+  
+  bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
+  bdSound = new BeatDetect();
 }
