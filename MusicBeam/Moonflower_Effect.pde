@@ -29,7 +29,7 @@ public class Moonflower_Effect extends Effect
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
     radiusSlider.setValue(stg.getMinRadius()/5);
 
-    speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0.01, 1).setGroup(controlGroup);
+    speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 55).setSize(395, 45).setRange(0.01, 0.99).setGroup(controlGroup);
     speedSlider.getCaptionLabel().set("speed").align(ControlP5.RIGHT, ControlP5.CENTER);
     speedSlider.setValue(0.5);
 
