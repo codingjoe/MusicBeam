@@ -77,7 +77,7 @@ class Derby_Effect extends Effect
         stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
       }
 
-    if (aHueToggle.getState()&&isOnset())
+    if (aHueToggle.getState()&&(isKick()||isHat()||isSnare()))
       hueSlider.setValue((hueSlider.getValue()+120)%360);
 
     if (rotation%(PI/2)>0.1) {
