@@ -57,7 +57,7 @@ class RGBSpot_Effect extends Effect
     radius = stg.getMinRadius()*radiusSlider.getValue();
     translate(-stg.width/2, -stg.height/2);
 
-    if ((isTriggered()&&timer<=0)) {
+    if (((isTriggered()) || (hatToggle.getState() && isHat() || snareToggle.getState() && isSnare() || kickToggle.getState() && isKick() || onsetToggle.getState() && isOnset())) && timer<=0) {
       rx[1] = rx[0];
       ry[1] = ry[0];
       rc[1] = rc[0];
