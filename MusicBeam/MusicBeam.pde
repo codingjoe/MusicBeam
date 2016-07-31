@@ -193,7 +193,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
   }
   if (n>98)
   {
-    stroke(50, 20, 30); 
+    stroke(50, 20, 30);
     n=98;
   }
   line(x, y-n, x+343, y-n);
@@ -218,6 +218,7 @@ void initControls()
   PApplet.runSketch(args, stage);
   stage.noLoop();
   initEffects();
+  initSettings();
   stage.loop();
 }
 
