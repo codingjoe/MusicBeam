@@ -52,6 +52,11 @@ class Derby_Effect extends Effect
     float width = stg.width-weightSlider.getValue();
     float height = stg.height-weightSlider.getValue();
     float points = int(pointSlider.getValue());
+    
+    int countTrigger = 0;
+    if(isHat()) countTrigger++;
+    if(isSnare()) countTrigger++;
+    if(isKick()) countTrigger++;
 
     translate(-stg.width/2, -stg.height/2);
     stg.fill(hueSlider.getValue(), 100, 100);
@@ -77,7 +82,7 @@ class Derby_Effect extends Effect
         stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
       }
 
-    if (aHueToggle.getState()&&isOnset()&&isKick()&&isHat()&&isSnare())
+    if (aHueToggle.getState() && countTrigger >= 2)
       hueSlider.setValue((hueSlider.getValue()+120)%360);
 
     if (rotation%(PI/2)>0.1) {
