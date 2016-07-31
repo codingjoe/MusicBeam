@@ -3,7 +3,7 @@ class RGBSpot_Effect extends Effect
   String getName() {
     return "RGB Spot";
   }
-  
+
   char triggeredByKey() {
     return '4';
   }
@@ -41,7 +41,7 @@ class RGBSpot_Effect extends Effect
   float[] rc = {0,0};
 
   float timer = 0;
-  
+
   float fader = 0;
 
   Button manualButton;
@@ -57,7 +57,8 @@ class RGBSpot_Effect extends Effect
     radius = stg.getMinRadius()*radiusSlider.getValue();
     translate(-stg.width/2, -stg.height/2);
 
-    if ((isTriggered()&&timer<=0)) {
+    if (timer<=0 && (isTriggeredByBeat() || isTriggeredManually()))
+    {
       rx[1] = rx[0];
       ry[1] = ry[0];
       rc[1] = rc[0];
@@ -85,19 +86,17 @@ class RGBSpot_Effect extends Effect
       fader--;
   }
 
-  boolean isTriggered()
+  boolean isTriggeredManually()
   {
-    if (manualButton.isPressed() || effect_manual_triggered)
-      return true;
-    else if ((!onsetToggle.getState() && hatToggle.getState() && isHat()) || (onsetToggle.getState() && isOnset() && hatToggle.getState() && isHat()))
-      return true;
-    else if ((!onsetToggle.getState() && snareToggle.getState() && isSnare()) || (onsetToggle.getState() && isOnset() && snareToggle.getState() && isSnare()))
-      return true;
-    else if ((!onsetToggle.getState() && kickToggle.getState() && isKick()) || (onsetToggle.getState() && isOnset() && kickToggle.getState() && isKick()))
-      return true;
-    else if (onsetToggle.getState() && isOnset())
-      return true;
-    else
-      return false;
+    return manualButton.isPressed() || effect_manual_triggered;
+  }
+
+  boolean isTriggeredByBeat()
+  {
+    return
+      hatToggle.getState() && isHat() ||
+      snareToggle.getState() && isSnare() ||
+      kickToggle.getState() && isKick() ||
+      onsetToggle.getState() && isOnset();
   }
 }
