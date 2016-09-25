@@ -46,12 +46,19 @@ class Derby_Effect extends Effect
     aHueToggle.getCaptionLabel().set("A").align(ControlP5.CENTER, ControlP5.CENTER);
     aHueToggle.setState(true);
   }
+  
+  int weight, points, hue;
+  float speed;
 
   void draw()
   {
-    float width = stg.width-weightSlider.getValue();
-    float height = stg.height-weightSlider.getValue();
-    float points = int(pointSlider.getValue());
+    weight = int(weightSlider.getValue());
+    points = int(pointSlider.getValue());
+    hue = int(hueSlider.getValue());
+    speed = speedSlider.getValue();
+    
+    float width = stg.width-weight;
+    float height = stg.height-weight;
     
     int countTrigger = 0;
     if(isHat()) countTrigger++;
@@ -59,39 +66,40 @@ class Derby_Effect extends Effect
     if(isKick()) countTrigger++;
 
     translate(-stg.width/2, -stg.height/2);
-    stg.fill(hueSlider.getValue(), 100, 100);
+    
     for (int i=1;i<=points;i++)
     {
-      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)+cos(rotation)*width/(points+1), weightSlider.getValue()/2+height/3-height/3*sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
+      float posx = weight/2+i * width/(points+1);
+      float rotx = width/(points+1) * cos(rotation);
+      float posy = weight/2+height/3;
+      float roty = -height/3 * sin(rotation);
+      
+      stg.fill(hue, 100, 100);
+      
+      stg.ellipse(posx+rotx, posy+roty, weight*0.9, weight*0.9);
+      
+      if (mirrorToggle.getState())
+        stg.ellipse(posx-rotx, posy+roty, weight*0.9, weight*0.9);
+        
+      stg.fill((hue+120)%360, 100, 100);
+        
+      stg.ellipse(posx+rotx, height/3 + posy-roty, weight*0.9, weight*0.9);
+      
+      if (mirrorToggle.getState())
+        stg.ellipse(posx-rotx, height/3 + posy-roty, weight*0.9, weight*0.9);
+        
     }
-    if (mirrorToggle.getState())
-      for (int i=1;i<=points;i++)
-      {
-        stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+height/3-height/3*sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
-      }
-
-    stg.fill((hueSlider.getValue()+120)%360, 100, 100);
-    for (int i=1;i<=points;i++)
-    {
-      stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)+cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
-    }
-
-    if (mirrorToggle.getState())
-      for (int i=1;i<=points;i++)
-      {
-        stg.ellipse(weightSlider.getValue()/2+i*width/(points+1)-cos(rotation)*width/(points+1), weightSlider.getValue()/2+2*height/3-height/3*-sin(rotation), weightSlider.getValue()*0.9, weightSlider.getValue()*0.9);
-      }
 
     if (aHueToggle.getState() && countTrigger >= 2)
-      hueSlider.setValue((hueSlider.getValue()+120)%360);
+      hueSlider.setValue((hue+120)%360);
 
     if (rotation%(PI/2)>0.1) {
       moving = false;
-      rotation = rotation + speedSlider.getValue()/10%(2*PI);
+      rotation = rotation + speed/10%(2*PI);
     }
     else if (rotation%(PI/2)<=0.1 && (isKick() || isSnare() || isOnset() || moving)) {
       moving = true;
-      rotation = rotation + speedSlider.getValue()/10%(2*PI);
+      rotation = rotation + speed/10%(2*PI);
     } 
     else
     {

@@ -48,6 +48,7 @@ int height = 570;
 float maxLevel = 0;
 float goalMaxLevel=0;
 void settings() {
+  pixelDensity(displayDensity());
   initAudioInput();
 
   if(!hasEnoughScreenDevices()) {
@@ -64,7 +65,7 @@ void settings() {
 
 void setup() {
   surface.setTitle("MusicBeam v"+version);
-
+  
   colorMode(HSB, 360, 100, 100);
 
   initControls();
@@ -204,7 +205,7 @@ void drawBeatHistory(LinkedList<Beat> history, int x, int y)
 void initControls()
 {
   cp5 = new ControlP5(this);
-  cp5.setFont(createFont("Monospace", 12));
+  cp5.setFont(createFont("Monospace", 12 / displayDensity()));
   beatDelaySlider = cp5.addSlider("beatDelay").setSize(395, 20).setPosition(10, 134).setRange(10, 1000);
   beatDelaySlider.getCaptionLabel().set("Beat Delay (ms)").align(ControlP5.CENTER, ControlP5.CENTER);
   beatDelaySlider.setValue(200);
@@ -333,8 +334,8 @@ float getLevel()
 
 private boolean hasEnoughScreenDevices()
 {
-  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-  GraphicsDevice[] gs = ge.getScreenDevices(); //<>//
+  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //<>//
+  GraphicsDevice[] gs = ge.getScreenDevices();
   return gs.length > 1;
 }
 
