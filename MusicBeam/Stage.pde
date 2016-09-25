@@ -12,11 +12,15 @@ public class Stage extends PApplet {
   }
 
   public void settings() {
-    fullScreen(P2D, 2);
+    pixelDensity(displayDensity());
+    if (ctrl.debugMode) {
+      size(800, 600, P2D);
+    } else {
+      fullScreen(P2D, 2);
+    }
   }
 
   public void setup() {
-    noStroke();
     colorMode(HSB, 360, 100, 100);
     try {
       blendMode(ADD);
@@ -28,6 +32,7 @@ public class Stage extends PApplet {
   public void draw() {
     ctrl.beatDetect();
     background(0);
+    noStroke();
 
     if (ctrl.debugMode) {
       fill(120, 100, 100);
