@@ -143,3 +143,22 @@ footer {
 #faq h4, #faq p{
 	text-align: left;
 }
+
+@media (max-width: 420px) {
+    h1 {
+        font-size: 50px !important;
+    }
+    #header p {
+        font-size: 30px !important;
+    }
+    p {
+        padding: 20px !important;
+    }
+    h4 {
+        padding: 20px !important;
+    }
+    iframe {
+        max-width: 285px !important;
+        max-height: 160px !important;
+    }
+}
