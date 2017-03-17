@@ -1,6 +1,9 @@
 import processing.core.PApplet;
 import processing.core.PSurface;
 
+import java.awt.GraphicsEnvironment;
+import java.awt.GraphicsDevice;
+
 public class Stage extends PApplet {
 
   MusicBeam ctrl = null;
@@ -16,6 +19,9 @@ public class Stage extends PApplet {
   }
 
   public void settings() {
+    if(!hasEnoughScreenDevices())
+      javax.swing.JOptionPane.showMessageDialog(null, "No second screen device available!");
+      
     fullScreen(P2D, 2);
   }
 
@@ -39,6 +45,16 @@ public class Stage extends PApplet {
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
         effectArray[i].refresh();
+  }
+ 
+  private boolean hasEnoughScreenDevices()
+  {
+    GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+    GraphicsDevice[] gs = ge.getScreenDevices();
+    if(gs.length < 2)
+      return false;
+      
+    return true;
   }
   
   public int getMaxRadius(){
