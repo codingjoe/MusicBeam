@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.2.1";
+String version = "2.3.0";
 
 public Boolean debugMode = false;
 
@@ -345,16 +345,16 @@ private void initAudioInput()
   String msg = "No audio input found!\n\n"
              + "Please check the audio settings on your current operating system.\n"
              + "There must be at least one audio input activated.";
-  
+
   minim = new Minim(this);
   in = minim.getLineIn(Minim.STEREO, 512);
-  
+
   if(in == null)
   {
     JOptionPane.showMessageDialog(null, msg, "Device detection", JOptionPane.ERROR_MESSAGE);
     System.exit(1);
   }
-  
+
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
 }
