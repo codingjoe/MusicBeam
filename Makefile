@@ -1,35 +1,37 @@
-VERSION ?= $(shell git describe --tags)
+VERSION ?= $(shell read -p "Enter version number: " version; echo $$version)
+BASE_DIR := $(shell pwd)
+BUILD_DIR := $(BASE_DIR)/builds
+SOURCE_DIR := $(BASE_DIR)/MusicBeam
 
-.PHONY: clean release
+ARCHS = macosx windows32 windows64 linux32 linux64
+ZIPS = $(ARCHS:%=$(BUILD_DIR)/MusicBeam-%.zip)
 
-release:
-	mkdir -p builds/
+.PHONY: clean release builds
 
-	# Mac OS X
-	cp MusicBeam/sketch.icns MusicBeam/application.macosx/MusicBeam.app/Contents/Resources/sketch.icns
-	(cd MusicBeam/application.macosx/ && zip -rq ../../builds/MusicBeam-v$(VERSION)-macosx.zip *)
-	zip -q builds/MusicBeam-v$(VERSION)-macosx.zip LICENSE README.md
+$(BUILD_DIR):
+	mkdir -p $(BUILD_DIR)
 
-	# Win32
-	(cd MusicBeam/application.windows32/ && zip -rq ../../builds/MusicBeam-v$(VERSION)-windows32.zip *)
-	zip -q builds/MusicBeam-v$(VERSION)-windows32.zip LICENSE README.md
+$(BUILD_DIR)/MusicBeam-%.zip:
+	(cd $(SOURCE_DIR)/application.$* && zip -r $(BUILD_DIR)/MusicBeam-$*.zip *)
+	zip $(BUILD_DIR)/MusicBeam-$*.zip LICENSE README.md
 
-	# Win64
-	(cd MusicBeam/application.windows64/ && zip -rq ../../builds/MusicBeam-v$(VERSION)-windows64.zip *)
-	zip -q builds/MusicBeam-v$(VERSION)-windows64.zip LICENSE README.md
+$(BUILD_DIR)/MusicBeam-macosx.zip:
+	cp $(SOURCE_DIR)/sketch.icns $(SOURCE_DIR)/application.macosx/MusicBeam.app/Contents/Resources/sketch.icns
+	codesign --force --sign - $(SOURCE_DIR)/application.macosx/MusicBeam.app
+	(cd $(SOURCE_DIR)/application.macosx && zip -r $(BUILD_DIR)/MusicBeam-macosx.zip *)
+	zip $(BUILD_DIR)/MusicBeam-macosx.zip LICENSE README.md
 
-	# Linux i386
-	(cd MusicBeam/application.linux32/ && zip -rq ../../builds/MusicBeam-v$(VERSION)-linux32.zip *)
-	zip -q builds/MusicBeam-v$(VERSION)-linux32.zip LICENSE README.md
+builds: $(BUILD_DIR) $(ZIPS)
 
-	# Linux x86_64
-	(cd MusicBeam/application.linux64/ && zip -rq ../../builds/MusicBeam-v$(VERSION)-linux64.zip *)
-	zip -q builds/MusicBeam-v$(VERSION)-linux64.zip LICENSE README.md
+release: builds
+	hub releases create origin \
+	-a $(BUILD_DIR)/MusicBeam-macosx.zip \
+	-a $(BUILD_DIR)/MusicBeam-windows32.zip \
+	-a $(BUILD_DIR)/MusicBeam-windows64.zip \
+	-a $(BUILD_DIR)/MusicBeam-linux32.zip \
+	-a $(BUILD_DIR)/MusicBeam-linux64.zip \
+	$(VERSION)
 
 clean:
-	rm -rf ./MusicBeam/application.*
-	rm -rf ./builds/
-
-test:
-	read -e -p "Enter Your Name:" NAME
-	echo $$NAME
+	rm -rf $(SOURCE_DIR)/application.*
+	rm -rf $(BUILD_DIR)
