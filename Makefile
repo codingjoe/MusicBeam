@@ -24,7 +24,7 @@ $(BUILD_DIR)/MusicBeam-macosx.zip:
 builds: $(BUILD_DIR) $(ZIPS)
 
 release: builds
-	hub releases create origin \
+	hub release create origin \
 	-a $(BUILD_DIR)/MusicBeam-macosx.zip \
 	-a $(BUILD_DIR)/MusicBeam-windows32.zip \
 	-a $(BUILD_DIR)/MusicBeam-windows64.zip \
