@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.3.1";
+String version = "2.4.0";
 
 public Boolean debugMode = false;
 
@@ -334,7 +334,7 @@ float getLevel()
 
 private boolean hasEnoughScreenDevices()
 {
-  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //<>//
+  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //<>// //<>//
   GraphicsDevice[] gs = ge.getScreenDevices();
   return gs.length > 1;
 }
