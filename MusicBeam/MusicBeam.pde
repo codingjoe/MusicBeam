@@ -334,10 +334,8 @@ float getLevel()
 private boolean hasEnoughScreenDevices()
 {
   GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
-  GraphicsDevice[] gs = ge.getScreenDevices();
-  if(gs.length < 2)
-    return false;
-  return true;
+  GraphicsDevice[] gs = ge.getScreenDevices(); //<>//
+  return gs.length > 1;
 }
 
 private void initAudioInput()
