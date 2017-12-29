@@ -5,10 +5,6 @@ public class Stage extends PApplet {
 
   MusicBeam ctrl = null;
 
-  int posx;
-
-  float t = 0.0f;
-
   Stage (MusicBeam main)
   {
     super();
@@ -22,7 +18,11 @@ public class Stage extends PApplet {
   public void setup() {
     noStroke();
     colorMode(HSB, 360, 100, 100);
-    blendMode(ADD);
+    try {
+      blendMode(ADD);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
   }
 
   public void draw() {
