@@ -4,12 +4,15 @@ public class ProjectorSimulator extends PApplet{
   private float eyeX,eyeY,eyeZ,sceneX,sceneY,sceneZ;
   private float cameraDistance, cameraTheta, cameraPhi;
   
+  private float beamWeight;
+  
   public ProjectorSimulator(){
     super(); 
   }
   
   public void settings() {
     pixelDensity(displayDensity());
+    beamWeight = pixelDensity;
     size(800, 600, P3D);
   }
   
@@ -24,7 +27,7 @@ public class ProjectorSimulator extends PApplet{
     sceneY = height/2;
     sceneZ =-250;
   
-    cameraDistance = 250;
+    cameraDistance = 800;
     cameraTheta = 0.01;
     cameraPhi = PI/2;
 }
@@ -94,20 +97,19 @@ public class ProjectorSimulator extends PApplet{
 }
 
   private void drawBeams(){
-    stroke(0,120);
     pushMatrix();
     blendMode(ADD);
     translate(projImg.width,0,0);
     rotateY(PI); 
-    strokeWeight(1);
+    strokeWeight(beamWeight);
     
     projImg.loadPixels();
-    for(int y=0; y<projImg.height; y+=2){
-    for (int x =0; x<projImg.width; x+=2){   
+    for(int y=0; y<projImg.pixelHeight; y+=(2*beamWeight)){
+    for (int x =0; x<projImg.pixelWidth; x+=(2*beamWeight)){   
       int loc = x + y * width;
-      if( projImg.pixels[loc] !=0 && projImg.pixels[loc] != color(0)){
-        //img.pixels[loc] = color(0,255,255);
-        stroke(projImg.pixels[loc],25);          
+      color c = projImg.pixels[loc]; 
+      if(  c !=0 && c != color(0)){
+        stroke(c,25);          
         line(x,y,0,width/2,height/2,500);       
       }
      }
