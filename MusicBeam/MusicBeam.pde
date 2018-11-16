@@ -10,6 +10,14 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
+import themidibus.*; //Import the midi library
+import javax.sound.midi.MidiMessage; 
+
+MidiBus myBus; 
+
+int currentColor = 0;
+int midiDevice  = 2;
+
 String version = "2.4.0";
 
 public Boolean debugMode = false;
@@ -47,6 +55,9 @@ int height = 570;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
+
+MusicBeam musicBeam = this;
+
 void settings() {
   pixelDensity(displayDensity());
   initAudioInput();
@@ -71,8 +82,31 @@ void setup() {
   initControls();
   if (! debugMode)
     checkForUpdate();
+
+  // init midi
+  MidiBus.list(); 
+  myBus = new MidiBus(this, midiDevice, 1); 
 }
 
+void midiMessage(MidiMessage message, long timestamp, String bus_name) { 
+  int msg = (int)(message.getMessage()[0] & 0xFF) ;
+  int note = (int)(message.getMessage()[1] & 0xFF) ;
+  int vel = (int)(message.getMessage()[2] & 0xFF);
+
+  if (debugMode) println("Bus " + bus_name + ": Msg: " + msg + " Note "+ note + ", vel " + vel);
+  if (effectArray!=null) {
+    char key = (char) (note - 11);
+    for (int i = 0; i < effectArray.length; i++)
+    {
+      //if (msg == 144 && vel > 0 ) {
+      //  if (key == effectArray[i].triggeredByKey())
+      //    effectArray[i].activate();
+      //}
+      if (effectArray[i].isActive())
+        effectArray[i].midiMessage(message, timestamp, bus_name);
+    }
+  }
+}
 
 void draw() {
   if (stage==null)
@@ -224,25 +258,25 @@ void initControls()
 }
 
 void initRandomControls() {
-  randomToggle = cp5.addToggle("random").setSize(135, 45).setPosition(415, 10);
+  randomToggle = cp5.addToggle("random").setSize(135, 40).setPosition(415, 10);
   randomToggle.getCaptionLabel().set("Play Random").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  randomTimeSlider = cp5.addSlider("randomTime").setSize(210, 45).setPosition(555, 10).setRange(1, 60);
+  randomTimeSlider = cp5.addSlider("randomTime").setSize(210, 40).setPosition(555, 10).setRange(1, 60);
   randomTimeSlider.getCaptionLabel().set("Random Time (s)").align(ControlP5.CENTER, ControlP5.CENTER);
   randomTimeSlider.setValue(20);
 
-  nextButton = cp5.addButton("next").setSize(350, 45).setPosition(415, 60);
+  nextButton = cp5.addButton("next").setSize(350, 40).setPosition(415, 60);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
-  activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
+  activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 40).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
+  activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 40).setItemsPerRow(1).setSpacingRow(5);
 }
 
 void initEffects()
 {
   initRandomControls();
 
-  effectArray = new Effect[9];
+  effectArray = new Effect[10];
   effectArray[0] = new Blackout_Effect(this, 0);
   effectArray[1] = new Strobe_Effect(this, 1);
   effectArray[2] = new Scanner_Effect(this, 2);
@@ -252,6 +286,7 @@ void initEffects()
   effectArray[6] = new Snowstorm_Effect(this, 6);
   effectArray[7] = new LaserBurst_Effect(this, 7);
   effectArray[8] = new Polygon_Effect(this, 8);
+  effectArray[9] = new Midi_Effect(this, 9);
 
   activeSetting.activate(0);
 
@@ -287,6 +322,7 @@ void checkForUpdate()
 
 void keyPressed()
 {
+  println("KeyPressed: key: " + key + " keyCode: " + keyCode);
   if (effectArray!=null)
     for (int i = 0; i < effectArray.length; i++)
     {
@@ -334,7 +370,7 @@ float getLevel()
 
 private boolean hasEnoughScreenDevices()
 {
-  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //<>// //<>//
+  GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment(); //<>//
   GraphicsDevice[] gs = ge.getScreenDevices();
   return gs.length > 1;
 }
@@ -356,4 +392,8 @@ private void initAudioInput()
 
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
+}
+
+public void reloadConfig(int v) {
+  ((Midi_Effect)effectArray[9]).reloadConfig();
 }

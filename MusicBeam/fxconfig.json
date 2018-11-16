@@ -1,0 +1,524 @@
+{
+  "curves": {
+    "LINE_GOBO": [-100,0, -100,0, 100,0, 100,0], 
+    "TRIANGEL_GOBO": [0,100, -86,-50, 86,-50, 0,100],
+    "SQUARE_GOBO": [0,100, 100,0, 0,-100, -100,0, 0,100],
+    "CIRCLE_GOBO": [-70,70, 0,100, 70,70, 100,0, 70,-70, 0,-100, -70,-70, -100,0, -70,70, 0,100, 70,70],
+    "PARABOLA_GOBO": [
+      -110,0, 0,100,  90,0, 0,-80, -70,0, 
+              0, 60,  50,0, 0,-40, -30,0,
+              0, 20,  10,0, 0,  0,   0,0
+    ]
+  },
+  "fx": {
+    "CircleRotate":   {
+      "midinote": 48,
+      "key": "a",
+      "keyCode": 65,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "CIRCLE_GOBO",
+              "gobosize": 0.02
+            }
+          },
+          "duration": 2,
+          "modRotate": [1.5, 1.5, 1.5, -0.4],
+          "start": [0, 0, 0, 1],
+          "end": [0.5, 0.5, 0, 2] 
+        }
+      }
+    },
+
+    "PolyCircleGrow":   {
+      "midinote": 49,
+      "key": "s",
+      "keyCode": 83,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "CIRCLE_GOBO",
+              "gobosize": 0.14,
+              "nosmooth": null
+            }
+          },
+          "hue": 220,
+          "duration": 4,
+          "start": [0, 0, 0, 1],
+          "end": [0, 0, 1, 7] 
+        }
+      }
+    },
+    "PolyCircleGrowDot":   {
+      "midinote": 61,
+      "key": "s",
+      "keyCode": 83,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "DotGobo": {
+              "curve": "CIRCLE_GOBO",
+              "gobosize": 0.14,
+              "nosmooth": null
+            }
+          },
+          "bw": 0,
+          "fillbw": 0,
+          "duration": 4,
+          "start": [0, 0, 0, 1],
+          "end": [0, 0, 2, 7] 
+        }
+      }
+    },
+
+    "Parabola":   {
+      "midinote": 50,
+      "key": "d",
+      "keyCode": 68,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "PARABOLA_GOBO",
+              "gobosize": 0.04,
+              "smooth": null
+            }
+          },
+          "duration": 2.0,
+          "start": [1.0, -0.5, 0.0, 1.0],
+          "end": [-0.0, 0.0, 5.0, 5.0] 
+        }
+      }
+    },
+    "ParabolaDot":   {
+      "midinote": 62,
+      "key": "d",
+      "keyCode": 68,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "DotGobo": {
+              "curve": "PARABOLA_GOBO",
+              "gobosize": 0.04,
+              "smooth": null
+            }
+          },
+          "bw": 0,
+          "fillbw": 0,
+          "duration": 2.0,
+          "start": [1.0, -0.5, 0.0, 1.0],
+          "end": [-0.0, 0.0, 5.0, 8.0] 
+        }
+      }
+    },
+
+    "LineFlyLeft":   {
+      "midinote": 51,
+      "key": "f",
+      "keyCode": 70,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 0.05,
+              "nosmooth": null
+            }
+          },
+          "duration": 4.0,
+          "start": [-0.5, -1.0, 0.0, 1.0],
+          "end": [1.0, 1.0, -1.0,17.0] 
+        }
+      }
+    }, 
+
+    "LineFlyRight":   {
+      "midinote": 52,
+      "key": "g",
+      "keyCode": 71,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 0.05,
+              "nosmooth": null
+            }
+          },
+          "duration": 4.0,
+          "start": [0.5, -1.0, 0.0, 1.0],
+          "end": [-1.0, 1.0, 1.0,10.0] 
+        }
+      }
+    }, 
+
+    "LineTopDownSlow":   {
+      "midinote": 53,
+      "key": "h",
+      "keyCode": 72,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1.0,
+              "nosmooth": null
+            }
+          },
+          "duration": 4.0,
+          "start": [0.0, -1.0, 0.0, 1.0],
+          "end": [0.0, 1.0, 0.0,1.0] 
+        }
+      }
+    }, 
+
+    "LineDownTopSlow":   {
+      "midinote": 54,
+      "key": "j",
+      "keyCode": 74,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1.0,
+              "nosmooth": null
+            }
+          },
+          "duration": 4.0,
+          "start": [0.0, 1.0, 0.0, 1.0],
+          "end": [0.0, -1.0, 0.0,1.0] 
+        }
+      }
+    }, 
+
+    "LineCenterRotateRight":   {
+      "midinote": 55,
+      "key": "k",
+      "keyCode": 75,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1.0,
+              "nosmooth": null
+            }
+          },
+          "modRotate": [0.1, 0.1, 1.3, 1],
+          "duration": 2,
+          "start": [-0.3, 0, 0, 1],
+          "end": [0.3, 0.0, 0.4, 1.0] 
+        }
+      }
+    }, 
+
+    "LineCenterRotateLeft":   {
+      "midinote": 56,
+      "key": "l",
+      "keyCode": 76,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1.0,
+              "nosmooth": null
+            }
+          },
+          "duration": 4.0,
+          "modRotate": [0, 10, 1, 0.3],
+          "start": [0, 0.3, 0, 3],
+          "end": [0.0, 0.3, 0.0, 3] 
+        }
+      }
+    }, 
+
+    "Square":   {
+      "midinote": 63,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "SQUARE_GOBO",
+              "gobosize": 0.5,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "start": [-0.3, 0, 0, 0.5],
+          "end": [0, 0, 1, 0.5] 
+        }
+      }
+    }, 
+    "SquareZoom":   {
+      "midinote": 64,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "SQUARE_GOBO",
+              "gobosize": 0.2,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "start": [0, 0, 0.5, 0.5],
+          "end": [0, 0, 0.5, 4] 
+        }
+      }
+    }, 
+
+    "Triangel":   {
+      "midinote": 65,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "TRIANGEL_GOBO",
+              "gobosize": 0.5,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "modRotate": [0, 2, 1, 0.3],
+          "start": [0.5, 0, 0, 0.5],
+          "end": [-0.5, 0, 2, 0.7] 
+        }
+      }
+    }, 
+    "TriangelZoom":   {
+      "midinote": 66,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "TRIANGEL_GOBO",
+              "gobosize": 0.2,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "start": [0, 0, 0.5, 0.5],
+          "end": [0, 0, 0.5, 7] 
+        }
+      }
+    }, 
+
+    "TriangelRandom":   {
+      "midinote": 67,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "TRIANGEL_GOBO",
+              "gobosize": 0.3,
+              "nosmooth": null
+            }
+          },
+          "duration": 0.5,
+          "modRandom": [3, 2, 0, 0],
+          "start": [0, 0, 0, 1],
+          "end": [0, 0, 1, 1] 
+        }
+      }
+    }, 
+
+    "CircleDotRandom":   {
+      "midinote": 68,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "DotGobo": {
+              "curve": "CIRCLE_GOBO",
+              "gobosize": 0.3,
+              "nosmooth": null
+            }
+          },
+          "bw": 0,
+          "fillbw": 0,
+          "duration": 0.5,
+          "modRandom": [3, 2, 0, 0],
+          "start": [0.3, 0, 1, 1],
+          "end": [-0.3, 0, 0, 1.5] 
+        }
+      }
+    }, 
+
+    "LineRandomLR":   {
+      "midinote": 69,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 0.3,
+              "nosmooth": null
+            }
+          },
+          "duration": 1,
+          "modRandom": [3, 2, 1, 1],
+          "start": [0.5, 0, 0, 1],
+          "end": [-0.5, 0, 0.5, 1] 
+        }
+      }
+    }, 
+
+    "LineRandomRL":   {
+      "midinote": 70,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 0.3,
+              "nosmooth": null
+            }
+          },
+          "duration": 1,
+          "modRandom": [3, 2, 1, 1],
+          "start": [-0.5, 0, 0, 1],
+          "end": [0.5, 0, 0.5, 1] 
+        }
+      }
+    }, 
+
+    "Cross1":   {
+      "midinote": 71,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "start": [0, 0, 0, 1],
+          "end": [0, 0, 0.5, 1] 
+        }
+      }
+    }, 
+    "Cross2":   {
+      "midinote": 72,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "CurveGobo": {
+              "curve": "LINE_GOBO",
+              "gobosize": 1,
+              "nosmooth": null
+            }
+          },
+          "duration": 2,
+          "start": [0, 0, 1, 1],
+          "end": [0, 0, 0.5, 1] 
+        }
+      }
+    }, 
+
+    "DotLineRandomRL":   {
+      "midinote": 73,
+      "key": "return",
+      "keyCode": 13,
+      "FX": {
+        "GoboFx": {
+          "gobo": {
+            "DotGobo": {
+              "curve": "CIRCLE_GOBO",
+              "gobosize": 0.3,
+              "nosmooth": null
+            }
+          },
+          "bw": 0,
+          "fillbw": 60,
+          "duration": 2,
+          "modRandom": [0, 2, 1, 1],
+          "start": [-1.5, 0, 0, 1],
+          "end": [1.5, 0, 0, 1] 
+        }
+      }
+    }, 
+
+
+    "ScreenFx":   {
+      "midinote": 57,
+      "key": "m",
+      "keyCode": 77,
+      "FX": {
+        "ScreenFx": {
+          "duration": 4.0,
+          "modRotate": [1,1,1,1],
+          "start": [0, 0.3, 0, 1],
+          "end": [0, 0.3, -0.5, 1.0] 
+        }
+      }
+    },
+
+    "CirclePumpFx":   {
+      "midinote": 58,
+      "key": "m",
+      "keyCode": 77,
+      "FX": {
+        "CirclePumpFx": {
+          "duration": 4.0,
+          "modRotate": [1,1,1,1],
+          "start": [0, 0.3, 0, 1],
+          "end": [0, 0.3, -0.5, 1.0] 
+        }
+      }
+    },
+
+    "CirclePumpOutFx":   {
+      "midinote": 59,
+      "key": "m",
+      "keyCode": 77,
+      "FX": {
+        "CirclePumpOutFx": {
+          "duration": 4.0,
+          "modRotate": [1,1,1,1],
+          "start": [0, 0.3, 0, 1],
+          "end": [0, 0.3, -0.5, 1.0] 
+        }
+      }
+    },
+
+    "SnowStormFx":   {
+      "midinote": 60,
+      "key": "m",
+      "keyCode": 77,
+      "FX": {
+        "SnowStormFx": {
+          "duration": 4,
+          "modRotate": [1,1,1,1],
+          "start": [0, 0.3, 0, 1],
+          "end": [0, 0.3, -0.5, 1.0] 
+        }
+      }
+    }
+
+  }
+}

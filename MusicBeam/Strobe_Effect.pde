@@ -109,4 +109,38 @@ public class Strobe_Effect extends Effect
         delaySlider.setValue(delaySlider.getValue()+1);
     }
   }
+  
+  int midiHueH = 0;
+  int midiHueL = 0;
+  void midiMessage(MidiMessage message, long timestamp, String bus_name) { 
+    int msg = (int)(message.getMessage()[0] & 0xFF) ;
+    int note = (int)(message.getMessage()[1] & 0xFF) ;
+    int vel = (int)(message.getMessage()[2] & 0xFF);
+  
+    println("StrobeEffect: Bus " + bus_name + ": Msg: " + msg + " Note "+ note + ", vel " + vel);
+    if (msg == 144) {
+      if(note==48) effect_manual_triggered = !effect_manual_triggered;
+      if(note==49) effect_manual_triggered = true;
+      else if(note==54) hatToggle.setState(!hatToggle.getState());
+      else if(note==56) snareToggle.setState(!snareToggle.getState());
+      else if(note==58) kickToggle.setState(!kickToggle.getState());
+      else if(note==51) onsetToggle.setState(!onsetToggle.getState());
+      else if(note==50) aHueToggle.setState(!aHueToggle.getState());
+      else if(note==52) bwToggle.setState(!bwToggle.getState());
+        
+    } else if (msg == 128) {
+      if(note==49) effect_manual_triggered = false;
+    } else if (msg == 176)
+      if (note == 20 ) {
+        int v = Math.round(vel * 30/127);
+        println("Strobo freq value: "+v);
+        delaySlider.setValue(v);
+      } else if(note == 21) {
+        midiHueH = vel;
+      } else if(note == 22) {
+        midiHueL = vel;
+      }
+      if(note == 21 || note == 22) hueSlider.setValue((midiHueL + midiHueH*127) * 360/(127*127));
+  }
+
 }

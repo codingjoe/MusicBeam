@@ -37,7 +37,7 @@ public abstract class Effect
     stg = controller.stage;
     frameRate = stg.frameRate;
     
-    int posy = 115+(i*50);
+    int posy = 115+(i*45);
 
     controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,195).setWidth(395).setHeight(30);
     controlGroup.disableCollapse();
@@ -46,7 +46,7 @@ public abstract class Effect
     ctrl.activeEffect.addItem("("+triggeredByKey() + ")  " + getName(),i);
     ctrl.activeSetting.addItem("settings"+getName(),i);
     
-    randomToggle = cp5.addToggle("random"+getName()).setSize(45, 45).setPosition(670, posy);
+    randomToggle = cp5.addToggle("random"+getName()).setSize(45, 40).setPosition(670, posy);
     randomToggle.getCaptionLabel().set("RND").align(ControlP5.CENTER, ControlP5.CENTER);
     randomToggle.setState(true);
   }
@@ -156,5 +156,14 @@ public abstract class Effect
   {
     if (key == 't')
       effect_manual_triggered = false;
+  }
+  
+  void midiMessage(MidiMessage message, long timestamp, String bus_name) {
+    int msg = (int)(message.getMessage()[0] & 0xFF) ;
+    int note = (int)(message.getMessage()[1] & 0xFF) ;
+    int vel = (int)(message.getMessage()[2] & 0xFF);
+
+    // println("Effect midi: Bus " + bus_name + ": Msg: " + msg + " Note "+ note + ", vel " + vel);
+
   }
 }
