@@ -43,7 +43,7 @@ float randomTimer = 0;
 
 int randomEffect = 0;
 int width = 775;
-int height = 570;
+int height = 620;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
@@ -243,7 +243,7 @@ void initEffects()
 {
   initRandomControls();
 
-  effectArray = new Effect[9];
+  effectArray = new Effect[10];
   effectArray[0] = new Blackout_Effect(this, 0);
   effectArray[1] = new Strobe_Effect(this, 1);
   effectArray[2] = new Scanner_Effect(this, 2);
@@ -253,6 +253,7 @@ void initEffects()
   effectArray[6] = new Snowstorm_Effect(this, 6);
   effectArray[7] = new LaserBurst_Effect(this, 7);
   effectArray[8] = new Polygon_Effect(this, 8);
+  effectArray[9] = new Vortex_Effect(this, 9);
 
   activeSetting.activate(0);
 
