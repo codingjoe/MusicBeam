@@ -8,7 +8,7 @@ class Vortex_Effect extends Effect
   char triggeredByKey() {
     return '9';
   }
-
+  Toggle bwToggle;
   Slider weightSlider, radiusSlider, hueSlider;
 
   Vortex_Effect(MusicBeam controller, int y)
@@ -23,9 +23,13 @@ class Vortex_Effect extends Effect
     radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
     radiusSlider.setValue(600);
 
-    hueSlider = cp5.addSlider("hue"+getName()).setPosition(0, 105).setSize(395, 45).setRange(0, 360).setGroup(controlGroup);
+    hueSlider = cp5.addSlider("hue"+getName()).setPosition(0, 105).setSize(345, 45).setRange(0, 360).setGroup(controlGroup);
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(100);
+    
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 105).setSize(45, 45).setGroup(controlGroup);
+    bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
+    bwToggle.setState(false);
   }
   
   int points, weight, radius, hue;
@@ -34,8 +38,7 @@ class Vortex_Effect extends Effect
     weight = int(weightSlider.getValue());
     radius = int(radiusSlider.getValue());
     hue = int(hueSlider.getValue());
-
-    stg.stroke(hue, 100, 100);
+    stg.stroke(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
     stg.noFill();
     stg.strokeWeight(weight);
     stg.ellipse(0, 0, radius, radius);
@@ -53,6 +56,8 @@ class Vortex_Effect extends Effect
         weightSlider.setValue(weightSlider.getValue()-1);
       else if (keyCode == UP)
         weightSlider.setValue(weightSlider.getValue()+1);
+      else if (keyCode == CONTROL)
+        bwToggle.setValue(!bwToggle.getState());
     }
   }
 }
