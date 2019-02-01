@@ -10,19 +10,20 @@ class RotatingThing_Effect extends Effect
   }
   float offset;
   Toggle bwToggle;
-  Slider weightSlider, radiusSlider, hueSlider, speedSlider;
+  Slider weightSlider, sizeSlider, hueSlider, speedSlider;
 
   RotatingThing_Effect(MusicBeam controller, int y)
   {
     super(controller, y);
-
+    int maxWeight =20; 
+    int maxSize = min(stg.width, stg.height)-2*maxWeight;
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(1, 20).setGroup(controlGroup);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
     weightSlider.setValue(8);
 
-    radiusSlider = cp5.addSlider("radius"+getName()).setPosition(0, 55).setSize(395, 45).setRange(200, 1000).setGroup(controlGroup);
-    radiusSlider.getCaptionLabel().set("Radius").align(ControlP5.RIGHT, ControlP5.CENTER);
-    radiusSlider.setValue(600);
+    sizeSlider = cp5.addSlider("size"+getName()).setPosition(0, 55).setSize(395, 45).setRange(200, maxSize).setGroup(controlGroup);
+    sizeSlider.getCaptionLabel().set("Size").align(ControlP5.RIGHT, ControlP5.CENTER);
+    sizeSlider.setValue(maxSize/4*3);
 
     speedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 105).setSize(395, 45).setRange(-180, 180).setGroup(controlGroup);
     speedSlider.getCaptionLabel().set("Speed").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -37,19 +38,19 @@ class RotatingThing_Effect extends Effect
     bwToggle.setState(false);
   }
   
-  int points, weight, radius, hue;
+  int weight, circleSize, hue;
 
   void draw() {
     offset+=speedSlider.getValue();
     offset=getDegree(offset);
     weight = int(weightSlider.getValue());
-    radius = int(radiusSlider.getValue());
+    circleSize = int(sizeSlider.getValue());
     hue = int(hueSlider.getValue());
     stg.stroke(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
     stg.noFill();
     stg.strokeWeight(weight);
-    stg.arc(0, 0, radius, radius, radians(offset),radians(getDegree(offset+90)));
-    stg.arc(0, 0, radius, radius, radians(getDegree(offset+180)),radians(getDegree(offset+270)));
+    stg.arc(0, 0, circleSize, circleSize, radians(offset),radians(getDegree(offset+90)));
+    stg.arc(0, 0, circleSize, circleSize, radians(getDegree(offset+180)),radians(getDegree(offset+270)));
   }
 
   void keyPressed(char key, int keyCode)
@@ -57,9 +58,9 @@ class RotatingThing_Effect extends Effect
     super.keyPressed(key, keyCode);
     if (key == CODED) {
       if (keyCode == LEFT)
-        radiusSlider.setValue(radiusSlider.getValue()-1);
+        sizeSlider.setValue(sizeSlider.getValue()-1);
       else if (keyCode == RIGHT)
-        radiusSlider.setValue(radiusSlider.getValue()+1);
+        sizeSlider.setValue(sizeSlider.getValue()+1);
       else if (keyCode == DOWN)
         speedSlider.setValue(speedSlider.getValue()-1);
       else if (keyCode == UP)
