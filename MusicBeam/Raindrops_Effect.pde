@@ -9,8 +9,8 @@ class Raindrops_Effect extends Effect
     return 'b';
   }
 
-  Toggle debugToggle,directionToggle;
-  Slider fadeSpeedSlider,debugSpeedSlider;
+  Toggle interactionToggle,directionToggle;
+  Slider fadeSpeedSlider,SpeedSlider;
   int tmpCounter;
   int halfWidth = stg.width/2;
   int halfHeight = stg.height/2;
@@ -23,32 +23,35 @@ class Raindrops_Effect extends Effect
     super(controller, y);
     tmpCounter =0;
     stg.noStroke();
-    stg.fill(100,0,100);
     stg.ellipseMode(CENTER);
     fadeSpeedSlider = cp5.addSlider("speed"+getName()).setPosition(0, 5).setSize(395, 45).setRange(1, 10).setGroup(controlGroup);
     fadeSpeedSlider.getCaptionLabel().set("Fadespeed").align(ControlP5.RIGHT, ControlP5.CENTER);
     fadeSpeedSlider.setValue(5);
     directionToggle = ctrl.cp5.addToggle("direction"+getName()).setPosition(0, 55).setSize(100, 45).setGroup(controlGroup);
-    directionToggle.getCaptionLabel().set("Direction").align(ControlP5.CENTER, ControlP5.CENTER);
+    directionToggle.getCaptionLabel().set("Raindrops").align(ControlP5.CENTER, ControlP5.CENTER);
     directionToggle.setState(false);
-    debugToggle = ctrl.cp5.addToggle("debug"+getName()).setPosition(0, 105).setSize(45, 45).setGroup(controlGroup);
-    debugToggle.getCaptionLabel().set("Debug").align(ControlP5.CENTER, ControlP5.CENTER);
-    debugToggle.setState(false);
-    debugSpeedSlider = cp5.addSlider("debugspeed"+getName()).setPosition(0, 155).setSize(395, 45).setRange(1, 10).setGroup(controlGroup);
-    debugSpeedSlider.getCaptionLabel().set("Debugspeed").align(ControlP5.RIGHT, ControlP5.CENTER);
-    debugSpeedSlider.setValue(5);
+    interactionToggle = ctrl.cp5.addToggle("interaction"+getName()).setPosition(0, 105).setSize(45, 45).setGroup(controlGroup);
+    interactionToggle.getCaptionLabel().set("Music").align(ControlP5.CENTER, ControlP5.CENTER);
+    interactionToggle.setState(true);
+    SpeedSlider = cp5.addSlider("autospeed"+getName()).setPosition(0, 155).setSize(395, 45).setRange(1, 10).setGroup(controlGroup);
+    SpeedSlider.getCaptionLabel().set("Speed (Auto)").align(ControlP5.RIGHT, ControlP5.CENTER);
+    SpeedSlider.setValue(5);
   }
 
  void draw() {
-  if (debugToggle.getState()) {
+  directionToggle.getCaptionLabel().set(directionToggle.getState()?"Sunrays":"Raindrops");
+  stg.fill(100,0,100);
+  if (!interactionToggle.getState()) {
+    interactionToggle.getCaptionLabel().set("Auto");
     if (tmpCounter==0) {
       addDrop();
     }
      tmpCounter+=1;
-     if (tmpCounter>=10-debugSpeedSlider.getValue()) {
+     if (tmpCounter>=10-SpeedSlider.getValue()) {
        tmpCounter=0;
      }
   } else {
+    interactionToggle.getCaptionLabel().set("Music");    
     if(isHat()) addDrop();
     if(isSnare()) addDrop();
     if(isKick()) addDrop();
