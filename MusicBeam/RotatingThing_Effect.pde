@@ -9,8 +9,8 @@ class RotatingThing_Effect extends Effect
     return 'a';
   }
   float offset;
-  Toggle bwToggle;
-  Slider weightSlider, sizeSlider, hueSlider, speedSlider;
+  Toggle bwToggle, dualColourToggle;
+  Slider weightSlider, sizeSlider, hueSlider, hue2Slider, speedSlider;
 
   RotatingThing_Effect(MusicBeam controller, int y)
   {
@@ -33,23 +33,33 @@ class RotatingThing_Effect extends Effect
     hueSlider.getCaptionLabel().set("hue").align(ControlP5.RIGHT, ControlP5.CENTER);
     hueSlider.setValue(100);
     
-    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(350, 155).setSize(45, 45).setGroup(controlGroup);
+    hue2Slider = cp5.addSlider("hue2"+getName()).setPosition(0, 205).setSize(345, 45).setRange(0, 360).setGroup(controlGroup);
+    hue2Slider.getCaptionLabel().set("hue2").align(ControlP5.RIGHT, ControlP5.CENTER);
+    hue2Slider.setValue(100);
+    
+    bwToggle = ctrl.cp5.addToggle("bw"+getName()).setPosition(0, 255).setSize(45, 45).setGroup(controlGroup);
     bwToggle.getCaptionLabel().set("BW").align(ControlP5.CENTER, ControlP5.CENTER);
     bwToggle.setState(false);
+
+    dualColourToggle = ctrl.cp5.addToggle("link"+getName()).setPosition(50, 255).setSize(100, 45).setGroup(controlGroup);
+    dualColourToggle.getCaptionLabel().set("Dual Colours").align(ControlP5.CENTER, ControlP5.CENTER);
+    dualColourToggle.setState(false);
   }
   
-  int weight, circleSize, hue;
+  int weight, circleSize, hue, hue2;
 
   void draw() {
+    stg.noFill();
+    stg.strokeWeight(weight);
     offset+=speedSlider.getValue();
     offset=getDegree(offset);
     weight = int(weightSlider.getValue());
     circleSize = int(sizeSlider.getValue());
     hue = int(hueSlider.getValue());
-    stg.stroke(hueSlider.getValue()%360, bwToggle.getState()?0:100, 100);
-    stg.noFill();
-    stg.strokeWeight(weight);
+    hue2 = int(dualColourToggle.getState()?hue2Slider.getValue():hue);
+    stg.stroke(hue%360, bwToggle.getState()?0:100, 100);
     stg.arc(0, 0, circleSize, circleSize, radians(offset),radians(getDegree(offset+90)));
+    stg.stroke(hue2%360, bwToggle.getState()?0:100, 100);
     stg.arc(0, 0, circleSize, circleSize, radians(getDegree(offset+180)),radians(getDegree(offset+270)));
   }
 
