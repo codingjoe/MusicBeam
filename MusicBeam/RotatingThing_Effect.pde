@@ -9,13 +9,15 @@ class RotatingThing_Effect extends Effect
     return 'a';
   }
   float offset;
-  Toggle bwToggle, dualColourToggle;
+  boolean swap;
+  Toggle bwToggle, dualColourToggle, swapColourToggle;
   Slider weightSlider, sizeSlider, hueSlider, hue2Slider, speedSlider;
 
   RotatingThing_Effect(MusicBeam controller, int y)
   {
     super(controller, y);
-    int maxWeight =20; 
+    swap=false;
+    int maxWeight =20;
     int maxSize = min(stg.width, stg.height)-2*maxWeight;
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(1, 20).setGroup(controlGroup);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
@@ -44,6 +46,10 @@ class RotatingThing_Effect extends Effect
     dualColourToggle = ctrl.cp5.addToggle("link"+getName()).setPosition(50, 255).setSize(100, 45).setGroup(controlGroup);
     dualColourToggle.getCaptionLabel().set("Dual Colours").align(ControlP5.CENTER, ControlP5.CENTER);
     dualColourToggle.setState(false);
+
+    swapColourToggle = ctrl.cp5.addToggle("swapclolour"+getName()).setPosition(150, 255).setSize(100, 45).setGroup(controlGroup);
+    swapColourToggle.getCaptionLabel().set("Swap Colours").align(ControlP5.CENTER, ControlP5.CENTER);
+    swapColourToggle.setState(false);
   }
   
   int weight, circleSize, hue, hue2;
@@ -57,6 +63,18 @@ class RotatingThing_Effect extends Effect
     circleSize = int(sizeSlider.getValue());
     hue = int(hueSlider.getValue());
     hue2 = int(dualColourToggle.getState()?hue2Slider.getValue():hue);
+
+    if(dualColourToggle.getState() && swapColourToggle.getState()) {
+      if (isHat()) {
+        swap=!swap;
+      }
+      if (swap) {
+        int tmp=hue;
+        hue=hue2;
+        hue2=tmp;
+      }
+    }
+
     stg.stroke(hue%360, bwToggle.getState()?0:100, 100);
     stg.arc(0, 0, circleSize, circleSize, radians(offset),radians(getDegree(offset+90)));
     stg.stroke(hue2%360, bwToggle.getState()?0:100, 100);
