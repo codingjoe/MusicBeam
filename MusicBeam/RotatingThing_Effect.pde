@@ -47,7 +47,7 @@ class RotatingThing_Effect extends Effect
     dualColourToggle.getCaptionLabel().set("Dual Colours").align(ControlP5.CENTER, ControlP5.CENTER);
     dualColourToggle.setState(false);
 
-    swapColourToggle = ctrl.cp5.addToggle("swapclolour"+getName()).setPosition(150, 255).setSize(100, 45).setGroup(controlGroup);
+    swapColourToggle = ctrl.cp5.addToggle("swapclolour"+getName()).setPosition(155, 255).setSize(100, 45).setGroup(controlGroup);
     swapColourToggle.getCaptionLabel().set("Swap Colours").align(ControlP5.CENTER, ControlP5.CENTER);
     swapColourToggle.setState(false);
   }
