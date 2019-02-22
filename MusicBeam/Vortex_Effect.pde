@@ -16,7 +16,7 @@ class Vortex_Effect extends Effect
     super(controller, y);
     int maxWeight=20; 
     maxSize = min(stg.width, stg.height)-2*maxWeight;
-    pulseValue=int(maxSize/20);
+    pulseValue=int(maxSize/10);
     currentPulseValue=0;
     weightSlider = cp5.addSlider("weight"+getName()).setPosition(0, 5).setSize(395, 45).setRange(1, 20).setGroup(controlGroup);
     weightSlider.getCaptionLabel().set("Weight").align(ControlP5.RIGHT, ControlP5.CENTER);
