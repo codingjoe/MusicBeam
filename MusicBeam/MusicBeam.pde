@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.4.1";
+String version = "2.5.1";
 
 public Boolean debugMode = false;
 
@@ -346,7 +346,7 @@ private void initAudioInput()
              + "There must be at least one audio input activated.";
 
   minim = new Minim(this);
-  in = minim.getLineIn(Minim.STEREO, 512);
+  in = minim.getLineIn(Minim.MONO, 512);
 
   if(in == null)
   {
