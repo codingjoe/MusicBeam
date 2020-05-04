@@ -14,13 +14,16 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+        os: [ubuntu-latest, windows-latest]
+        processing: [windows64.zip, linux64.tgz]
     runs-on: ${{ matrix.os }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Processing
         uses: ifP1/setup-processing@v1.0.1
+        with:
+          plataform-filetype: ${{ matrix.processing }}
       - name: Run headless test
         uses: GabrielBB/xvfb-action@v1.0
         with:
