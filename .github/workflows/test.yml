@@ -1,0 +1,53 @@
+name: Test and build #TODO: run software in xvfb-run using two virtual displays and virtual audio source and record session using ffmpeg. Then, upload the video.
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  build_ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Processing
+        uses: ifP1/setup-processing@v1.0.1
+        with:
+          platform-filetype: linux64.tgz
+      - name: Install Processing libs
+        run: |
+          ls /opt/hostedtoolcache/processing/3.5.4/x64
+          sudo apt install wget curl -y
+          curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
+          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries controlP5*
+          curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
+          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries v*
+          sudo mv /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/minim
+          ls /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries
+      - name: Linux build
+        run: processing-java --sketch=./MusicBeam --output=./output --force --export 
+      - name: Windows build
+        run: processing-java --sketch=./MusicBeam --output=./output_windows --platform=windows --force --export 
+      #- name: MacOSX build TODO: fix MacOSX builds -> it requires /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/application/mac-app-stub (No such file or directory)
+      #                                                for compiling on Ubuntu Linux.
+      #  run: processing-java --sketch=./MusicBeam --output=./output_macosx --platform=macosx --force --export
+      - name: Check builds
+        run: |
+          ls ./output
+          ls ./output_windows
+          #ls ./output-macosx
+      - name: Upload Linux Build
+        uses: actions/upload-artifact@v1
+        with:
+          name: Linux Build
+          path: output
+      - name: Upload Windows Build
+        uses: actions/upload-artifact@v1
+        with:
+          name: Windows Build
+          path: output_windows
+      #- name: Upload MacOSX Build
+      #  uses: actions/upload-artifact@v1
+      #  with:
+      #    name: MacOSX Build
+      #    path: output_macosx
