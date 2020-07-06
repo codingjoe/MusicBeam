@@ -25,31 +25,10 @@
 <h1>MusicBeam</h1>
 <p class="lead">Your open source light show!</p>
 <p>
-<a class="btn btn-large btn-primary" href="#download">Download</a>
+<a class="btn btn-large btn-primary" href="https://github.com/codingjoe/MusicBeam/releases/latest">Download</a>
 <a class="btn btn-large" href="#demo">View Demo</a>
 </p>
 <p id="version">Version: <span class="version"></span></p>
-</div>
-</div>
-
-<div id="social-ribbon">
-<div class="container">
-<ul>
-<li>
-	<div class="fb-like" data-href="http://facebook.com/musicbeam" data-send="true" data-layout="button_count" data-show-faces="false"></div>
-</li>
-<li>
-<a class="FlattrButton" style="display:none;" rev="flattr;button:compact;" href="http://musicbeam.zepplab.net/"></a>
-<noscript><a href="http://flattr.com/thing/1230754/MusicBeam" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a></noscript>
-</li>
-<li>
-	<iframe class="github-button" src="//ghbtns.com/github-btn.html?user=codingjoe&amp;repo=musicbeam&amp;type=watch&amp;count=true" width="82" height="20"></iframe>
-</li>
-<li>
-	<iframe class="github-button" src="//ghbtns.com/github-btn.html?user=codingjoe&amp;repo=musicbeam&amp;type=fork&amp;count=true" width="82" height="20"></iframe>
-</li>
-</ul>
 </div>
 </div>
 
@@ -235,28 +214,6 @@
 </div>
 </div>
 
-<div id="share-to-download" class="modal hide fade">
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-<h3>Share our Love</h3>
-</div>
-<div class="modal-body">
-<div class="pull-right">
-<a class="FlattrButton" style="display:none;" href="http://musicbeam.zepplab.net/"></a>
-<noscript><a href="http://flattr.com/thing/1230754/MusicBeam" target="_blank">
-<img src="http://api.flattr.com/button/flattr-badge-large.png" alt="Flattr this" title="Flattr this" /></a></noscript>
-<div class="fb-like" data-href="http://facebook.com/musicbeam" data-send="true" data-layout="box_count" data-show-faces="false" data-action="recommend"></div>
-</div>
-<p>Developing open source software is fun but takes all the developers love and passion.</p>
-<p>If you love it too, why not show us in return and like, share, tweet or tumble us?</p>
-<p>Thanks!</p>
-</div>
-<div class="modal-footer">
-<button id="download-button" type="button" class="btn btn-primary disabled"><i class="icon-download icon-white"></i>&nbsp;Download</button>
-</div>
-</div>
-
-
 <!--// Footer //-->
 <footer>
 <div class="container">
@@ -294,45 +251,6 @@ $(document).ready(function() {
 		}
 	)
 });
-</script>
-<div id="fb-root"></div>
-<script>
-
-function initDownload() {
-	var i = 20;
-	var interval = setInterval(function(){
-		$('#download-button').html("Please wait "+i+" seconds...");
-		if(i>0)
-			i--;
-		else {
-			activateDownload();
-			clearInterval(interval);
-			return;
-		}
-	},1000);
-}
-
-function activateDownload() {
-	$('#download-button').replaceWith('<a href="https://github.com/codingjoe/MusicBeam/releases/latest" class="btn btn-primary"><i class="icon-white icon-download"></i>&nbsp;Download</a>');
-}
-
-window.fbAsyncInit = function() {
-	FB.Event.subscribe('edge.create',function(response) {
-		console.log('Liked: '+response);
-		activateDownload();
-});
-	FB.Event.subscribe('message.send', function(response) {
-		console.log('Send: '+response);
-		activateDownload();
-});
-};
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/all.js#xfbml=1&appId=264519950297641";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
 </script>
 </body>
 </html>
