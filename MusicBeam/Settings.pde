@@ -10,13 +10,13 @@ void initSettings()
   saveSliderLabelAlign();
   cp5.getProperties().setFormat(ControlP5.SERIALIZED);
   
-  loadDefaultSettingsButton = cp5.addButton("loadDefaultSettings").setSize(129, 45).setPosition(10, 515);
+  loadDefaultSettingsButton = cp5.addButton("loadDefaultSettings").setPosition(10, height-55).setSize(129, 45);
   loadDefaultSettingsButton.getCaptionLabel().set("Default Settings").align(ControlP5.CENTER, ControlP5.CENTER);
   
-  loadSettingsButton = cp5.addButton("loadSettings").setSize(129, 45).setPosition(143, 515);
+  loadSettingsButton = cp5.addButton("loadSettings").setPosition(143, height-55).setSize(129, 45);
   loadSettingsButton.getCaptionLabel().set("Load Settings").align(ControlP5.CENTER, ControlP5.CENTER);
   
-  saveSettingsButton = cp5.addButton("saveSettings").setSize(129, 45).setPosition(276, 515);
+  saveSettingsButton = cp5.addButton("saveSettings").setPosition(276, height-55).setSize(129, 45);
   saveSettingsButton.getCaptionLabel().set("Save Settings").align(ControlP5.CENTER, ControlP5.CENTER);
 }
 
