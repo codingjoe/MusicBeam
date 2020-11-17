@@ -4,11 +4,19 @@ import processing.core.PSurface;
 public class Stage extends PApplet {
 
   MusicBeam ctrl = null;
+  ProjectorSimulator sim;
 
   Stage (MusicBeam main)
   {
     super();
     ctrl = main;
+    sim = new ProjectorSimulator();
+    
+    if(ctrl.debugMode){
+    String[] args = {"Simulator"};
+    PApplet.runSketch(args, sim);
+    }
+    
   }
 
   public void settings() {
@@ -34,16 +42,20 @@ public class Stage extends PApplet {
     background(0);
     noStroke();
 
-    if (ctrl.debugMode) {
-      fill(120, 100, 100);
-      textSize(30);
-      text(frameRate, 100, 100);
-    }
-
     translate(width/2, height/2);
     for (int i = 0; i < effectArray.length; i++)
       if (effectArray[i].isActive())
         effectArray[i].refresh();
+    
+     if (ctrl.debugMode) {
+      resetMatrix();
+      PImage img = get();
+      sim.setImage(img);
+       
+      fill(120, 100, 100);
+      textSize(30);
+      text(frameRate, 100, 100);
+    }
   }
   
   public int getMaxRadius(){
