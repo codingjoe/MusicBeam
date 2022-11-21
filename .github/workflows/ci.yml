@@ -36,7 +36,7 @@ jobs:
       - name: Check builds
         run: ls ./output
       - name: Upload Linux Build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Linux Build
           path: output
@@ -69,7 +69,7 @@ jobs:
       - name: Check builds
         run: ls ./output
       - name: Upload Windows Build
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: Windows Build
           path: output
