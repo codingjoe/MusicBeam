@@ -9,25 +9,30 @@ on:
 jobs:
   Ubuntu:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        processing-version:
+          - 3.5.4
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Processing
-        uses: ifP1/setup-processing@v1.0.1
+        uses: ifP1/setup-processing@v1.1.1
         with:
+          version: ${{matrix.processing-version}}
           platform-filetype: linux64.tgz
       - name: Install Processing libs
         run: |
-          ls /opt/hostedtoolcache/processing/3.5.4/x64
+          ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries controlP5*
+          unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries controlP5*
           curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries v*
-          sudo mv /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/minim
-          ls /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries
+          unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries v*
+          sudo mv /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/minim
+          ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries
       - name: Linux build
-        run: processing-java --sketch=./MusicBeam --output=./output --force --export 
+        run: processing-java --sketch=./MusicBeam --output=./output --force --export
       - name: Check builds
         run: ls ./output
       - name: Upload Linux Build
@@ -38,25 +43,29 @@ jobs:
 
   Windows:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        processing-version:
+          - 3.5.4
     steps:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Setup Processing
-        uses: ifP1/setup-processing@v1.0.1
+        uses: ifP1/setup-processing@v1.1.1
         with:
           platform-filetype: linux64.tgz
       - name: Install Processing libs
         run: |
-          ls /opt/hostedtoolcache/processing/3.5.4/x64
+          ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries controlP5*
+          unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries controlP5*
           curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries v*
-          sudo mv /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries/minim
-          ls /opt/hostedtoolcache/processing/3.5.4/x64/modes/java/libraries
+          unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries v*
+          sudo mv /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/minim
+          ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries
       - name: Windows build
-        run: processing-java --sketch=./MusicBeam --output=./output --platform=windows --force --export 
+        run: processing-java --sketch=./MusicBeam --output=./output --platform=windows --force --export
       - name: Check builds
         run: ls ./output
       - name: Upload Windows Build
