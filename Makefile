@@ -1,37 +1,35 @@
-VERSION ?= $(shell read -p "Enter version number: " version; echo $$version)
 BASE_DIR := $(shell pwd)
 BUILD_DIR := $(BASE_DIR)/MusicBeam
 SOURCE_DIR := $(BASE_DIR)/MusicBeam
 
-ARCHS = macosx windows32 windows64 linux32 linux64
+ARCHS = linux-aarch64 linux-amd64 linux-arm macos-aarch64 macos-x86_64 windows-amd64
 ZIPS = $(ARCHS:%=$(BUILD_DIR)/MusicBeam-%.zip)
 
-.PHONY: clean release builds
+.PHONY: all clean
 
 $(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+	mkdir -p "$(BUILD_DIR)"
 
 $(BUILD_DIR)/MusicBeam-%.zip:
-	(cd $(SOURCE_DIR)/application.$* && zip -r $(BUILD_DIR)/MusicBeam-$*.zip *)
-	zip $(BUILD_DIR)/MusicBeam-$*.zip LICENSE README.md
+	(cd "$(SOURCE_DIR)/$(*)" && zip -r "$(BUILD_DIR)/MusicBeam-$(*).zip" ./*)
+	zip "$(BUILD_DIR)/MusicBeam-$(*).zip" LICENSE README.md
 
-$(BUILD_DIR)/MusicBeam-macosx.zip:
-	cp $(SOURCE_DIR)/sketch.icns $(SOURCE_DIR)/application.macosx/MusicBeam.app/Contents/Resources/sketch.icns
-	codesign --force --sign - $(SOURCE_DIR)/application.macosx/MusicBeam.app
-	(cd $(SOURCE_DIR)/application.macosx && zip -r $(BUILD_DIR)/MusicBeam-macosx.zip *)
-	zip $(BUILD_DIR)/MusicBeam-macosx.zip LICENSE README.md
+$(BUILD_DIR)/MusicBeam-macos-aarch64.zip:
+	cp "$(SOURCE_DIR)/sketch.icns" "$(SOURCE_DIR)/macos-aarch64/MusicBeam.app/Contents/Resources/sketch.icns"
+	codesign --force --sign - "$(SOURCE_DIR)/macos-aarch64/MusicBeam.app"
+	(cd "$(SOURCE_DIR)/macos-aarch64" && zip -r "$(BUILD_DIR)/MusicBeam-macos-aarch64.zip" ./*)
+	zip "$(BUILD_DIR)/MusicBeam-macos-aarch64.zip" LICENSE README.md
 
-builds: $(BUILD_DIR) $(ZIPS)
+$(BUILD_DIR)/MusicBeam-macos-x86_64.zip:
+	cp "$(SOURCE_DIR)/sketch.icns" "$(SOURCE_DIR)/macos-x86_64/MusicBeam.app/Contents/Resources/sketch.icns"
+	codesign --force --sign - "$(SOURCE_DIR)/macos-x86_64/MusicBeam.app"
+	(cd "$(SOURCE_DIR)/macos-x86_64" && zip -r "$(BUILD_DIR)/MusicBeam-macos-x86_64.zip" ./*)
+	zip "$(BUILD_DIR)/MusicBeam-macos-x86_64.zip" LICENSE README.md
 
-release: builds
-	hub release create origin \
-	-a $(BUILD_DIR)/MusicBeam-macosx.zip \
-	-a $(BUILD_DIR)/MusicBeam-windows32.zip \
-	-a $(BUILD_DIR)/MusicBeam-windows64.zip \
-	-a $(BUILD_DIR)/MusicBeam-linux32.zip \
-	-a $(BUILD_DIR)/MusicBeam-linux64.zip \
-	$(VERSION)
+all: $(BUILD_DIR) $(ZIPS)
 
 clean:
-	rm -rf $(SOURCE_DIR)/application.*
-	rm $(ZIPS)
+	-for dir in $(ARCHS); do \
+		rm -rf "$(SOURCE_DIR)/$${dir}"; \
+	done
+	-rm $(ZIPS)
