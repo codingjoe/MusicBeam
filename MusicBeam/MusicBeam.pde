@@ -10,7 +10,7 @@ import controlP5.*;
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
-String version = "2.5.1";
+String version = "2.6.1";
 
 public Boolean debugMode = false;
 
@@ -48,6 +48,9 @@ int height = 570;
 float maxLevel = 0;
 float goalMaxLevel=0;
 void settings() {
+  if (! debugMode)
+    checkForUpdate();
+  
   pixelDensity(displayDensity());
   initAudioInput();
 
@@ -69,8 +72,6 @@ void setup() {
   colorMode(HSB, 360, 100, 100);
 
   initControls();
-  if (! debugMode)
-    checkForUpdate();
 }
 
 
@@ -280,8 +281,11 @@ void checkForUpdate()
       jsonString += lines[i];
     }
     JSONObject json = parseJSONObject(jsonString);
-    if (!json.getString("tag_name").toLowerCase().equals(version.toLowerCase()))
-      launch("http://www.musicbeam.org/#update");
+    if (!json.getString("tag_name").toLowerCase().equals(version.toLowerCase())) {
+      int choice = JOptionPane.showConfirmDialog(null, "A newer version of MusicBeam is available. Do you want to download it now?", "Device detection", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
+      if (choice == JOptionPane.YES_OPTION)
+        launch("https://github.com/codingjoe/MusicBeam/releases/latest");
+    }
   }
 }
 
