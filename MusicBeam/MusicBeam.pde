@@ -7,6 +7,8 @@ import java.awt.GraphicsDevice;
 
 import controlP5.*;
 
+import oscP5.*;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 
@@ -19,6 +21,9 @@ Stage stage = null;
 Strobe_Effect strobo;
 
 ControlP5 cp5;
+
+OscP5 oscP5;
+int oscServerPort = 14567;
 
 Minim minim;
 
@@ -72,6 +77,8 @@ void setup() {
   colorMode(HSB, 360, 100, 100);
 
   initControls();
+  
+  initOscSever();
 }
 
 
@@ -362,4 +369,42 @@ private void initAudioInput()
 
   bdFreq = new BeatDetect(in.bufferSize(), in.sampleRate());
   bdSound = new BeatDetect();
+}
+
+private void initOscSever()
+{
+  oscP5 = new OscP5(this, oscServerPort);
+}
+
+void oscEvent(OscMessage theOscMessage)
+{
+  switch(theOscMessage.addrPattern()) {
+    case "/random/play":
+      randomToggle.setState(true);
+      break;
+    case "/random/stop":
+      randomToggle.setState(false);
+      break;
+    case "/random/next":
+      nextRandom();
+      break;
+    case "/random/time":
+      randomTimeSlider.setValue(theOscMessage.get(0).intValue());
+      break;
+
+    case "/beat/delay":
+      beatDelaySlider.setValue(theOscMessage.get(0).intValue());
+      break;
+    case "/beat/minLevel":
+      minLevelSlider.setValue(theOscMessage.get(0).intValue());
+      break;
+
+/*
+    default:
+      print("### received an unknown osc message.");
+      print(" addrpattern: "+theOscMessage.addrPattern());
+      println(" typetag: "+theOscMessage.typetag());
+      break;
+*/
+  }
 }
