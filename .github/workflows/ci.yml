@@ -27,6 +27,8 @@ jobs:
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
           unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries controlP5*
+          wget -q https://sojamo.de/libraries/oscP5/download/oscP5-0.9.8.zip
+          unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries oscP5*
           curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
           unzip -d /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries v*
           sudo mv /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/minim
