@@ -17,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
-        uses: ifP1/setup-processing@v1.1.1
+        uses: ifP1/setup-processing@v2.0.0
         with:
           version: ${{matrix.processing-version}}
           platform-filetype: linux64.tgz
@@ -51,7 +51,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
-        uses: ifP1/setup-processing@v1.1.1
+        uses: ifP1/setup-processing@v2.0.0
         with:
           platform-filetype: linux64.tgz
       - name: Install Processing libs
