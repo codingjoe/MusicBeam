@@ -12,17 +12,15 @@ jobs:
     strategy:
       matrix:
         processing-version:
-          - 3.5.4
+          - 1292.0.0
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
         uses: ifP1/setup-processing@v2.0.0
-        with:
-          version: ${{matrix.processing-version}}
-          platform-filetype: linux64.tgz
       - name: Install Processing libs
         run: |
+          ls /opt/hostedtoolcache/processing
           ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
@@ -46,14 +44,12 @@ jobs:
     strategy:
       matrix:
         processing-version:
-          - 3.5.4
+          - 1292.0.0
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
         uses: ifP1/setup-processing@v2.0.0
-        with:
-          platform-filetype: linux64.tgz
       - name: Install Processing libs
         run: |
           ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64
@@ -65,7 +61,7 @@ jobs:
           sudo mv /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries/minim
           ls /opt/hostedtoolcache/processing/${{matrix.processing-version}}/x64/modes/java/libraries
       - name: Windows build
-        run: processing-java --sketch=./MusicBeam --output=./output --platform=windows --force --export
+        run: processing-java --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
       - name: Check builds
         run: ls ./output
       - name: Upload Windows Build
