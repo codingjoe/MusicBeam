@@ -13,18 +13,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
-        uses: ifP1/setup-processing@v2.1.0
+        id: setup-processing
+        uses: pr1metine/setup-processing@2.1.0
       - name: Install Processing libs
         run: |
-          ls /opt/hostedtoolcache/processing
-          ls /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries controlP5*
+          unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries controlP5*
           curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries v*
-          sudo mv /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries/minim
-          ls /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries
+          unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries v*
+          sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Linux build
         run: processing-java --sketch=./MusicBeam --output=./output --force --export
       - name: Check builds
@@ -41,17 +39,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Setup Processing
-        uses: ifP1/setup-processing@v2.1.0
+        id: setup-processing
+        uses: pr1metine/setup-processing@2.1.0
       - name: Install Processing libs
         run: |
-          ls /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64
           sudo apt install wget curl -y
           curl -s https://api.github.com/repos/sojamo/controlp5/releases/latest | jq -r '.assets[0]["browser_download_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries controlP5*
+          unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries controlP5*
           curl -s https://api.github.com/repos/ddf/Minim/releases/latest | jq -r '.["zipball_url"]' | xargs -L 1 wget -q
-          unzip -d /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries v*
-          sudo mv /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries/ddf-Minim-* /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries/minim
-          ls /opt/hostedtoolcache/processing/${{steps.setup-processing.outputs.install-dir}}/x64/modes/java/libraries
+          unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries v*
+          sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Windows build
         run: processing-java --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
       - name: Check builds
