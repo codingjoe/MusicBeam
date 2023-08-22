@@ -14,7 +14,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Processing
         id: setup-processing
-        uses: pr1metine/setup-processing@2.1.0
+        uses: pr1metine/setup-processing@v2.1.0
       - name: Install Processing libs
         run: |
           sudo apt install wget curl -y
@@ -25,8 +25,6 @@ jobs:
           sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Linux build
         run: processing-java --sketch=./MusicBeam --output=./output --force --export
-      - name: Check builds
-        run: ls ./output
       - name: Upload Linux Build
         uses: actions/upload-artifact@v3
         with:
@@ -40,7 +38,7 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Processing
         id: setup-processing
-        uses: pr1metine/setup-processing@2.1.0
+        uses: pr1metine/setup-processing@v2.1.0
       - name: Install Processing libs
         run: |
           sudo apt install wget curl -y
@@ -51,8 +49,6 @@ jobs:
           sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Windows build
         run: processing-java --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
-      - name: Check builds
-        run: ls ./output
       - name: Upload Windows Build
         uses: actions/upload-artifact@v3
         with:
