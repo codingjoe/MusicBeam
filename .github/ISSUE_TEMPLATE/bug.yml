@@ -1,0 +1,52 @@
+name: 🐛 Bug
+description: Report a technical issue.
+title: '🐛 '
+labels:
+  - bug
+assignees:
+  - codingjoe
+body:
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for taking the time to report a bug.
+        Please fill in as much of the template below as you're able.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Security issues
+        Please do not report security issues here.
+        Instead, disclose them as described in our [security policy](https://github.com/codingjoe/django-select2/security).
+
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Bug Description
+      description: A clear and concise description of what the bug is.
+      placeholder: I found a bug
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-steps
+    attributes:
+      label: Steps to Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '....'
+        3. Scroll down to '....'
+        4. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: bug-expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: I expected the app to do X
+    validations:
+      required: true
