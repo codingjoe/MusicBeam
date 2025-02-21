@@ -1,7 +1,5 @@
 # MusicBeam
 
-[![Join the chat at https://gitter.im/codingjoe/MusicBeam](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/codingjoe/MusicBeam?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
 MusicBeam is a multi platform software that allows using a projector as a RGB laser.
 MusicBeam is written in [Processing][Processing] a JAVA based language that is easy to learn to enable users to contribute new effects.
 
