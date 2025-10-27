@@ -26,7 +26,7 @@ jobs:
       - name: Linux build
         run: processing-java --sketch=./MusicBeam --output=./output --force --export
       - name: Upload Linux Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Linux Build
           path: output
@@ -50,7 +50,7 @@ jobs:
       - name: Windows build
         run: processing-java --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
       - name: Upload Windows Build
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Windows Build
           path: output
