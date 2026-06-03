@@ -3,6 +3,10 @@
 MusicBeam is a multi platform software that allows using a projector as a RGB laser.
 MusicBeam is written in [Processing][Processing] a JAVA based language that is easy to learn to enable users to contribute new effects.
 
+## Sponsors
+
+[![Sponsors](https://django.the-box.sh/sponsors/codingjoe/MusicBeam.svg)](https://github.com/sponsors/codingjoe)
+
 ## Download
 
 The latest releases can be found at: [musicbeam.org](http://www.musicbeam.org)
