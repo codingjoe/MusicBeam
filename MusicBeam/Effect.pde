@@ -37,7 +37,7 @@ public abstract class Effect
     stg = controller.stage;
     frameRate = stg.frameRate;
     
-    int posy = 115+(i*50);
+    int posy = 170+(i*50);
 
     controlGroup = cp5.addGroup(getName()+"SettingsGroup").hide().setPosition(10,195).setWidth(395).setHeight(30);
     controlGroup.disableCollapse();

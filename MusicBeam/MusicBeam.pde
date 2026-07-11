@@ -34,16 +34,18 @@ Effect[] effectArray;
 
 DropdownList displays;
 
-Toggle projectorToggle, randomToggle;
+Toggle projectorToggle, randomToggle, blackoutOnSilenceToggle;
 Slider randomTimeSlider, beatDelaySlider, minLevelSlider;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
 
 float randomTimer = 0;
 
+int lastAudibleMillis = 0;
+
 int randomEffect = 0;
 int width = 775;
-int height = 670;
+int height = 725;
 
 float maxLevel = 0;
 float goalMaxLevel=0;
@@ -235,8 +237,11 @@ void initRandomControls() {
   nextButton = cp5.addButton("next").setSize(350, 45).setPosition(415, 60);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 115).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
-  activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 115).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
+  blackoutOnSilenceToggle = cp5.addToggle("blackoutOnSilence").setSize(350, 45).setPosition(415, 110);
+  blackoutOnSilenceToggle.getCaptionLabel().set("Blackout on Silence").align(ControlP5.CENTER, ControlP5.CENTER);
+
+  activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 170).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
+  activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 170).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);
 }
 
 void initEffects()
@@ -272,6 +277,9 @@ void beatDetect()
   bdFreq.setSensitivity(int(beatDelaySlider.getValue()));
   bdSound.detect(in.mix);
   bdFreq.detect(in.mix);
+
+  if (getLevel()>minLevelSlider.getValue())
+    lastAudibleMillis = millis();
 }
 
 void checkForUpdate()
@@ -336,6 +344,18 @@ float getLevel()
 {
   if (in.mix.level()<0.0001)return 0;
   return in.mix.level();
+}
+
+// 1 while audible (or toggle off); after a 1.5s silence grace period,
+// fades to 0 over the next second so the stage dims to black.
+float silenceFade()
+{
+  if (!blackoutOnSilenceToggle.getState())
+    return 1;
+  int quiet = millis()-lastAudibleMillis;
+  if (quiet <= 1500)
+    return 1;
+  return max(0, 1 - (quiet-1500)/1000.0);
 }
 
 private boolean hasEnoughScreenDevices()
