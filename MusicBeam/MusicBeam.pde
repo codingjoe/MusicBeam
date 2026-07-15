@@ -350,12 +350,14 @@ float getLevel()
 // fades to 0 over the next second so the stage dims to black.
 float silenceFade()
 {
-  if (!blackoutOnSilenceToggle.getState())
-    return 1;
-  int quiet = millis()-lastAudibleMillis;
-  if (quiet <= 1500)
-    return 1;
-  return max(0, 1 - (quiet-1500)/1000.0);
+  float fade = 1;
+  if (blackoutOnSilenceToggle.getState())
+  {
+    int quiet = millis()-lastAudibleMillis;
+    if (quiet > 1500)
+      fade = max(0, 1 - (quiet-1500)/1000.0);
+  }
+  return fade;
 }
 
 private boolean hasEnoughScreenDevices()

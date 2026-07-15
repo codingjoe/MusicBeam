@@ -42,20 +42,20 @@ public class Stage extends PApplet {
 
     translate(width/2, height/2);
     float fade = ctrl.silenceFade();
-    if (fade <= 0)
-      return;
-    for (int i = 0; i < effectArray.length; i++)
-      if (effectArray[i].isActive())
-        effectArray[i].refresh();
+    if (fade > 0) {
+      for (int i = 0; i < effectArray.length; i++)
+        if (effectArray[i].isActive())
+          effectArray[i].refresh();
 
-    if (fade < 1) {
-      // additive blending cannot darken, so switch to normal blending
-      // for a translucent black overlay while fading out
-      blendMode(BLEND);
-      noStroke();
-      fill(0, 0, 0, (1-fade)*100);
-      rect(-width/2, -height/2, width, height);
-      blendMode(ADD);
+      if (fade < 1) {
+        // additive blending cannot darken, so switch to normal blending
+        // for a translucent black overlay while fading out
+        blendMode(BLEND);
+        noStroke();
+        fill(0, 0, 0, (1-fade)*100);
+        rect(-width/2, -height/2, width, height);
+        blendMode(ADD);
+      }
     }
   }
   
