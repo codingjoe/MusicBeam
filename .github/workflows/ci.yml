@@ -14,7 +14,9 @@ jobs:
         uses: actions/checkout@v7
       - name: Setup Processing
         id: setup-processing
-        uses: pr1metine/setup-processing@v2.1.0
+        uses: pr1metine/setup-processing@v2.2.0
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       - name: Install Processing libs
         run: |
           sudo apt install wget curl -y
@@ -24,7 +26,7 @@ jobs:
           unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries v*
           sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Linux build
-        run: processing-java --sketch=./MusicBeam --output=./output --force --export
+        run: processing cli --sketch=./MusicBeam --output=./output --force --export
       - name: Upload Linux Build
         uses: actions/upload-artifact@v7
         with:
@@ -38,7 +40,9 @@ jobs:
         uses: actions/checkout@v7
       - name: Setup Processing
         id: setup-processing
-        uses: pr1metine/setup-processing@v2.1.0
+        uses: pr1metine/setup-processing@v2.2.0
+        env:
+          ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
       - name: Install Processing libs
         run: |
           sudo apt install wget curl -y
@@ -48,7 +52,7 @@ jobs:
           unzip -d ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries v*
           sudo mv ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/ddf-Minim-* ${{steps.setup-processing.outputs.install-dir}}/modes/java/libraries/minim
       - name: Windows build
-        run: processing-java --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
+        run: processing cli --sketch=./MusicBeam --output=./output --variant=windows-amd64 --force --export
       - name: Upload Windows Build
         uses: actions/upload-artifact@v7
         with:
