@@ -34,7 +34,7 @@ Effect[] effectArray;
 
 DropdownList displays;
 
-Toggle projectorToggle, randomToggle, blackoutOnSilenceToggle;
+Toggle projectorToggle, randomToggle, blackoutOnSilenceToggle, artNetToggle;
 Slider randomTimeSlider, beatDelaySlider, minLevelSlider;
 Button nextButton;
 RadioButton activeEffect, activeSetting;
@@ -93,6 +93,9 @@ void draw() {
       effectArray[int(activeSetting.getValue())].showControls();
   }
 
+  if (artNet != null)
+    artNet.update();
+
   if (randomToggle!=null)
     if (randomToggle.getState()&&randomTimer>=randomTimeSlider.getValue()*60)
     {
@@ -115,6 +118,8 @@ void controlEvent(ControlEvent event)
 {
   if (event.getName()=="next")
     nextRandom();
+  else if (event.getName()=="artNet" && artNet!=null)
+    artNet.setEnabled(artNetToggle.getState());
 }
 
 void drawBeatBoard()
@@ -222,6 +227,7 @@ void initControls()
   PApplet.runSketch(args, stage);
   stage.noLoop();
   initEffects();
+  artNet = new ArtNet();
   initSettings();
   stage.loop();
 }
@@ -237,8 +243,11 @@ void initRandomControls() {
   nextButton = cp5.addButton("next").setSize(350, 45).setPosition(415, 60);
   nextButton.getCaptionLabel().set("Next Effect").align(ControlP5.CENTER, ControlP5.CENTER);
 
-  blackoutOnSilenceToggle = cp5.addToggle("blackoutOnSilence").setSize(350, 45).setPosition(415, 110);
+  blackoutOnSilenceToggle = cp5.addToggle("blackoutOnSilence").setSize(172, 45).setPosition(415, 110);
   blackoutOnSilenceToggle.getCaptionLabel().set("Blackout on Silence").align(ControlP5.CENTER, ControlP5.CENTER);
+
+  artNetToggle = cp5.addToggle("artNet").setSize(172, 45).setPosition(593, 110);
+  artNetToggle.getCaptionLabel().set("Art-Net (DMX)").align(ControlP5.CENTER, ControlP5.CENTER);
 
   activeEffect = cp5.addRadioButton("activeEffects").setPosition(415, 170).setSize(250, 45).setItemsPerRow(1).setSpacingRow(5).setNoneSelectedAllowed(true);
   activeSetting = cp5.addRadioButton("activeSettings").setPosition(720, 170).setSize(45, 45).setItemsPerRow(1).setSpacingRow(5);

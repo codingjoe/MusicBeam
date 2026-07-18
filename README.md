@@ -12,6 +12,17 @@ MusicBeam is written in [Processing][Processing] a JAVA based language that is e
 The latest releases can be found at: [musicbeam.org](http://www.musicbeam.org)
 
 
+## Art-Net (DMX) Control
+
+The active effect can be selected over the network with Art-Net messages. The button **Art-Net (DMX)** starts a background thread that listens on UDP port 6454 for DMX frames and monitors channel 1 of universe 0. The channel value gets mapped to the available Effects. Channel value 0 maps to the Blackout effect.
+
+It can be tried out using [`examples/artnet_test.py`](examples/artnet_test.py):
+
+```console
+python3 examples/artnet_test.py 3     # select effect 3
+```
+
+
 ## Contributing
 
 MusicBeam is writing in Processing a Java sublanguage. It is extremely easy to write even without prior coding experience.
